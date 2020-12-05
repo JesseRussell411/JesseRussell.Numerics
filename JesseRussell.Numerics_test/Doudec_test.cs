@@ -17,8 +17,8 @@ namespace JesseRussell.Numerics_test
             Assert.AreEqual(d1, 0.0);
             Assert.AreEqual(d1, 0.0M);
             Assert.AreEqual(d1, 0);
-            Assert.IsTrue(d1.IsDouble);
-            Assert.IsFalse(d1.IsDecimal);
+            Assert.IsFalse(d1.IsDouble);
+            Assert.IsTrue(d1.IsDecimal);
             Assert.AreEqual(d1.Value, 0.0);
             Assert.AreEqual(d1.Double, 0.0);
             Assert.AreEqual(d1.Decimal, 0.0M);

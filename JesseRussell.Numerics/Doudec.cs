@@ -88,13 +88,60 @@ namespace JesseRussell.Numerics
         }
         public bool Equals(double d) => Equals((Doudec)d);
         public bool Equals(decimal dec) => Equals((Doudec)dec);
+
+        public bool Equals(sbyte i) => Equals((Doudec)i);
+        public bool Equals(short i) => Equals((Doudec)i);
+        public bool Equals(int i) => Equals((Doudec)i);
+        public bool Equals(long i) => Equals((Doudec)i);
+        public bool Equals(BigInteger i)
+        {
+            if (this % 1 != 0) return false;
+            if (doubleNotDecimal)
+            {
+                if (double_minValue_BigInteger <= i && i <= double_maxValue_BigInteger)
+                {
+                    return (BigInteger)doub == i;
+                }
+                else return false;
+            }
+            else
+            {
+                if (decimal_minValue_BigInteger <= i && i <= decimal_maxValue_BigInteger)
+                {
+                    return (BigInteger)decim == i;
+                }
+                else return false;
+            }
+        }
+        private static readonly BigInteger double_maxValue_BigInteger = (BigInteger)Math.Truncate(double.MaxValue);
+        private static readonly BigInteger double_minValue_BigInteger = (BigInteger)Math.Truncate(double.MinValue);
+
+        private static readonly BigInteger decimal_maxValue_BigInteger = (BigInteger)Math.Truncate(decimal.MaxValue);
+        private static readonly BigInteger decimal_minValue_BigInteger = (BigInteger)Math.Truncate(decimal.MinValue);
+
+
+        public bool Equals(byte i) => Equals((Doudec)i);
+        public bool Equals(ushort i) => Equals((Doudec)i);
+        public bool Equals(uint i) => Equals((Doudec)i);
+        public bool Equals(ulong i) => Equals((Doudec)i);
+        public bool Equals(UBigInteger ubig) => Equals((BigInteger)ubig);
         public override bool Equals(object obj) => obj switch
         {
             Doudec dd => Equals(dd),
             double d => Equals(d),
             float f => Equals(f),
             decimal dec => Equals(dec),
-            _ => throw new ArgumentException("Argument must be a Doudec, double, float, or decimal")
+
+            sbyte i => Equals(i),
+            short i => Equals(i),
+            int i => Equals(i),
+            long i => Equals(i),
+
+            byte i => Equals(i),
+            ushort i => Equals(i),
+            uint i => Equals(i),
+            ulong i => Equals(i),
+            _ => throw new ArgumentException("Argument must be a Doudec, double, float, decimal, or integer")
         };
 
         public override int GetHashCode()
@@ -259,15 +306,10 @@ namespace JesseRussell.Numerics
         public static Doudec operator +(Doudec dd) => dd;
 
         public static Doudec operator +(Doudec left, Doudec right) => Add(left, right);
-        public static Doudec operator +(Doudec left, Fraction right) => Add(left, right.ToDoudec());
         public static Doudec operator -(Doudec left, Doudec right) => Subtract(left, right);
-        public static Doudec operator -(Doudec left, Fraction right) => Subtract(left, right.ToDoudec());
         public static Doudec operator *(Doudec left, Doudec right) => Multiply(left, right);
-        public static Doudec operator *(Doudec left, Fraction right) => Multiply(left, right.ToDoudec());
         public static Doudec operator /(Doudec left, Doudec right) => Divide(left, right);
-        public static Doudec operator /(Doudec left, Fraction right) => Divide(left, right.ToDoudec());
         public static Doudec operator %(Doudec left, Doudec right) => Remainder(left, right);
-        public static Doudec operator %(Doudec left, Fraction right) => Remainder(left, right.ToDoudec());
 
         public static Doudec operator ++(Doudec dd) => dd.Increment();
         public static Doudec operator --(Doudec dd) => dd.Decrement();

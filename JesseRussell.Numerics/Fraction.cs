@@ -33,6 +33,9 @@ namespace JesseRussell.Numerics
         /// </summary>
         public bool IsNegative => (!IsUndefined) && (Numerator.Sign == -1) ^ (Denominator.Sign == -1);
 
+        /// <summary>
+        /// True if this fractions represents a whole number. Essentially if the denominator equals 1 after simplification.
+        /// </summary>
         public bool IsWhole => Numerator % Denominator == 0;
 
         /// <summary>
@@ -50,6 +53,9 @@ namespace JesseRussell.Numerics
         /// </summary>
         public int Sign => IsZero ? 0 : IsNegative ? -1 : 1;
 
+        /// <summary>
+        /// Returns the absoluteValue.
+        /// </summary>
         public Fraction AbsoluteValue => new Fraction(BigInteger.Abs(Numerator), BigInteger.Abs(Denominator));
 
         /// <summary>
@@ -94,7 +100,7 @@ namespace JesseRussell.Numerics
         #region public Methods
         #region Math
         /// <summary>
-        /// Returns the current fraction with the combination sign moves to the numerator.    1/-2 --> -1/2    -1/-2 --> 1/2
+        /// Returns the current fraction with the combination sign moved to the numerator.    1/-2 --> -1/2    -1/-2 --> 1/2
         /// </summary>
         public Fraction SimplifySign()
         {
@@ -228,12 +234,21 @@ namespace JesseRussell.Numerics
         /// <returns>The whole portion of the fraction.</returns>
         public Fraction Truncate() => ToBigInteger();
 
+        /// <summary>
+        /// Returns the fractions rounded to the next lowest integer.
+        /// </summary>
+        /// <returns></returns>
         public Fraction Floor()
         {
             if (IsWhole) return this;
             else if (IsNegative) return ToBigInteger() - 1;
             else return ToBigInteger();
         }
+
+        /// <summary>
+        /// Returns the fraction rounded to the next highest integer.
+        /// </summary>
+        /// <returns></returns>
         public Fraction Ceiling()
         {
             if (IsWhole) return this;
@@ -289,9 +304,25 @@ namespace JesseRussell.Numerics
             Fraction simplified = Simplify();
             return simplified.Denominator == 1 && simplified.Numerator == bi;
         }
+
+        /// <summary>
+        /// Returns whether d is equal to the current fraction.
+        /// </summary>
         public bool Equals(double d) => Equals(FromDouble(d));
+
+        /// <summary>
+        /// Returns whether f is equal to the current fraction.
+        /// </summary>
         public bool Equals(float f) => Equals(FromDouble(f));
+
+        /// <summary>
+        /// Returns whether dec is equal to the current fraction.
+        /// </summary>
         public bool Equals(decimal dec) => Equals(FromDecimal(dec));
+
+        /// <summary>
+        /// Returns whether dd is equal to the current fraction.
+        /// </summary>
         public bool Equals(Doudec dd) => Equals(FromDoudec(dd));
 
         /// <summary>
@@ -338,6 +369,12 @@ namespace JesseRussell.Numerics
                 _ => throw new ArgumentException("The parameter must be a fraction, integer, or floating point number.")
             };
         }
+
+        /// <summary>
+        /// Returns an integer code from the comparison between the current fraction and other.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>Comparison int code.</returns>
         public int CompareTo(Fraction other)
         {
             BigInteger numerator = BigInteger.Abs(Numerator) * BigInteger.Abs(other.Denominator);
@@ -345,11 +382,47 @@ namespace JesseRussell.Numerics
 
             return (numerator * Sign).CompareTo(other_numerator * other.Sign);
         }
+
+        /// <summary>
+        /// Returns an integer code from the comparison between the current fraction and big.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>Comparison int code.</returns>
         public int CompareTo(BigInteger big) => CompareTo((Fraction)big);
+
+        /// <summary>
+        /// Returns an integer code from the comparison between the current fraction and fo.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>Comparison int code.</returns>
         public int CompareTo(FractionOperation fo) => CompareTo((Fraction)fo);
+
+        /// <summary>
+        /// Returns an integer code from the comparison between the current fraction and d.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>Comparison int code.</returns>
         public int CompareTo(double d) => CompareTo((Fraction)d);
+
+        /// <summary>
+        /// Returns an integer code from the comparison between the current fraction and d.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>Comparison int code.</returns>
         public int CompareTo(decimal d) => CompareTo((Fraction)d);
+
+        /// <summary>
+        /// Returns an integer code from the comparison between the current fraction and ift.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>Comparison int code.</returns>
         public int CompareTo(IntFloat ift) => ift.IsInt ? CompareTo(ift.Int) : CompareTo(ift.Float);
+
+        /// <summary>
+        /// Returns an integer code from the comparison between the current fraction and obj.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns>Comparison int code.</returns>
         public int CompareTo(object obj)
         {
             return obj switch
@@ -376,19 +449,55 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region Conversion
+        /// <summary>
+        /// Converts the current fraction to a BigInteger by floor-dividing it's numerator by it's denominator.
+        /// </summary>
+        /// <returns>The result of the conversion.</returns>
         public BigInteger ToBigInteger() => Numerator / Denominator;
-        public BigInteger ToBigInteger(BigInteger remainder) => BigInteger.DivRem(Numerator, Denominator, out remainder);
 
+        /// <summary>
+        /// Converts the current fraction to a BigInteger by floor-dividing it's numerator by it's denominator.
+        /// </summary>
+        /// <param name="remainder">The remainder left over from the floor-division.</param>
+        /// <returns>The result of the conversion.</returns>
+        public BigInteger ToBigInteger(out BigInteger remainder) => BigInteger.DivRem(Numerator, Denominator, out remainder);
+
+        /// <summary>
+        /// Converts the current fraction to a double by dividing it's numerator by it's denominator.
+        /// </summary>
+        /// <returns>The result of the conversion.</returns>
         public double ToDouble() => (double)Numerator / (double)Denominator;
+
+        /// <summary>
+        /// Converts the current fraction to a float by dividing it's numerator by it's denominator.
+        /// </summary>
+        /// <returns>The result of the conversion.</returns>
         public float ToFloat() => (float)Numerator / (float)Denominator;
+
+        /// <summary>
+        /// Converts the current fraction to a decimal by dividing it's numerator by it's denominator.
+        /// </summary>
+        /// <returns>The result of the conversion.</returns>
+        /// <exception cref="OverflowException"></exception>
         public decimal ToDecimal() => (decimal)Numerator / (decimal)Denominator;
+
+        /// <summary>
+        /// Converts the current fraction to a Doudec by dividing it's numerator by it's denominator.
+        /// </summary>
+        /// <returns>The result of the conversion.</returns>
         public Doudec ToDoudec() => (Doudec)Numerator / (Doudec)Denominator;
+
+        /// <summary>
+        /// Converts the current fraction to an IntFloat by dividing it's numerator by it's denominator.
+        /// </summary>
+        /// <returns>The result of the conversion.</returns>
         public IntFloat ToIntFloat() => IsWhole ? (IntFloat)ToBigInteger() : ToDoudec();
+
         #endregion
         /// <summary>
         /// Returns a string representation of the current fraction.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A string representation of the current fraction.</returns>
         public override string ToString()
         {
             return $"{Numerator}/{Denominator}";
@@ -397,11 +506,32 @@ namespace JesseRussell.Numerics
 
         #region public static Methods
         #region Math
+        /// <summary>
+        /// Returns the natural (base e) logarithm of the provided fraction.
+        /// </summary>
         public static double Log(Fraction f) => Math.Log(f.ToDouble());
+
+        /// <summary>
+        /// Return the logarithm of the provided fraction by the provided new base.
+        /// </summary>
         public static double Log(Fraction f, double newBase) => Math.Log(f.ToDouble(), newBase);
+
+        /// <summary>
+        /// Returns the base 10 logarithm of the provided fraction.
+        /// </summary>
         public static double Log10(Fraction f) => Math.Log10(f.ToDouble());
-        public static Fraction Min(Fraction a, Fraction b) => a < b ? a : b;
-        public static Fraction Max(Fraction a, Fraction b) => a > b ? a : b;
+
+        /// <summary>
+        /// Returns the smallest of the two provided fractions.
+        /// </summary>
+        /// <returns> Either the smallest fraction or the first one (a) if they are equal.</returns>
+        public static Fraction Min(Fraction a, Fraction b) => a > b ? b : a;
+
+        /// <summary>
+        /// Returns the largest of the two provided fractions.
+        /// </summary>
+        /// <returns> Either the largest fraction or the first one (a) if they are equal.</returns>
+        public static Fraction Max(Fraction a, Fraction b) => a < b ? b : a;
         public static Fraction Abs(Fraction f) => f.AbsoluteValue;
         #endregion
 
@@ -410,15 +540,10 @@ namespace JesseRussell.Numerics
         public static FractionOperation operator +(Fraction f) => f;
 
         public static FractionOperation operator +(Fraction left, Fraction right) => left.Add(right);
-        public static Doudec operator +(Fraction left, Doudec right) => left.ToDoudec() + right;
         public static FractionOperation operator -(Fraction left, Fraction right) => left.Subtract(right);
-        public static Doudec operator -(Fraction left, Doudec right) => left.ToDoudec() - right;
         public static FractionOperation operator *(Fraction left, Fraction right) => left.Multiply(right);
-        public static Doudec operator *(Fraction left, Doudec right) => left.ToDoudec() * right;
         public static FractionOperation operator /(Fraction left, Fraction right) => left.Divide(right);
-        public static Doudec operator /(Fraction left, Doudec right) => left.ToDoudec() / right;
         public static FractionOperation operator %(Fraction left, Fraction right) => left.Remainder(right);
-        public static Doudec operator %(Fraction left, Doudec right) => left.ToDoudec() % right;
         public static Fraction operator ++(Fraction f) => f.Increment();
         public static Fraction operator --(Fraction f) => f.Decrement();
 
