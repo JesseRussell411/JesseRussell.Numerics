@@ -461,10 +461,15 @@ namespace JesseRussell.Numerics
         public static FractionOperation operator +(Fraction f) => f;
 
         public static FractionOperation operator +(Fraction left, Fraction right) => left.Add(right);
+        public static Doudec operator +(Fraction left, Doudec right) => left.ToDoudec() + right;
         public static FractionOperation operator -(Fraction left, Fraction right) => left.Subtract(right);
+        public static Doudec operator -(Fraction left, Doudec right) => left.ToDoudec() - right;
         public static FractionOperation operator *(Fraction left, Fraction right) => left.Multiply(right);
+        public static Doudec operator *(Fraction left, Doudec right) => left.ToDoudec() * right;
         public static FractionOperation operator /(Fraction left, Fraction right) => left.Divide(right);
+        public static Doudec operator /(Fraction left, Doudec right) => left.ToDoudec() / right;
         public static FractionOperation operator %(Fraction left, Fraction right) => left.Remainder(right);
+        public static Doudec operator %(Fraction left, Doudec right) => left.ToDoudec() % right;
         public static Fraction operator ++(Fraction f) => f.Increment();
         public static Fraction operator --(Fraction f) => f.Decrement();
 

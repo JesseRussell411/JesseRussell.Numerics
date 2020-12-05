@@ -259,10 +259,15 @@ namespace JesseRussell.Numerics
         public static Doudec operator +(Doudec dd) => dd;
 
         public static Doudec operator +(Doudec left, Doudec right) => Add(left, right);
+        public static Doudec operator +(Doudec left, Fraction right) => Add(left, right.ToDoudec());
         public static Doudec operator -(Doudec left, Doudec right) => Subtract(left, right);
+        public static Doudec operator -(Doudec left, Fraction right) => Subtract(left, right.ToDoudec());
         public static Doudec operator *(Doudec left, Doudec right) => Multiply(left, right);
+        public static Doudec operator *(Doudec left, Fraction right) => Multiply(left, right.ToDoudec());
         public static Doudec operator /(Doudec left, Doudec right) => Divide(left, right);
+        public static Doudec operator /(Doudec left, Fraction right) => Divide(left, right.ToDoudec());
         public static Doudec operator %(Doudec left, Doudec right) => Remainder(left, right);
+        public static Doudec operator %(Doudec left, Fraction right) => Remainder(left, right.ToDoudec());
 
         public static Doudec operator ++(Doudec dd) => dd.Increment();
         public static Doudec operator --(Doudec dd) => dd.Decrement();
