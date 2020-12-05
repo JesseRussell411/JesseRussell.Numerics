@@ -4,7 +4,12 @@
     <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>JesseRussell</Authors>
     <Product>Numerics</Product>
-    <Description>A collection of number useful types.</Description>
+    <Description>A collection of userful number types.</Description>
+    <PackageReleaseNotes>initial release</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/JesseRussell411/JesseRussell.Numerics</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/JesseRussell411/JesseRussell.Numerics</PackageProjectUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>math numerics fraction UBigInteger Doudec IntFloat IntFloatFrac MathUtils</PackageTags>
   </PropertyGroup>
 
 </Project>
