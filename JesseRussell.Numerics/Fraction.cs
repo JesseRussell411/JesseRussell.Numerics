@@ -405,57 +405,6 @@ namespace JesseRussell.Numerics
         public static Fraction Abs(Fraction f) => f.AbsoluteValue;
         #endregion
 
-        //#region Math
-        ///// <summary>
-        ///// Returns the unsimplified result of adding left and right.
-        ///// </summary>
-        ///// <param name="left"></param>
-        ///// <param name="right"></param>
-        ///// <returns></returns>
-        //public static Fraction Add(Fraction left, Fraction right) => left.Add(right);
-
-        ///// <summary>
-        ///// Returns the unsimplified result of subtracting right from left.
-        ///// </summary>
-        ///// <param name="left"></param>
-        ///// <param name="right"></param>
-        ///// <returns></returns>
-        //public static Fraction Subtract(Fraction left, Fraction right) => left.Subtract(right);
-
-        ///// <summary>
-        ///// Returns the unsimplified result of multiplying left and right.
-        ///// </summary>
-        ///// <param name="left"></param>
-        ///// <param name="right"></param>
-        ///// <returns></returns>
-        //public static Fraction Multiply(Fraction left, Fraction right) => left.Multiply(right);
-
-        ///// <summary>
-        ///// Returns the unsimplified result of dividing right from left.
-        ///// </summary>
-        ///// <param name="left"></param>
-        ///// <param name="right"></param>
-        ///// <returns></returns>
-        //public static Fraction Divide(Fraction left, Fraction right) => left.Divide(right);
-
-        ///// <summary>
-        ///// Returns the unsimplified remainder of the division of right from left.
-        ///// </summary>
-        ///// <param name="left"></param>
-        ///// <param name="right"></param>
-        ///// <returns></returns>
-        //public static Fraction Rem(Fraction left, Fraction right) => left.Remainder(right);
-
-        ///// <summary>
-        ///// Returns the unsimplified negation of the provided fraction.
-        ///// </summary>
-        ///// <param name="f">The provided fraction.</param>
-        ///// <returns>The unsimplified negation of the provided fraction.</returns>
-        //public static Fraction Neg(Fraction f) => f.Negate();
-
-        //public static Fraction Floor(Fraction f)
-        //#endregion
-
         #region Operators
         public static FractionOperation operator -(Fraction f) => f.Negate();
         public static FractionOperation operator +(Fraction f) => f;
