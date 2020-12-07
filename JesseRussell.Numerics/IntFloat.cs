@@ -1,4 +1,4 @@
-﻿//#define use_new
+﻿#define use_new
 
 
 using System;
@@ -23,19 +23,16 @@ namespace JesseRussell.Numerics
     /// </Author>
     public struct IntFloat : IComparable, IComparable<IntFloat>, IEquatable<IntFloat>
     {
-        #region public readonly Fields
-        public readonly  Value;
-        #endregion
-
-        #region readonly private Fields
+        #region private readonly Fields
+        private readonly object value;
         private readonly bool floatNotInt;
         #endregion
 
         #region private readonly Properties
-        private Doudec floating => (Doudec)(Value);
-        private BigInteger integer => (BigInteger)(Value);
-        //private Doudec floating => (Doudec)(Value ?? 0);
-        //private BigInteger integer => (BigInteger)(Value ?? default(BigInteger));
+        //private Doudec floating => (Doudec)(Value);
+        //private BigInteger integer => (BigInteger)(Value);
+        private Doudec floating => (Doudec)(value ?? 0);
+        private BigInteger integer => (BigInteger)(value ?? default(BigInteger));
         #endregion
         #region public Properties
         public Doudec Float { get => floatNotInt ? floating : (Doudec)integer; }
@@ -65,13 +62,13 @@ namespace JesseRussell.Numerics
         #region public Constructors
         public IntFloat(BigInteger value)
         {
-            Value = value;
+            this.value = value;
             floatNotInt = false;
         }
 
         public IntFloat(Doudec value)
         {
-            Value = value;
+            this.value = value;
             floatNotInt = true;
         }
 
@@ -79,19 +76,19 @@ namespace JesseRussell.Numerics
         {
             if (dec % 1 == 0)
             {
-                Value = new BigInteger(dec);
+                value = new BigInteger(dec);
                 floatNotInt = false;
             }
             else
             {
-                Value = new Doudec(dec);
+                value = new Doudec(dec);
                 floatNotInt = true;
             }
         }
 
         public IntFloat(float f)
         {
-            Value = (Doudec)f;
+            value = (Doudec)f;
             floatNotInt = true;
         }
 

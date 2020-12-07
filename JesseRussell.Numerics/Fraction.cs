@@ -36,7 +36,7 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// True if this fractions represents a whole number. Essentially if the denominator equals 1 after simplification.
         /// </summary>
-        public bool IsWhole => Numerator % Denominator == 0;
+        public bool IsWhole => Denominator != 0 && Numerator % Denominator == 0;
 
         /// <summary>
         /// True if numerator is zero, false otherwise.
