@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 namespace JesseRussell.Numerics
 {
     /// <summary>
-    /// Represents either and IntFloat or a Fraction based on context.
+    /// Represents either IntFloat or a Fraction based on context.
     /// </summary>
     public readonly struct IntFloatFrac : IComparable<BigInteger>, IComparable<double>, IComparable<float>, IComparable<Doudec>, IComparable<IntFloat>, IComparable<Fraction>, IComparable<IntFloatFrac>, IEquatable<BigInteger>, IEquatable<double>, IEquatable<float>, IEquatable<Doudec>, IEquatable<IntFloat>, IEquatable<Fraction>, IEquatable<IntFloatFrac>
     {

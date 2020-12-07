@@ -12,8 +12,9 @@ namespace Debugging
     {
         static void Main(string[] args)
         {
-            IntFloatFrac steve = default;
-            Console.WriteLine(steve);
+            //IntFloatFrac steve = default;
+            dynamic bob = default;
+            Console.WriteLine(bob);
             ////IntFloat bob = default;
             ////Console.WriteLine(bob);
             ////bob = 9;
