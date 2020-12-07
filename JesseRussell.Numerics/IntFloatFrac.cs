@@ -287,7 +287,7 @@ namespace JesseRussell.Numerics
         public static explicit operator short(IntFloatFrac iff) => (short)iff.Int;
         public static explicit operator int(IntFloatFrac iff) => (int)iff.Int;
         public static explicit operator long(IntFloatFrac iff) => (long)iff.Int;
-        public static explicit operator BigInteger(IntFloatFrac iff) => iff.Int
+        public static explicit operator BigInteger(IntFloatFrac iff) => iff.Int;
         public static explicit operator byte(IntFloatFrac iff) => (byte)iff.Int;
         public static explicit operator ushort(IntFloatFrac iff) => (ushort)iff.Int;
         public static explicit operator uint(IntFloatFrac iff) => (uint)iff.Int;
