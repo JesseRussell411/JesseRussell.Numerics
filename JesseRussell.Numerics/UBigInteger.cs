@@ -6,7 +6,7 @@ namespace JesseRussell.Numerics
     /// <summary>
     /// Unsigned BigInteger. Not really unsigned of course; just artificially forced to be positive; effectively making it unsigned for most purposes. However, unlike other unsigned types, it's overflow behavior (or rather underflow) is to become it's own absolute value instead of rolling over to max value, since BigInteger does not have a max value.
     /// </summary>
-    public struct UBigInteger : IComparable, IComparable<UBigInteger>, IComparable<BigInteger>, IEquatable<UBigInteger>, IEquatable<BigInteger>, IFormattable
+    public readonly struct UBigInteger : IComparable, IComparable<UBigInteger>, IComparable<BigInteger>, IEquatable<UBigInteger>, IEquatable<BigInteger>, IFormattable
     {
         #region public Properties
         public readonly BigInteger Value;

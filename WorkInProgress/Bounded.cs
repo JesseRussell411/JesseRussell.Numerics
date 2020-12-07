@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace JesseRussell.Numerics
 {
-    public struct Bounded<T> : IComparable<Bounded<T>>, IComparable<T>, IEquatable<Bounded<T>>, IEquatable<T> where T: IComparable<T>, IEquatable<T>
+    public readonly struct Bounded<T> : IComparable<Bounded<T>>, IComparable<T>, IEquatable<Bounded<T>>, IEquatable<T> where T: IComparable<T>, IEquatable<T>
     {
         #region public Properties
         public T Value { get; }

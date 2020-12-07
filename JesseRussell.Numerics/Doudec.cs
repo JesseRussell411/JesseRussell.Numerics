@@ -14,7 +14,7 @@ namespace JesseRussell.Numerics
     /// Jesse Russell
     /// </author>
     [StructLayout(LayoutKind.Explicit)]
-    public struct Doudec : IComparable<Doudec>, IComparable<double>, IComparable<decimal>, IEquatable<Doudec>, IEquatable<double>, IEquatable<decimal>
+    public readonly struct Doudec : IComparable<Doudec>, IComparable<double>, IComparable<decimal>, IEquatable<Doudec>, IEquatable<double>, IEquatable<decimal>
     {
         #region public Constructors
         public Doudec(double d)

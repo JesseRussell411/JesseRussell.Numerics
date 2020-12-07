@@ -23,7 +23,7 @@ namespace JesseRussell.Numerics
     /// <Author>
     /// Jesse Russell
     /// </Author>
-    public struct Fraction : IComparable<Fraction>, IComparable<BigInteger>, IComparable<FractionOperation>, IComparable, IEquatable<Fraction>, IEquatable<BigInteger>
+    public readonly struct Fraction : IComparable<Fraction>, IComparable<BigInteger>, IComparable<FractionOperation>, IComparable, IEquatable<Fraction>, IEquatable<BigInteger>
     {
         #region public derived Properties
         // *derived: meaning that these properties must be derived from other fields or properties. Essentially, they cannot increase the size of the struct.
@@ -710,7 +710,7 @@ namespace JesseRussell.Numerics
         #endregion
     }
 
-    public struct FractionOperation : IComparable<Fraction>, IComparable<BigInteger>, IComparable<FractionOperation>, IComparable
+    public readonly struct FractionOperation : IComparable<Fraction>, IComparable<BigInteger>, IComparable<FractionOperation>, IComparable
     {
         #region public Properties
         public BigInteger Numerator => Unsimplified.Numerator;

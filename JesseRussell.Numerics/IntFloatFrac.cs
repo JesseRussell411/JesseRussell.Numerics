@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 
 namespace JesseRussell.Numerics
 {
-    public struct IntFloatFrac : IComparable<BigInteger>, IComparable<double>, IComparable<float>, IComparable<Doudec>, IComparable<IntFloat>, IComparable<Fraction>, IComparable<IntFloatFrac>, IEquatable<BigInteger>, IEquatable<double>, IEquatable<float>, IEquatable<Doudec>, IEquatable<IntFloat>, IEquatable<Fraction>, IEquatable<IntFloatFrac>
+    public readonly struct IntFloatFrac : IComparable<BigInteger>, IComparable<double>, IComparable<float>, IComparable<Doudec>, IComparable<IntFloat>, IComparable<Fraction>, IComparable<IntFloatFrac>, IEquatable<BigInteger>, IEquatable<double>, IEquatable<float>, IEquatable<Doudec>, IEquatable<IntFloat>, IEquatable<Fraction>, IEquatable<IntFloatFrac>
     {
         #region public Constructors
         public IntFloatFrac(IntFloat value)

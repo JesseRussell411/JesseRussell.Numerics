@@ -1,4 +1,7 @@
-﻿using System;
+﻿//#define use_new
+
+
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
@@ -10,6 +13,7 @@ using System.Data.SqlTypes;
 
 namespace JesseRussell.Numerics
 {
+#if use_new
     /// <summary>
     /// Combination BigInteger and Doudec. Automatically chooses best way of storing value based on context.
     /// </summary>
@@ -20,7 +24,7 @@ namespace JesseRussell.Numerics
     public struct IntFloat : IComparable, IComparable<IntFloat>, IEquatable<IntFloat>
     {
         #region public readonly Fields
-        public readonly object Value;
+        public readonly  Value;
         #endregion
 
         #region readonly private Fields
@@ -28,8 +32,10 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region private readonly Properties
-        private Doudec floating => (Doudec)Value;
-        private BigInteger integer => (BigInteger)Value;
+        private Doudec floating => (Doudec)(Value);
+        private BigInteger integer => (BigInteger)(Value);
+        //private Doudec floating => (Doudec)(Value ?? 0);
+        //private BigInteger integer => (BigInteger)(Value ?? default(BigInteger));
         #endregion
         #region public Properties
         public Doudec Float { get => floatNotInt ? floating : (Doudec)integer; }
@@ -590,7 +596,7 @@ namespace JesseRussell.Numerics
         #endregion
 
     }
-}
+#else
 
 
 
@@ -631,19 +637,6 @@ namespace JesseRussell.Numerics
 
 
 
-/*
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Numerics;
-using System.Reflection;
-using System.Text;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Data.SqlTypes;
-
-namespace JesseRussell.Numerics
-{
     /// <summary>
     /// Combination BigInteger and Doudec. Automatically chooses best way of storing value based on context.
     /// </summary>
@@ -651,9 +644,9 @@ namespace JesseRussell.Numerics
     /// <Author>
     /// Jesse Russell
     /// </Author>
-    public struct IntFloat : IComparable, IComparable<IntFloat>, IEquatable<IntFloat>
+    public readonly struct IntFloat : IComparable, IComparable<IntFloat>, IEquatable<IntFloat>
     {
-        #region public Properties
+#region public Properties
         public Doudec Float { get => floatNotInt ? floating : (Doudec)integer; }
         public BigInteger Int { get => !floatNotInt ? integer : (BigInteger)floating; }
         public bool IsFloat { get => floatNotInt; }
@@ -677,9 +670,9 @@ namespace JesseRussell.Numerics
         public bool IsSubNormal { get => floatNotInt && Doudec.IsSubnormal(floating); }
 
         public bool IsZero => floatNotInt ? floating == 0 : integer.IsZero;
-        #endregion
+#endregion
 
-        #region public Constructors
+#region public Constructors
         public IntFloat(BigInteger value)
         {
             integer = value;
@@ -725,11 +718,11 @@ namespace JesseRussell.Numerics
         public IntFloat(ushort us) : this((BigInteger) us) { }
         public IntFloat(uint ui) : this((BigInteger)ui) { }
         public IntFloat(ulong ul) : this((BigInteger)ul) { }
-        #endregion
+#endregion
 
-        #region public Methods
-        #region Comparison
-        #region Equals
+#region public Methods
+#region Comparison
+#region Equals
         public bool Equals(IntFloat other)
         {
             if (floatNotInt && other.floatNotInt)
@@ -768,8 +761,8 @@ namespace JesseRussell.Numerics
         {
             return floatNotInt ? floating.Equals(obj) : integer.Equals(obj);
         }
-        #endregion
-        #region CompareTo
+#endregion
+#region CompareTo
         public int CompareTo(IntFloat other)
         {
             if (floatNotInt)
@@ -871,20 +864,20 @@ namespace JesseRussell.Numerics
 
             throw new ArgumentException("The parameter must be a float, Doudec, or integer type. (Parameter 'obj')");
         }
-        #endregion
+#endregion
         public override int GetHashCode()
         {
             return floatNotInt ? HashCode.Combine(floating) : HashCode.Combine(integer);
         }
-        #endregion
+#endregion
         public override string ToString()
         {
             return floatNotInt ? floating.ToString() : integer.ToString();
         }
-        #endregion
+#endregion
 
-        #region public static Methods
-        #region Math
+#region public static Methods
+#region Math
         public static IntFloat Add(IntFloat left, IntFloat right)
         {
             if (left.floatNotInt || right.floatNotInt)
@@ -1120,8 +1113,8 @@ namespace JesseRussell.Numerics
                 return val2 > val1 ? val2 : val1;
             }
         }
-        #endregion
-        #region Parse
+#endregion
+#region Parse
         public static bool TryParse(string s, out IntFloat result)
         {
             if (BigInteger.TryParse(s, out BigInteger big))
@@ -1151,8 +1144,8 @@ namespace JesseRussell.Numerics
                 throw new FormatException($"{s} is not a valid Doudec or BigInteger");
             }
         }
-        #endregion
-        #region Casts
+#endregion
+#region Casts
         public static implicit operator IntFloat(Doudec dd) => new IntFloat(dd);
         public static implicit operator IntFloat(BigInteger big) => new IntFloat(big);
 
@@ -1189,8 +1182,8 @@ namespace JesseRussell.Numerics
         public static explicit operator uint(IntFloat iflt) => (uint)iflt.Int;
         public static explicit operator ulong(IntFloat iflt) => (ulong)iflt.Int;
 
-        #endregion
-        #region Operators
+#endregion
+#region Operators
         public static IntFloat operator +(IntFloat left, IntFloat right) => IntFloat.Add(left, right);
         public static IntFloat operator -(IntFloat left, IntFloat right) => IntFloat.Subtract(left, right);
         public static IntFloat operator *(IntFloat left, IntFloat right) => IntFloat.Multiply(left, right);
@@ -1207,21 +1200,21 @@ namespace JesseRussell.Numerics
         public static bool operator <=(IntFloat left, IntFloat right) => left < right || left == right;
         public static bool operator ==(IntFloat left, IntFloat right) => left.Equals(right);
         public static bool operator !=(IntFloat left, IntFloat right) => !left.Equals(right);
-        #endregion
-        #endregion
+#endregion
+#endregion
 
-        #region public static Properties
+#region public static Properties
         public static IntFloat Default { get => new IntFloat(); }
         public static IntFloat PositiveInfinity { get => Doudec.PositiveInfinity; }
         public static IntFloat NegativeInfinity { get => Doudec.NegativeInfinity; }
         public static IntFloat NaN { get => Doudec.NaN; }
-        #endregion
+#endregion
 
-        #region private Fields
+#region private Fields
         private readonly bool floatNotInt;
         private readonly Doudec floating;
         private readonly BigInteger integer;
-        #endregion
+#endregion
     }
+#endif
 }
- */
