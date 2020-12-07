@@ -283,17 +283,16 @@ namespace JesseRussell.Numerics
         public static implicit operator IntFloatFrac(uint ui) => new IntFloatFrac((BigInteger)ui);
         public static implicit operator IntFloatFrac(ulong ul) => new IntFloatFrac((BigInteger)ul);
 
-        public static implicit operator sbyte(IntFloatFrac iff) => (sbyte)iff.Int;
-        public static implicit operator short(IntFloatFrac iff) => (short)iff.Int;
-        public static implicit operator int(IntFloatFrac iff) => (int)iff.Int;
-        public static implicit operator long(IntFloatFrac iff) => (long)iff.Int;
-        public static explicit operator BigInteger(IntFloatFrac iff) => iff.Int;
-
-        public static implicit operator byte(IntFloatFrac iff) => (byte)iff.Int;
-        public static implicit operator ushort(IntFloatFrac iff) => (ushort)iff.Int;
-        public static implicit operator uint(IntFloatFrac iff) => (uint)iff.Int;
-        public static implicit operator ulong(IntFloatFrac iff) => (ulong)iff.Int;
-        public static implicit operator UBigInteger(IntFloatFrac iff) => (UBigInteger)iff.Int;
+        public static explicit operator sbyte(IntFloatFrac iff) => (sbyte)iff.Int;
+        public static explicit operator short(IntFloatFrac iff) => (short)iff.Int;
+        public static explicit operator int(IntFloatFrac iff) => (int)iff.Int;
+        public static explicit operator long(IntFloatFrac iff) => (long)iff.Int;
+        public static explicit operator BigInteger(IntFloatFrac iff) => iff.Int
+        public static explicit operator byte(IntFloatFrac iff) => (byte)iff.Int;
+        public static explicit operator ushort(IntFloatFrac iff) => (ushort)iff.Int;
+        public static explicit operator uint(IntFloatFrac iff) => (uint)iff.Int;
+        public static explicit operator ulong(IntFloatFrac iff) => (ulong)iff.Int;
+        public static explicit operator UBigInteger(IntFloatFrac iff) => (UBigInteger)iff.Int;
 
         public static explicit operator Doudec(IntFloatFrac iff) => iff.Float;
         public static explicit operator Fraction(IntFloatFrac iff) => iff.Fraction;
