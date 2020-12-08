@@ -533,6 +533,11 @@ namespace JesseRussell.Numerics
         /// <returns> Either the largest fraction or the first one (a) if they are equal.</returns>
         public static Fraction Max(Fraction a, Fraction b) => a < b ? b : a;
         public static Fraction Abs(Fraction f) => f.AbsoluteValue;
+
+        public static FractionOperation Pow(Fraction left, int right) => left.Power(right);
+        public static FractionOperation Pow(FractionOperation left, int right) => left.Unsimplified.Power(right);
+        public static double Pow(Fraction x, double y) => Math.Pow(x.ToDouble(), y);
+        public static double Pow(FractionOperation x, double y) => Math.Pow(x.Unsimplified.ToDouble(), y);
         #endregion
 
         #region Operators
@@ -556,8 +561,6 @@ namespace JesseRussell.Numerics
         public static bool operator !=(Fraction left, Fraction right) => !left.SoftEquals(right);
         #endregion
 
-        public static FractionOperation Pow(Fraction left, int right) => left.Power(right);
-        public static FractionOperation Pow(FractionOperation left, int right) => left.Unsimplified.Power(right);
 
         #region Parse
         public static bool TryParse(string s, out Fraction result)
@@ -781,6 +784,13 @@ namespace JesseRussell.Numerics
 
         public static implicit operator FractionOperation(Fraction f) => new FractionOperation(f);
         public static implicit operator Fraction(FractionOperation fo) => fo.Unsimplified.Simplify();
+
+        public static explicit operator Doudec(FractionOperation fo) => fo.Unsimplified.ToDoudec();
+        public static explicit operator double(FractionOperation fo) => fo.Unsimplified.ToDouble();
+        public static explicit operator float(FractionOperation fo) => fo.Unsimplified.ToFloat();
+
+        public static explicit operator BigInteger(FractionOperation fo) => fo.Unsimplified.ToBigInteger();
+        public static explicit operator UBigInteger(FractionOperation fo) => (UBigInteger)fo.Unsimplified.ToBigInteger();
     }
 #endif
 
