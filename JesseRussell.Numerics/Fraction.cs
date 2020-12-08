@@ -41,7 +41,7 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// True if numerator is zero, false otherwise.
         /// </summary>
-        public bool IsZero => Numerator.IsZero;
+        public bool IsZero => Numerator.IsZero && !IsUndefined;
 
         /// <summary>
         /// True if denominator is zero, false otherwise.

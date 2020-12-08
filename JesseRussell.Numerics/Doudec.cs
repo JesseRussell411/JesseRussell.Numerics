@@ -336,7 +336,7 @@ namespace JesseRussell.Numerics
                 {
                     return left.decim + right.decim;
                 }
-                catch (Exception)
+                catch (OverflowException)
                 {
                     return left.Double + right.Double;
                 }
@@ -354,7 +354,7 @@ namespace JesseRussell.Numerics
                 {
                     return left.decim - right.decim;
                 }
-                catch (Exception)
+                catch (OverflowException)
                 {
                     return left.Double - right.Double;
                 }
@@ -372,7 +372,7 @@ namespace JesseRussell.Numerics
                 {
                     return left.decim * right.decim;
                 }
-                catch (Exception)
+                catch (OverflowException)
                 {
                     return left.Double * right.Double;
                 }
@@ -390,7 +390,7 @@ namespace JesseRussell.Numerics
                 {
                     return left.decim / right.decim;
                 }
-                catch (Exception)
+                catch (OverflowException)
                 {
                     return left.Double / right.Double;
                 }
@@ -408,7 +408,7 @@ namespace JesseRussell.Numerics
                 {
                     return left.decim % right.decim;
                 }
-                catch (Exception)
+                catch (OverflowException)
                 {
                     return left.Double % right.Double;
                 }
