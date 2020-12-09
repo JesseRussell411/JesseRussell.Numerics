@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
+using System.Numerics;
 
 using JesseRussell.Numerics;
 
@@ -12,9 +13,12 @@ namespace Debugging
     {
         static void Main(string[] args)
         {
+            var num = new IntFloat(8);
+            var def = default(IntFloat);
+            
+            
             //IntFloatFrac steve = default;
-            dynamic bob = default;
-            Console.WriteLine(bob);
+            Console.WriteLine(sizeof(bool));
             ////IntFloat bob = default;
             ////Console.WriteLine(bob);
             ////bob = 9;

@@ -34,22 +34,23 @@ namespace JesseRussell.Numerics
         private Doudec floating => (Doudec)(value ?? 0);
         private BigInteger integer => (BigInteger)(value ?? default(BigInteger));
         #endregion
+
         #region public Properties
-        public Doudec Float { get => floatNotInt ? floating : (Doudec)integer; }
-        public BigInteger Int { get => !floatNotInt ? integer : (BigInteger)floating; }
-        public bool IsFloat { get => floatNotInt; }
-        public bool IsInt { get => !floatNotInt; }
+        /// <summary>
+        /// The value in the form of a Doudec. If the value is not a Doudec, a conversion will be provided.
+        /// </summary>
+        public Doudec Float => floatNotInt ? floating : (Doudec)integer;
+        /// <summary>
+        /// The value in the form of a BigInteger. If the value is not a BigInteger, a conversion will be provided.
+        /// </summary>
+        public BigInteger Int => floatNotInt ? (BigInteger)floating : integer;
+        public bool IsFloat => floatNotInt;
+        public bool IsInt => !floatNotInt;
 
-        // Doudec Passthrough:
-        public bool IsDouble => floatNotInt && floating.IsDouble;
-        public bool IsDecimal => floatNotInt && floating.IsDecimal;
-        //
+        public bool IsNegative => floatNotInt ? Doudec.IsNegative(floating) : integer < 0;
+        public bool IsPositive => !IsNegative;
 
-
-        public bool IsNegative { get => floatNotInt ? Doudec.IsNegative(floating) : integer < 0; }
-        public bool IsPositive { get => !IsNegative; }
-
-        public bool IsFinite { get => !floatNotInt || Doudec.IsFinite(floating); }
+        public bool IsFinite => !floatNotInt || Doudec.IsFinite(floating);
         public bool IsPositiveInfinity { get => floatNotInt && Doudec.IsPositiveInfinity(floating); }
         public bool IsNegativeInfinity { get => floatNotInt && Doudec.IsNegativeInfinity(floating); }
         public bool IsNaN { get => floatNotInt && Doudec.IsNaN(floating); }
@@ -100,6 +101,7 @@ namespace JesseRussell.Numerics
         public IntFloat(ushort us) : this((BigInteger) us) { }
         public IntFloat(uint ui) : this((BigInteger)ui) { }
         public IntFloat(ulong ul) : this((BigInteger)ul) { }
+        public IntFloat(UBigInteger ubig) : this((BigInteger)ubig) { }
         #endregion
 
         #region public Methods
@@ -546,6 +548,7 @@ namespace JesseRussell.Numerics
 
         public static explicit operator IntFloat(decimal d) => new IntFloat(d);
 
+        public static explicit operator IntFloat(Fraction f) => new IntFloat((Doudec)f);
 
         public static explicit operator BigInteger(IntFloat iflt) => iflt.Int;
         public static explicit operator Doudec(IntFloat iflt) => iflt.Float;
@@ -563,6 +566,7 @@ namespace JesseRussell.Numerics
         public static explicit operator ushort(IntFloat iflt) => (ushort)iflt.Int;
         public static explicit operator uint(IntFloat iflt) => (uint)iflt.Int;
         public static explicit operator ulong(IntFloat iflt) => (ulong)iflt.Int;
+        public static explicit operator UBigInteger(IntFloat iflt) => (UBigInteger)iflt.Int;
 
         #endregion
         #region Operators

@@ -113,20 +113,29 @@ namespace JesseRussell.Numerics
         /// <returns></returns>
         public Fraction Simplify()
         {
+            // Special circumstances:
             if (Numerator.IsZero) return Zero;
             if (Denominator.IsZero) return Undefined;
+            //
 
+            // Get sign.
             bool negative = IsNegative;
+
+            // Remove sign:
             BigInteger numerator = BigInteger.Abs(Numerator);
             BigInteger denominator = BigInteger.Abs(Denominator);
+            //
 
-            BigInteger gcd;
-            while ((gcd = BigInteger.GreatestCommonDivisor(numerator, denominator)) > 1)
-            {
-                numerator /= gcd;
-                denominator /= gcd;
-            }
+            // Get gcd.
+            BigInteger gcd = BigInteger.GreatestCommonDivisor(numerator, denominator);
+            
+            // Apply gcd:
+            numerator /= gcd;
+            denominator /= gcd;
+            //
+            
 
+            // Re-apply sign and finish.
             return new Fraction(numerator * (negative ? -1 : 1), denominator);
         }
 
@@ -136,12 +145,12 @@ namespace JesseRussell.Numerics
         public Fraction Add(Fraction other)
         {
             #region copied to Subtract(Fraction other)
-            // Simplify sign
+            // Simplify sign:
             BigInteger numerator = Numerator * Denominator.Sign;
             BigInteger other_numerator = other.Numerator * other.Denominator.Sign;
             //
 
-            // Equalize denominators
+            // Equalize denominators:
             BigInteger denominator;
             if (Denominator != other.Denominator)
             {
@@ -165,12 +174,12 @@ namespace JesseRussell.Numerics
         public Fraction Subtract(Fraction other)
         {
             #region copied from Add(Fraction other)
-            // Simplify sign
+            // Simplify sign:
             BigInteger numerator = Numerator * Denominator.Sign;
             BigInteger other_numerator = other.Numerator * other.Denominator.Sign;
             //
 
-            // Equalize denominators
+            // Equalize denominators:
             BigInteger denominator;
             if (Denominator != other.Denominator)
             {
@@ -506,6 +515,24 @@ namespace JesseRussell.Numerics
 
         #region public static Methods
         #region Math
+
+        /// <summary>
+        /// Returns two fractions representing left and right with the denominators equalized by cross multiplication.
+        /// </summary>
+        public static (Fraction left, Fraction right) EqualizeDenominators(Fraction left, Fraction right)
+        {
+            int left_sign = left.Sign, 
+                right_sign = right.Sign;
+
+            BigInteger
+                left_den_abs = BigInteger.Abs(left.Denominator),
+                right_den_abs = BigInteger.Abs(right.Denominator),
+                common_den_abs = left_den_abs * right_den_abs;
+
+            return (new Fraction(left_den_abs * left_sign, common_den_abs),
+                new Fraction(right_den_abs * right_sign, common_den_abs));
+        }
+
         /// <summary>
         /// Returns the natural (base e) logarithm of the provided fraction.
         /// </summary>
@@ -560,7 +587,6 @@ namespace JesseRussell.Numerics
         public static bool operator ==(Fraction left, Fraction right) => left.SoftEquals(right);
         public static bool operator !=(Fraction left, Fraction right) => !left.SoftEquals(right);
         #endregion
-
 
         #region Parse
         public static bool TryParse(string s, out Fraction result)
@@ -664,46 +690,52 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region Casts
-        public static implicit operator Fraction(BigInteger bi) => new Fraction(bi);
+        #region from
+        // int -> fraction
+        public static implicit operator Fraction(sbyte i) => new Fraction(i);
+        public static implicit operator Fraction(short i) => new Fraction(i);
+        public static implicit operator Fraction(int i) => new Fraction(i);
+        public static implicit operator Fraction(long i) => new Fraction(i);
+        public static implicit operator Fraction(BigInteger i) => new Fraction(i);
 
-        public static implicit operator Fraction(sbyte sb) => new Fraction((BigInteger)sb);
-        public static implicit operator Fraction(short s) => new Fraction((BigInteger)s);
-        public static implicit operator Fraction(int i) => new Fraction((BigInteger)i);
-        public static implicit operator Fraction(long l) => new Fraction((BigInteger)l);
+        public static implicit operator Fraction(byte i) => new Fraction(i);
+        public static implicit operator Fraction(ushort i) => new Fraction(i);
+        public static implicit operator Fraction(uint i) => new Fraction(i);
+        public static implicit operator Fraction(ulong i) => new Fraction(i);
+        public static implicit operator Fraction(UBigInteger i) => new Fraction(i);
 
-        public static implicit operator Fraction(byte b) => new Fraction((BigInteger)b);
-        public static implicit operator Fraction(ushort us) => new Fraction((BigInteger)us);
-        public static implicit operator Fraction(uint ui) => new Fraction((BigInteger)ui);
-        public static implicit operator Fraction(ulong ul) => new Fraction((BigInteger)ul);
+        // floating point -> fraction
+        public static explicit operator Fraction(float f) => Fraction.FromDouble(f);
+        public static explicit operator Fraction(double f) => Fraction.FromDouble(f);
+        public static explicit operator Fraction(decimal f) => Fraction.FromDecimal(f);
+        public static explicit operator Fraction(Doudec f) => Fraction.FromDoudec(f);
+        #endregion
 
-        public static explicit operator BigInteger(Fraction f) => f.ToBigInteger();
-        public static explicit operator long(Fraction f) => (long)f.ToBigInteger();
-        public static explicit operator int(Fraction f) => (int)f.ToBigInteger();
-        public static explicit operator short(Fraction f) => (short)f.ToBigInteger();
+        #region to
+        // fraction -> int
         public static explicit operator sbyte(Fraction f) => (sbyte)f.ToBigInteger();
+        public static explicit operator short(Fraction f) => (short)f.ToBigInteger();
+        public static explicit operator int(Fraction f) => (int)f.ToBigInteger();
+        public static explicit operator long(Fraction f) => (long)f.ToBigInteger();
+        public static explicit operator BigInteger(Fraction f) => f.ToBigInteger();
 
-        public static explicit operator UBigInteger(Fraction f) => (UBigInteger)f.ToBigInteger();
-        public static explicit operator ulong(Fraction f) => (ulong)f.ToBigInteger();
-        public static explicit operator uint(Fraction f) => (uint)f.ToBigInteger();
-        public static explicit operator ushort(Fraction f) => (ushort)f.ToBigInteger();
         public static explicit operator byte(Fraction f) => (byte)f.ToBigInteger();
+        public static explicit operator ushort(Fraction f) => (ushort)f.ToBigInteger();
+        public static explicit operator uint(Fraction f) => (uint)f.ToBigInteger();
+        public static explicit operator ulong(Fraction f) => (ulong)f.ToBigInteger();
+        public static explicit operator UBigInteger(Fraction f) => (UBigInteger)f.ToBigInteger();
 
-        public static explicit operator double(Fraction f) => f.ToDouble();
+        // fraction -> floating point
         public static explicit operator float(Fraction f) => f.ToFloat();
+        public static explicit operator double(Fraction f) => f.ToDouble();
         public static explicit operator decimal(Fraction f) => f.ToDecimal();
         public static explicit operator Doudec(Fraction f) => f.ToDoudec();
-
-        public static explicit operator IntFloat(Fraction f) => f.ToIntFloat();
-
-        public static explicit operator Fraction(double d) => FromDouble(d);
-        public static explicit operator Fraction(float f) => FromDouble(f);
-        public static explicit operator Fraction(decimal dec) => FromDecimal(dec);
-        public static explicit operator Fraction(Doudec dd) => FromDoudec(dd);
+        #endregion
         #endregion
         #endregion
 
         #region public static readonly Fields
-        public static readonly Fraction Zero = new Fraction(0);
+        public static readonly Fraction Zero = new Fraction(0, 1);
         public static readonly Fraction Undefined = new Fraction(0, 0);
         #endregion
 
