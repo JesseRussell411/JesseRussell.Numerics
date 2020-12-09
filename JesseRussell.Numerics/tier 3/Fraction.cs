@@ -707,7 +707,11 @@ namespace JesseRussell.Numerics
         // floating point -> fraction
         public static explicit operator Fraction(float f) => Fraction.FromDouble(f);
         public static explicit operator Fraction(double f) => Fraction.FromDouble(f);
+
+        // decimal -> fraction
         public static explicit operator Fraction(decimal f) => Fraction.FromDecimal(f);
+
+        // Doudec -> fraction
         public static explicit operator Fraction(Doudec f) => Fraction.FromDoudec(f);
         #endregion
 
@@ -728,7 +732,11 @@ namespace JesseRussell.Numerics
         // fraction -> floating point
         public static explicit operator float(Fraction f) => f.ToFloat();
         public static explicit operator double(Fraction f) => f.ToDouble();
+
+        // fraction -> decimal
         public static explicit operator decimal(Fraction f) => f.ToDecimal();
+
+        // fraction -> Doudec
         public static explicit operator Doudec(Fraction f) => f.ToDoudec();
         #endregion
         #endregion

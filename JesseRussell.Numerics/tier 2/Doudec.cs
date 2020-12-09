@@ -175,27 +175,30 @@ namespace JesseRussell.Numerics
 
         #region public static Methods
         #region Casts
-        public static implicit operator Doudec(double d) => FromDouble(d);
-        public static implicit operator Doudec(decimal dec) => FromDecimal(dec);
+        #region from
+        // int -> Doudec
+        public static implicit operator Doudec(sbyte i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(short i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(int i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(long i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(BigInteger i) => FromBigInteger(i);
+
+        public static implicit operator Doudec(byte i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(ushort i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(uint i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(ulong i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(UBigInteger i) => FromBigInteger(i);
+
+        // floating point -> Doudec
         public static implicit operator Doudec(float f) => FromDouble(f);
+        public static implicit operator Doudec(double f) => FromDouble(f);
 
-        public static implicit operator Doudec(sbyte i) => new Doudec((decimal)i);
-        public static implicit operator Doudec(short i) => new Doudec((decimal)i);
-        public static implicit operator Doudec(int i) => new Doudec((decimal)i);
-        public static implicit operator Doudec(long i) => new Doudec((decimal)i);
-        public static explicit operator Doudec(BigInteger bi) => FromBigInteger(bi);
+        // decimal -> Doudec
+        public static implicit operator Doudec(decimal dec) => FromDecimal(dec);
+        #endregion
 
-        public static implicit operator Doudec(byte i) => new Doudec((decimal)i);
-        public static implicit operator Doudec(ushort i) => new Doudec((decimal)i);
-        public static implicit operator Doudec(uint i) => new Doudec((decimal)i);
-        public static implicit operator Doudec(ulong i) => new Doudec((decimal)i);
-        public static explicit operator Doudec(UBigInteger bi) => FromBigInteger(bi);
-
-
-        public static explicit operator double(Doudec dd) => dd.Double;
-        public static explicit operator decimal(Doudec dd) => dd.Decimal;
-        public static explicit operator float(Doudec dd) => (float)dd.Double;
-
+        #region to
+        // Doudec -> int
         public static explicit operator sbyte(Doudec d) => d.doubleNotDecimal ? (sbyte)d.doub : (sbyte)d.decim;
         public static explicit operator short(Doudec d) => d.doubleNotDecimal ? (short)d.doub : (short)d.decim;
         public static explicit operator int(Doudec d) => d.doubleNotDecimal ? (int)d.doub : (int)d.decim;
@@ -207,6 +210,14 @@ namespace JesseRussell.Numerics
         public static explicit operator uint(Doudec d) => d.doubleNotDecimal ? (uint)d.doub : (uint)d.decim;
         public static explicit operator ulong(Doudec d) => d.doubleNotDecimal ? (ulong)d.doub : (ulong)d.decim;
         public static explicit operator UBigInteger(Doudec d) => d.doubleNotDecimal ? (UBigInteger)d.doub : (UBigInteger)d.decim;
+
+        // Doudec -> floating point
+        public static explicit operator float(Doudec d) => (float)d.Double;
+        public static explicit operator double(Doudec d) => (double)d.Double;
+
+        // Doudec -> decimal
+        public static explicit operator decimal(Doudec d) => d.Decimal;
+        #endregion
         #endregion
 
         #region double Passthrough
