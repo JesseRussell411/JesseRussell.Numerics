@@ -18,10 +18,6 @@ namespace JesseRussell.Numerics
     /// <summary>
     /// Represents a fraction of arbitrary size.
     /// </summary>
-    /// 
-    /// <Author>
-    /// Jesse Russell
-    /// </Author>
     public readonly struct Fraction : IComparable<Fraction>, IComparable<BigInteger>, IComparable<FractionOperation>, IComparable, IEquatable<Fraction>, IEquatable<BigInteger>
     {
         #region public derived Properties
@@ -890,6 +886,9 @@ namespace JesseRussell.Numerics
         #endregion
     }
 
+    /// <summary>
+    /// Static utility methods and extension methods for other classes.
+    /// </summary>
     public static class FractionUtils
     {
         public static Fraction NextFraction(this Random rand)
