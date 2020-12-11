@@ -47,5 +47,45 @@ namespace JesseRussell.Numerics_test
 
             if (fs.Numerator != -1 || fs.Denominator != 2) Assert.Fail();
         }
+
+        [Test]
+        public void Floor_Ceiling_Truncate()
+        {
+            Fraction f;
+            f= new Fraction(25, 3);
+
+            if (f.Floor() != 8) Assert.Fail();
+            if (f.Ceiling() != 9) Assert.Fail();
+            if (f.Truncate() != 8) Assert.Fail();
+
+            f = new Fraction(-25, 3);
+
+            if (f.Floor() != -9) Assert.Fail();
+            if (f.Ceiling() != -8) Assert.Fail();
+            if (f.Truncate() != -8) Assert.Fail();
+        }
+
+        [Test]
+        public void Remainder()
+        {
+            Fraction f1, f2;
+
+            f1 = new Fraction(50, 1);
+            f2 = new Fraction(9, 1);
+
+            if (f1 % f2 != 5) Assert.Fail();
+
+            f1 = new Fraction(-50, 1);
+            f2 = new Fraction(9, 1);
+            if (f1.Remainder(f2) != -5) Assert.Fail();
+
+            f1 = new Fraction(50, 1);
+            f2 = new Fraction(-9, 1);
+            if (f1.Remainder(f2) != 5) Assert.Fail();
+
+            f1 = new Fraction(-50, 1);
+            f2 = new Fraction(-9, 1);
+            if (f1.Remainder(f2) != -5) Assert.Fail();
+        }
     }
 }
