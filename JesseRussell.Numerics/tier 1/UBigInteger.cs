@@ -165,10 +165,15 @@ namespace JesseRussell.Numerics
 
         #region Operators
         public static UBigInteger operator +(UBigInteger self, UBigInteger other) => new UBigInteger(self.Value + other.Value);
+        public static UBigInteger operator +(UBigInteger self, BigInteger other) => new UBigInteger(self.Value + other);
         public static UBigInteger operator -(UBigInteger self, UBigInteger other) => new UBigInteger(self.Value - other.Value);
+        public static UBigInteger operator -(UBigInteger self, BigInteger other) => new UBigInteger(self.Value - other);
         public static UBigInteger operator *(UBigInteger self, UBigInteger other) => new UBigInteger(self.Value * other.Value);
+        public static UBigInteger operator *(UBigInteger self, BigInteger other) => new UBigInteger(self.Value * other);
         public static UBigInteger operator /(UBigInteger self, UBigInteger other) => new UBigInteger(self.Value / other.Value);
+        public static UBigInteger operator /(UBigInteger self, BigInteger other) => new UBigInteger(self.Value / other);
         public static UBigInteger operator %(UBigInteger self, UBigInteger other) => new UBigInteger(self.Value % other.Value);
+        public static UBigInteger operator %(UBigInteger self, BigInteger other) => new UBigInteger(self.Value % other);
         public static UBigInteger operator ++(UBigInteger self) => new UBigInteger(self.Value + 1);
         public static UBigInteger operator --(UBigInteger self) => new UBigInteger(self.Value - 1);
 

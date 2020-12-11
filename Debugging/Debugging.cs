@@ -11,14 +11,14 @@ namespace Debugging
 {
     class Debugging
     {
+        static void print(object obj) => Console.Write(obj);
+        static void println(object obj) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            var num = new IntFloat(8);
-            var def = default(IntFloat);
-            
-            
+
+
+            println(new Fraction(0, 0).Simplify());
             //IntFloatFrac steve = default;
-            Console.WriteLine(sizeof(bool));
             ////IntFloat bob = default;
             ////Console.WriteLine(bob);
             ////bob = 9;

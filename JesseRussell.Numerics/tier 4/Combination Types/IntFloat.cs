@@ -21,7 +21,7 @@ namespace JesseRussell.Numerics
     /// <Author>
     /// Jesse Russell
     /// </Author>
-    public struct IntFloat : IComparable, IComparable<IntFloat>, IEquatable<IntFloat>
+    public readonly struct IntFloat : IComparable, IComparable<IntFloat>, IEquatable<IntFloat>
     {
         #region private readonly Fields
         private readonly object value;
@@ -595,7 +595,6 @@ namespace JesseRussell.Numerics
         public static IntFloat NegativeInfinity { get => Doudec.NegativeInfinity; }
         public static IntFloat NaN { get => Doudec.NaN; }
         #endregion
-
     }
 #else
 
