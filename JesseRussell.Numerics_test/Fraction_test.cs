@@ -77,15 +77,15 @@ namespace JesseRussell.Numerics_test
 
             f1 = new Fraction(-50, 1);
             f2 = new Fraction(9, 1);
-            if (f1.Remainder(f2) != -5) Assert.Fail();
+            if (f1 % f2 != -5) Assert.Fail();
 
             f1 = new Fraction(50, 1);
             f2 = new Fraction(-9, 1);
-            if (f1.Remainder(f2) != 5) Assert.Fail();
+            if (f1 % f2 != 5) Assert.Fail();
 
             f1 = new Fraction(-50, 1);
             f2 = new Fraction(-9, 1);
-            if (f1.Remainder(f2) != -5) Assert.Fail();
+            if (f1 % f2 != -5) Assert.Fail();
         }
     }
 }
