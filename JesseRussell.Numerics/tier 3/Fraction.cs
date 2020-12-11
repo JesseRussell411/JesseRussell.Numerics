@@ -755,9 +755,9 @@ namespace JesseRussell.Numerics
     /// <summary>
     /// Doesn't automatically simplify until it is cast to a Fraction.
     /// </summary>
-    public readonly struct FractionOperation : IComparable<Fraction>, IComparable<BigInteger>, IComparable<FractionOperation>, IComparable
+    public readonly struct FractionOperation : IComparable<Fraction>, IComparable<FractionOperation>, IEquatable<FractionOperation>, IEquatable<Fraction> IComparable
     {
-        #region public Properties
+        #region (passthrough) public Properties
         public BigInteger Numerator => Unsimplified.Numerator;
         public BigInteger Denominator => Unsimplified.Denominator;
         public UBigInteger UNumerator => Unsimplified.UNumerator;
@@ -791,17 +791,24 @@ namespace JesseRussell.Numerics
 
         #region Comparison
         public int CompareTo(Fraction f) => Unsimplified.CompareTo(f);
-        public int CompareTo(BigInteger big) => Unsimplified.CompareTo(big);
         public int CompareTo(FractionOperation other) => Unsimplified.CompareTo(other);
         public int CompareTo(object obj) => Unsimplified.CompareTo(obj);
+
+        public bool Equals(Fraction other) => Unsimplified.Equals(other);
+        public bool Equals(FractionOperation other) => Unsimplified.Equals(other.Unsimplified);
+        public override bool Equals(object obj) => Unsimplified.Equals(obj);
+        public override int GetHashCode() => Unsimplified.GetHashCode();
         #endregion
+
         #region Math
         public FractionOperation Floor() => Unsimplified.Floor();
         public FractionOperation Ceiling() => Unsimplified.Ceiling();
         public FractionOperation Truncate() => Unsimplified.Truncate();
         #endregion
         #endregion
-
+        
+        #region public static Methods
+        #region Operators
         public static FractionOperation operator -(FractionOperation fo) => -fo.Unsimplified;
         public static FractionOperation operator +(FractionOperation fo) => +fo.Unsimplified;
 
@@ -829,8 +836,9 @@ namespace JesseRussell.Numerics
 
         public static bool operator ==(FractionOperation left, FractionOperation right) => left.Equals(right);
         public static bool operator !=(FractionOperation left, FractionOperation right) => !left.Equals(right);
+        #endregion
 
-        #region casts
+        #region Casts
         #region to
         // FractionOperation -> Fraction
         public static implicit operator Fraction(FractionOperation fo) => fo.Unsimplified.Simplify();
@@ -879,6 +887,7 @@ namespace JesseRussell.Numerics
         public static implicit operator FractionOperation(byte i) => new FractionOperation((Fraction) i);
         #endregion
         #endregion
+        #endregion
     }
 
     public static class FractionUtils
@@ -892,9 +901,5 @@ namespace JesseRussell.Numerics
         {
             return new Fraction(rand.Next(minNumerator, maxNumerator), rand.Next(minDenominator, maxDenominator));
         }
-
-        public static Fraction ToFraction(this double d) => Fraction.FromDouble(d);
-        public static Fraction ToFraction(this float d) => Fraction.FromDouble(d);
-        public static Fraction ToFraction(this decimal d) => Fraction.FromDecimal(d);
     }
 }
