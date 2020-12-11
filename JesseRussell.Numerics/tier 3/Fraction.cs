@@ -269,7 +269,7 @@ namespace JesseRussell.Numerics
         /// </summary>
         /// <param name="other">The Fraction that the current fraction is being divided by.</param>
         /// <returns>The remainder from the division.</returns>
-        public Fraction Remainder(Fraction other) => Subtract(Divide(other).Floor().Multiply(other));
+        public Fraction Remainder(Fraction other) => Subtract(Divide(other).Truncate().Multiply(other));
 
         /// <summary>
         /// Returns the unsimplified negation of the current fraction.
