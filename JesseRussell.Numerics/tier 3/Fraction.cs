@@ -751,7 +751,7 @@ namespace JesseRussell.Numerics
     /// <summary>
     /// Doesn't automatically simplify until it is cast to a Fraction.
     /// </summary>
-    public readonly struct FractionOperation : IComparable<Fraction>, IComparable<FractionOperation>, IEquatable<FractionOperation>, IEquatable<Fraction> IComparable
+    public readonly struct FractionOperation : IComparable<Fraction>, IComparable<FractionOperation>, IEquatable<FractionOperation>, IEquatable<Fraction>, IComparable
     {
         #region (passthrough) public Properties
         public BigInteger Numerator => Unsimplified.Numerator;
