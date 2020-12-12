@@ -23,6 +23,31 @@ namespace JesseRussell.Numerics
     /// </Author>
     public readonly struct IntFloat : IComparable, IComparable<IntFloat>, IEquatable<IntFloat>
     {
+        #region public Constructors
+        public IntFloat(BigInteger value)
+        {
+            this.value = value;
+            floatNotInt = false;
+        }
+
+        public IntFloat(Doudec value)
+        {
+            this.value = value;
+            floatNotInt = true;
+        }
+
+        public IntFloat(sbyte sb) : this((BigInteger)sb) { }
+        public IntFloat(short s) : this((BigInteger)s) { }
+        public IntFloat(int i) : this((BigInteger)i) { }
+        public IntFloat(long l) : this((BigInteger)l) { }
+
+        public IntFloat(byte b) : this((BigInteger)b) { }
+        public IntFloat(ushort us) : this((BigInteger) us) { }
+        public IntFloat(uint ui) : this((BigInteger)ui) { }
+        public IntFloat(ulong ul) : this((BigInteger)ul) { }
+        public IntFloat(UBigInteger ubig) : this((BigInteger)ubig) { }
+        #endregion
+
         #region private readonly Fields
         private readonly object value;
         private readonly bool floatNotInt;
@@ -58,50 +83,6 @@ namespace JesseRussell.Numerics
         public bool IsSubNormal { get => floatNotInt && Doudec.IsSubnormal(floating); }
 
         public bool IsZero => floatNotInt ? floating == 0 : integer.IsZero;
-        #endregion
-
-        #region public Constructors
-        public IntFloat(BigInteger value)
-        {
-            this.value = value;
-            floatNotInt = false;
-        }
-
-        public IntFloat(Doudec value)
-        {
-            this.value = value;
-            floatNotInt = true;
-        }
-
-        public IntFloat(decimal dec)
-        {
-            if (dec % 1 == 0)
-            {
-                value = new BigInteger(dec);
-                floatNotInt = false;
-            }
-            else
-            {
-                value = new Doudec(dec);
-                floatNotInt = true;
-            }
-        }
-
-        public IntFloat(float f)
-        {
-            value = (Doudec)f;
-            floatNotInt = true;
-        }
-
-        public IntFloat(sbyte sb) : this((BigInteger)sb) { }
-        public IntFloat(short s) : this((BigInteger)s) { }
-        public IntFloat(int i) : this((BigInteger)i) { }
-        public IntFloat(long l) : this((BigInteger)l) { }
-        public IntFloat(byte b) : this((BigInteger)b) { }
-        public IntFloat(ushort us) : this((BigInteger) us) { }
-        public IntFloat(uint ui) : this((BigInteger)ui) { }
-        public IntFloat(ulong ul) : this((BigInteger)ul) { }
-        public IntFloat(UBigInteger ubig) : this((BigInteger)ubig) { }
         #endregion
 
         #region public Methods

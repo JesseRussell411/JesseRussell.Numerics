@@ -315,19 +315,11 @@ namespace JesseRussell.Numerics
 
         #region Conversion
         /// <summary>
-        /// Conversion that prioritizes Fraction.
+        /// Conversion from double. Does not prioritize fraction.
         /// </summary>
         public static IntFloatFrac FromDouble(double d)
         {
-
-            if (MathUtils.TryToFraction(d, out Fraction fracAttempt) && ((double)fracAttempt == d))
-            {
-                return fracAttempt;
-            }
-            else
-            {
-                return new IntFloatFrac((Doudec)d);
-            }
+            return new IntFloatFrac((Doudec)d);
         }
 
         /// <summary>
@@ -340,14 +332,13 @@ namespace JesseRussell.Numerics
         /// </summary>
         public static IntFloatFrac FromDoudec(Doudec d)
         {
-
-            if (MathUtils.TryToFraction(d, out Fraction fracAttempt) && ((Doudec)fracAttempt == d))
+            if (d.IsDouble)
             {
-                return fracAttempt;
+                return FromDouble(d.Double);
             }
             else
             {
-                return new IntFloatFrac(d);
+                return FromDecimal(d.Decimal);
             }
         }
 
@@ -362,7 +353,7 @@ namespace JesseRussell.Numerics
             }
             else
             {
-                return i.Float;
+                return FromDoudec(i.Float);
             }
         }
 
