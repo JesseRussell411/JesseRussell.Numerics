@@ -15,7 +15,7 @@ namespace Debugging
         static void println(object obj) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            Fraction f = new Fraction(3458764513820541, 1152921504606846976);
+            IntFloatFrac bob = IntFloatFrac.Parse("0.000000000000000000000000000000000003");
 
             //IntFloatFrac steve = default;
             ////IntFloat bob = default;
