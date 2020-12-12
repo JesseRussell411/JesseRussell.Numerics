@@ -15,7 +15,8 @@ namespace Debugging
         static void println(object obj) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            IntFloatFrac bob = IntFloatFrac.Parse("0.000000000000000000000000000000000003");
+            IntFloat bob = double.NegativeInfinity;
+            println(bob);
 
             //IntFloatFrac steve = default;
             ////IntFloat bob = default;
