@@ -154,12 +154,8 @@ namespace JesseRussell.Numerics
             if (l_i % r_i == 0) return l_i / r_i;
             return left.Fraction / right.Fraction;
         }
-        public static IntFloatFrac FloorDivide(IntFloatFrac left, IntFloatFrac right)
-        {
-            if (left.IsFloat || right.IsFloat) return Doudec.Floor(left.Float / right.Float);
-            if (left.IsFraction || right.IsFraction) return (left.Fraction / right.Fraction).Floor();
-            return left.Int / right.Int;
-        }
+
+        public static IntFloatFrac FloorDivide(IntFloatFrac left, IntFloatFrac right) => Floor(Divide(left, right));
 
         public static IntFloatFrac Remainder(IntFloatFrac left, IntFloatFrac right)
         {
@@ -182,22 +178,18 @@ namespace JesseRussell.Numerics
                 return x.frac.Power(y);
             }
         }
-        public static IntFloatFrac Pow(IntFloatFrac x, double y) => x.intFloatNotFraction ?
-            IntFloat.Pow(x.ifloat, y) :
-            Doudec.Pow((Doudec)x.frac, y);
 
-
-        public static IntFloatFrac Pow(IntFloatFrac x, IntFloat y)
+        public static IntFloatFrac Pow(IntFloatFrac x, double y) => x.intFloatNotFraction switch
         {
-            if (y.IsInt)
-            {
-                return Pow(x, (int)y);
-            }
-            else
-            {
-                return Pow(x, (double)y);
-            }
-        }
+            true => IntFloat.Pow(x.ifloat, y),
+            false => Doudec.Pow((Doudec)x.frac, y)
+        };
+
+        public static IntFloatFrac Pow(IntFloatFrac x, IntFloat y) => y.IsInt switch
+        {
+            true => Pow(x, y.Int),
+            false => Pow(x, y.Float)
+        };
 
         public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? (IntFloatFrac)IntFloat.Abs(x.ifloat) : Fraction.Abs(x.frac);
         public static IntFloatFrac Neg(IntFloatFrac x) => x.intFloatNotFraction ? (IntFloatFrac)IntFloat.Negate(x.ifloat) : x.frac.Negate();
@@ -208,16 +200,21 @@ namespace JesseRussell.Numerics
         public static IntFloatFrac Log(IntFloatFrac iff) => iff.intFloatNotFraction ? IntFloat.Log(iff.ifloat) : Fraction.Log(iff.frac);
         public static IntFloatFrac Log(IntFloatFrac iff, double newBase) => iff.intFloatNotFraction ? IntFloat.Log(iff.ifloat, newBase) : Fraction.Log(iff.frac, newBase);
         public static IntFloatFrac Log10(IntFloatFrac iff) => iff.intFloatNotFraction ? IntFloat.Log10(iff.ifloat) : Fraction.Log10(iff.frac);
-        public static IntFloatFrac Min(IntFloatFrac a, IntFloatFrac b) => a < b ? a : b;
-        public static IntFloatFrac Max(IntFloatFrac a, IntFloatFrac b) => a > b ? a : b;
+        public static IntFloatFrac Min(IntFloatFrac a, IntFloatFrac b) => a > b ? b : a;
+        public static IntFloatFrac Max(IntFloatFrac a, IntFloatFrac b) => a < b ? b : a;
         #endregion
 
         #region Parse
         public static bool TryParse(string s, out IntFloatFrac result)
         {
-            if (IntFloat.TryParse(s, out IntFloat ift))
+            if (BigInteger.TryParse(s, out BigInteger b))
             {
-                result = ift;
+                result = b;
+                return true;
+            }
+            else if (Doudec.TryParse(s, out Doudec d))
+            {
+                result = d;
                 return true;
             }
             else if (Fraction.TryParse(s, out Fraction f))
@@ -288,11 +285,11 @@ namespace JesseRussell.Numerics
         public static implicit operator IntFloatFrac(Doudec f) => FromDoudec(f);
 
         // Fraction -> IntFloatFrac
-        public static implicit operator IntFloatFrac(Fraction f) => new IntFloatFrac(f);
-        public static implicit operator IntFloatFrac(FractionOperation fo) => new IntFloatFrac(fo);
+        public static implicit operator IntFloatFrac(Fraction f) => FromFraction(f);
+        public static implicit operator IntFloatFrac(FractionOperation fo) => FromFraction(fo.Unsimplified);
 
         // IntFloat -> IntFloatFrac
-        public static implicit operator IntFloatFrac(IntFloat ift) => new IntFloatFrac(ift);
+        public static implicit operator IntFloatFrac(IntFloat ift) => FromIntFloat(ift);
         #endregion
 
         #region to
@@ -325,13 +322,16 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region Conversion
+        /// <summary>
+        /// Conversion that prioritizes Fraction.
+        /// </summary>
         public static IntFloatFrac FromDouble(double d)
         {
             Fraction fracAttempt = Fraction.FromDouble(d);
 
             if (fracAttempt.ToDouble() == d)
             {
-                return new IntFloatFrac(fracAttempt);
+                return fracAttempt;
             }
             else
             {
@@ -339,21 +339,58 @@ namespace JesseRussell.Numerics
             }
         }
 
+        /// <summary>
+        /// Conversion that prioritizes Fraction.
+        /// </summary>
         public static IntFloatFrac FromDecimal(decimal dec)
         {
-            return new IntFloatFrac(Fraction.FromDecimal(dec));
+            return Fraction.FromDecimal(dec);
         }
 
+        /// <summary>
+        /// Conversion that prioritizes Fraction.
+        /// </summary>
         public static IntFloatFrac FromDoudec(Doudec d)
         {
             Fraction fracAttempt = Fraction.FromDoudec(d);
             if (fracAttempt.ToDoudec() == d)
             {
-                return new IntFloatFrac(fracAttempt);
+                return fracAttempt;
             }
             else
             {
                 return new IntFloatFrac(d);
+            }
+        }
+
+        /// <summary>
+        /// Conversion that prioritizes Fraction.
+        /// </summary>
+        public static IntFloatFrac FromIntFloat(IntFloat i)
+        {
+            if (i.IsInt)
+            {
+                return i.Int;
+            }
+            else
+            {
+                return i.Float;
+            }
+        }
+
+
+        /// <summary>
+        /// Conversion that prioritizes BigInteger.
+        /// </summary>
+        public static IntFloatFrac FromFraction(Fraction f)
+        {
+            if (f.IsWhole)
+            {
+                return f.ToBigInteger();
+            }
+            else
+            {
+                return new IntFloatFrac(f);
             }
         }
         #endregion

@@ -552,10 +552,10 @@ namespace JesseRussell.Numerics
         public static implicit operator IntFloat(UBigInteger ubig) => new IntFloat(ubig);
 
         // floating point -> IntFloat
-        public static implicit operator IntFloat(float f) => new IntFloat(f);
-        public static implicit operator IntFloat(double d) => new IntFloat(d);
-        public static implicit operator IntFloat(decimal d) => new IntFloat(d);
-        public static implicit operator IntFloat(Doudec dd) => new IntFloat(dd);
+        public static implicit operator IntFloat(float f) => FromDouble(f);
+        public static implicit operator IntFloat(double d) => FromDouble(d);
+        public static implicit operator IntFloat(decimal d) => FromDecimal(d);
+        public static implicit operator IntFloat(Doudec dd) => FromDoudec(dd);
 
         // Fraction -> IntFloat
         public static explicit operator IntFloat(Fraction f) => FromFraction(f);
