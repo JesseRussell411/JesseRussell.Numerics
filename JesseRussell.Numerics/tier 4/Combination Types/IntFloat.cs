@@ -375,8 +375,8 @@ namespace JesseRussell.Numerics
         {
             return x.floatNotInt switch
             {
-                true => Doudec.Pow(x.floating, y),
-                false => BigInteger.Pow(x.integer, y)
+                true => (IntFloat)Doudec.Pow(x.floating, y),
+                false => (IntFloat)BigInteger.Pow(x.integer, y)
             };
         }
             

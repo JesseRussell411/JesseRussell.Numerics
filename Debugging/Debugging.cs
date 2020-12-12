@@ -15,7 +15,10 @@ namespace Debugging
         static void println(object obj) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            println(new Fraction(-50, 1) % new Fraction(9, 1));
+            BigInteger big = BigInteger.Parse("23623465246245634563457356732572652456245763457645624624562472456246545725624563735624562463456244262626455624564");
+            BigInteger _2 = 2;
+            BigInteger _666 = 666;
+            println(IntFloat.Pow(_2, _666));
             //IntFloatFrac steve = default;
             ////IntFloat bob = default;
             ////Console.WriteLine(bob);

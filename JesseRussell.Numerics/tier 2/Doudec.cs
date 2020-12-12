@@ -181,19 +181,17 @@ namespace JesseRussell.Numerics
         public static implicit operator Doudec(short i) => new Doudec((decimal) i);
         public static implicit operator Doudec(int i) => new Doudec((decimal) i);
         public static implicit operator Doudec(long i) => new Doudec((decimal) i);
-        public static implicit operator Doudec(BigInteger i) => FromBigInteger(i);
+        public static explicit operator Doudec(BigInteger i) => FromBigInteger(i);
 
         public static implicit operator Doudec(byte i) => new Doudec((decimal) i);
         public static implicit operator Doudec(ushort i) => new Doudec((decimal) i);
         public static implicit operator Doudec(uint i) => new Doudec((decimal) i);
         public static implicit operator Doudec(ulong i) => new Doudec((decimal) i);
-        public static implicit operator Doudec(UBigInteger i) => FromBigInteger(i);
+        public static explicit operator Doudec(UBigInteger i) => FromBigInteger(i);
 
         // floating point -> Doudec
         public static implicit operator Doudec(float f) => FromDouble(f);
         public static implicit operator Doudec(double f) => FromDouble(f);
-
-        // decimal -> Doudec
         public static implicit operator Doudec(decimal dec) => FromDecimal(dec);
         #endregion
 
