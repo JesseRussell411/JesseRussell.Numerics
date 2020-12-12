@@ -510,23 +510,23 @@ namespace JesseRussell.Numerics
         {
             if (BigInteger.TryParse(s, out BigInteger big))
             {
-                result = new IntFloat(big);
+                result = big;
                 return true;
             }
 
             if (Doudec.TryParse(s, out Doudec d))
             {
-                result = new IntFloat(d);
+                result = d;
                 return true;
             }
 
-            result = IntFloat.Default;
+            result = default;
             return false;
         }
 
         public static IntFloat Parse(string s)
         {
-            if (IntFloat.TryParse(s, out IntFloat result))
+            if (TryParse(s, out IntFloat result))
             {
                 return result;
             }
@@ -674,7 +674,6 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region public static Properties
-        public static IntFloat Default { get => new IntFloat(); }
         public static IntFloat PositiveInfinity { get => Doudec.PositiveInfinity; }
         public static IntFloat NegativeInfinity { get => Doudec.NegativeInfinity; }
         public static IntFloat NaN { get => Doudec.NaN; }
