@@ -351,7 +351,7 @@ namespace JesseRussell.Numerics
             {
                 if (y.integer > int.MaxValue)
                 {
-                    // Exponent is too big
+                    // *Exponent is too big
 
                     if (y.integer.IsEven)
                     {

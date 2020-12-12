@@ -212,8 +212,6 @@ namespace JesseRussell.Numerics
         // Doudec -> floating point
         public static explicit operator float(Doudec d) => (float)d.Double;
         public static explicit operator double(Doudec d) => (double)d.Double;
-
-        // Doudec -> decimal
         public static explicit operator decimal(Doudec d) => d.Decimal;
         #endregion
         #endregion
@@ -237,12 +235,12 @@ namespace JesseRussell.Numerics
             double? d = double.TryParse(s, out double dr) ? (double?)dr : null;
             //
 
-            // Base result on that.
+            // Base the result on that...
             if (d != null)
             {
                 if (dec != null)
                 {
-                    // * d dec
+                    //  double & decimal
 
                     if ((double)dec == d)
                     {
@@ -257,7 +255,7 @@ namespace JesseRussell.Numerics
                 }
                 else
                 {
-                    // * d !dec
+                    //  double & !decimal
 
                     result = (double)d;
                     return true;
@@ -267,35 +265,19 @@ namespace JesseRussell.Numerics
             {
                 if (dec != null)
                 {
-                    // * !d dec
+                    //  !double & decimal
 
                     result = (decimal)dec;
                     return true;
                 }
                 else
                 {
-                    // * !d !dec
+                    //  !double & !decimal
 
                     result = default;
                     return false;
                 }
             }
-
-            //if (double.TryParse(s, out double d))
-            //{
-            //    result = d;
-            //    return true;
-            //}
-            //else if (decimal.TryParse(s, out decimal dec))
-            //{
-            //    result = dec;
-            //    return true;
-            //}
-            //else
-            //{
-            //    result = default;
-            //    return false;
-            //}
         }
         public static Doudec Parse(string s)
         {
@@ -435,7 +417,7 @@ namespace JesseRussell.Numerics
         public static Doudec Neg(Doudec x) => x.doubleNotDecimal ? (Doudec)(-x.doub) : -x.decim;
         #endregion
 
-        #region Factories
+        #region Conversion
         public static Doudec FromDouble(double d) => MathUtils.TryToDecimalStrictly(d, out decimal dec) ? new Doudec(dec) : new Doudec(d);
         public static Doudec FromDecimal(decimal dec)
         {

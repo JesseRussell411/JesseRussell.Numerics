@@ -267,42 +267,94 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region Casts
-        public static implicit operator IntFloatFrac(BigInteger bi) => new IntFloatFrac(bi);
-        public static implicit operator IntFloatFrac(Doudec d) => new IntFloatFrac(d);
-        public static implicit operator IntFloatFrac(double d) => new IntFloatFrac(d);
-        public static implicit operator IntFloatFrac(Fraction f) => new IntFloatFrac(f);
-        public static implicit operator IntFloatFrac(FractionOperation fo) => new IntFloatFrac(fo);
+        #region from
+        // floating point -> IntFloatFrac
+        public static implicit operator IntFloatFrac(float f) => FromDouble(f);
+        public static implicit operator IntFloatFrac(double f) => FromDouble(f);
+        public static implicit operator IntFloatFrac(decimal f) => FromDecimal(f);
+        public static implicit operator IntFloatFrac(Doudec f) => FromDoudec(f);
 
+        // integer -> IntFloatFrac
         public static implicit operator IntFloatFrac(sbyte sb) => new IntFloatFrac((BigInteger)sb);
         public static implicit operator IntFloatFrac(short s) => new IntFloatFrac((BigInteger)s);
         public static implicit operator IntFloatFrac(int i) => new IntFloatFrac((BigInteger)i);
         public static implicit operator IntFloatFrac(long l) => new IntFloatFrac((BigInteger)l);
+        public static implicit operator IntFloatFrac(BigInteger bi) => new IntFloatFrac(bi);
 
         public static implicit operator IntFloatFrac(byte b) => new IntFloatFrac((BigInteger)b);
         public static implicit operator IntFloatFrac(ushort us) => new IntFloatFrac((BigInteger)us);
         public static implicit operator IntFloatFrac(uint ui) => new IntFloatFrac((BigInteger)ui);
         public static implicit operator IntFloatFrac(ulong ul) => new IntFloatFrac((BigInteger)ul);
+        public static implicit operator IntFloatFrac(UBigInteger ubi) => new IntFloatFrac(ubi);
 
+        // Fraction -> IntFloatFrac
+        public static implicit operator IntFloatFrac(Fraction f) => new IntFloatFrac(f);
+        public static implicit operator IntFloatFrac(FractionOperation fo) => new IntFloatFrac(fo);
+
+        // IntFloat -> IntFloatFrac
+        public static implicit operator IntFloatFrac(IntFloat ift) => new IntFloatFrac(ift);
+        #endregion
+
+        #region to
+        // IntFloatFrac -> integer
         public static explicit operator sbyte(IntFloatFrac iff) => (sbyte)iff.Int;
         public static explicit operator short(IntFloatFrac iff) => (short)iff.Int;
         public static explicit operator int(IntFloatFrac iff) => (int)iff.Int;
         public static explicit operator long(IntFloatFrac iff) => (long)iff.Int;
         public static explicit operator BigInteger(IntFloatFrac iff) => iff.Int;
+
         public static explicit operator byte(IntFloatFrac iff) => (byte)iff.Int;
         public static explicit operator ushort(IntFloatFrac iff) => (ushort)iff.Int;
         public static explicit operator uint(IntFloatFrac iff) => (uint)iff.Int;
         public static explicit operator ulong(IntFloatFrac iff) => (ulong)iff.Int;
         public static explicit operator UBigInteger(IntFloatFrac iff) => (UBigInteger)iff.Int;
 
+        // IntFloatFrac -> floating point
+        public static explicit operator float(IntFloatFrac iff) => (float)iff.Float;
+        public static explicit operator double(IntFloatFrac iff) => (double)iff.Float;
+        public static explicit operator decimal(IntFloatFrac iff) => (decimal)iff.Float;
         public static explicit operator Doudec(IntFloatFrac iff) => iff.Float;
+
+        // IntFloatFrac -> Fraction
         public static explicit operator Fraction(IntFloatFrac iff) => iff.Fraction;
 
-        public static explicit operator double(IntFloatFrac iff) => (double)iff.Float;
-        public static explicit operator float(IntFloatFrac iff) => (float)iff.Float;
-        public static explicit operator decimal(IntFloatFrac iff) => (decimal)iff.Float;
-
-        public static implicit operator IntFloatFrac(IntFloat ift) => new IntFloatFrac(ift);
+        // IntFloatFract -> IntFloat
         public static explicit operator IntFloat(IntFloatFrac iff) => iff.IntFloat;
+        #endregion
+        #endregion
+
+        #region Conversion
+        public static IntFloatFrac FromDouble(double d)
+        {
+            Fraction fracAttempt = Fraction.FromDouble(d);
+
+            if (fracAttempt.ToDouble() == d)
+            {
+                return new IntFloatFrac(fracAttempt);
+            }
+            else
+            {
+                return new IntFloatFrac((Doudec)d);
+            }
+        }
+
+        public static IntFloatFrac FromDecimal(decimal dec)
+        {
+            return new IntFloatFrac(Fraction.FromDecimal(dec));
+        }
+
+        public static IntFloatFrac FromDoudec(Doudec d)
+        {
+            Fraction fracAttempt = Fraction.FromDoudec(d);
+            if (fracAttempt.ToDoudec() == d)
+            {
+                return new IntFloatFrac(fracAttempt);
+            }
+            else
+            {
+                return new IntFloatFrac(d);
+            }
+        }
         #endregion
         #endregion
 
