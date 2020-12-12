@@ -268,12 +268,6 @@ namespace JesseRussell.Numerics
 
         #region Casts
         #region from
-        // floating point -> IntFloatFrac
-        public static implicit operator IntFloatFrac(float f) => FromDouble(f);
-        public static implicit operator IntFloatFrac(double f) => FromDouble(f);
-        public static implicit operator IntFloatFrac(decimal f) => FromDecimal(f);
-        public static implicit operator IntFloatFrac(Doudec f) => FromDoudec(f);
-
         // integer -> IntFloatFrac
         public static implicit operator IntFloatFrac(sbyte sb) => new IntFloatFrac((BigInteger)sb);
         public static implicit operator IntFloatFrac(short s) => new IntFloatFrac((BigInteger)s);
@@ -286,6 +280,12 @@ namespace JesseRussell.Numerics
         public static implicit operator IntFloatFrac(uint ui) => new IntFloatFrac((BigInteger)ui);
         public static implicit operator IntFloatFrac(ulong ul) => new IntFloatFrac((BigInteger)ul);
         public static implicit operator IntFloatFrac(UBigInteger ubi) => new IntFloatFrac(ubi);
+
+        // floating point -> IntFloatFrac
+        public static implicit operator IntFloatFrac(float f) => FromDouble(f);
+        public static implicit operator IntFloatFrac(double f) => FromDouble(f);
+        public static implicit operator IntFloatFrac(decimal f) => FromDecimal(f);
+        public static implicit operator IntFloatFrac(Doudec f) => FromDoudec(f);
 
         // Fraction -> IntFloatFrac
         public static implicit operator IntFloatFrac(Fraction f) => new IntFloatFrac(f);
@@ -317,6 +317,7 @@ namespace JesseRussell.Numerics
 
         // IntFloatFrac -> Fraction
         public static explicit operator Fraction(IntFloatFrac iff) => iff.Fraction;
+        public static explicit operator FractionOperation(IntFloatFrac iff) => iff.Fraction;
 
         // IntFloatFract -> IntFloat
         public static explicit operator IntFloat(IntFloatFrac iff) => iff.IntFloat;

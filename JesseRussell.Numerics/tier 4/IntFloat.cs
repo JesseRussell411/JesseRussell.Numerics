@@ -254,10 +254,17 @@ namespace JesseRussell.Numerics
             return floatNotInt ? HashCode.Combine(floating) : HashCode.Combine(integer);
         }
         #endregion
+        #region Conversion
         public override string ToString()
         {
             return floatNotInt ? floating.ToString() : integer.ToString();
         }
+        public Fraction ToFraction() => floatNotInt switch
+        {
+            true => Fraction.FromDoudec(floating),
+            false => new Fraction(integer)
+        };
+        #endregion
         #endregion
 
         #region public static Methods
@@ -530,33 +537,34 @@ namespace JesseRussell.Numerics
         }
         #endregion
         #region Casts
-        public static implicit operator IntFloat(Doudec dd) => new IntFloat(dd);
-        public static implicit operator IntFloat(BigInteger big) => new IntFloat(big);
-
-        public static implicit operator IntFloat(double d) => new IntFloat(d);
-        public static implicit operator IntFloat(float f) => new IntFloat(f);
-
+        #region From
+        // integer -> IntFloat
         public static implicit operator IntFloat(sbyte i) => new IntFloat(i);
         public static implicit operator IntFloat(short i) => new IntFloat(i);
         public static implicit operator IntFloat(int i) => new IntFloat(i);
         public static implicit operator IntFloat(long i) => new IntFloat(i);
+        public static implicit operator IntFloat(BigInteger big) => new IntFloat(big);
 
         public static implicit operator IntFloat(byte i) => new IntFloat(i);
         public static implicit operator IntFloat(ushort i) => new IntFloat(i);
         public static implicit operator IntFloat(uint i) => new IntFloat(i);
         public static implicit operator IntFloat(ulong i) => new IntFloat(i);
+        public static implicit operator IntFloat(UBigInteger ubig) => new IntFloat(ubig);
 
-        public static explicit operator IntFloat(decimal d) => new IntFloat(d);
+        // floating point -> IntFloat
+        public static implicit operator IntFloat(float f) => new IntFloat(f);
+        public static implicit operator IntFloat(double d) => new IntFloat(d);
+        public static implicit operator IntFloat(decimal d) => new IntFloat(d);
+        public static implicit operator IntFloat(Doudec dd) => new IntFloat(dd);
 
-        public static explicit operator IntFloat(Fraction f) => new IntFloat((Doudec)f);
+        // Fraction -> IntFloat
+        public static explicit operator IntFloat(Fraction f) => FromFraction(f);
+        public static explicit operator IntFloat(FractionOperation f) => FromFraction(f.Unsimplified);
+        #endregion
 
+        #region to
+        // IntFloat -> integer
         public static explicit operator BigInteger(IntFloat iflt) => iflt.Int;
-        public static explicit operator Doudec(IntFloat iflt) => iflt.Float;
-
-        public static explicit operator decimal(IntFloat iflt) => (decimal)iflt.Float;
-        public static explicit operator double(IntFloat iflt) => (double)iflt.Float;
-        public static explicit operator float(IntFloat i) => (float)i.Float;
-
         public static explicit operator sbyte(IntFloat iflt) => (sbyte)iflt.Int;
         public static explicit operator short(IntFloat iflt) => (short)iflt.Int;
         public static explicit operator int(IntFloat iflt) => (int)iflt.Int;
@@ -567,6 +575,18 @@ namespace JesseRussell.Numerics
         public static explicit operator uint(IntFloat iflt) => (uint)iflt.Int;
         public static explicit operator ulong(IntFloat iflt) => (ulong)iflt.Int;
         public static explicit operator UBigInteger(IntFloat iflt) => (UBigInteger)iflt.Int;
+
+        // IntFloat -> floating point
+        public static explicit operator float(IntFloat i) => (float)i.Float;
+        public static explicit operator double(IntFloat iflt) => (double)iflt.Float;
+        public static explicit operator decimal(IntFloat iflt) => (decimal)iflt.Float;
+        public static explicit operator Doudec(IntFloat iflt) => iflt.Float;
+
+        // IntFloat -> Fraction
+        public static explicit operator Fraction(IntFloat i) => i.ToFraction();
+        public static explicit operator FractionOperation(IntFloat i) => i.ToFraction();
+
+        #endregion
 
         #endregion
         #region Operators
@@ -586,6 +606,70 @@ namespace JesseRussell.Numerics
         public static bool operator <=(IntFloat left, IntFloat right) => left < right || left == right;
         public static bool operator ==(IntFloat left, IntFloat right) => left.Equals(right);
         public static bool operator !=(IntFloat left, IntFloat right) => !left.Equals(right);
+        #endregion
+        #region Conversion
+        /// <summary>
+        /// Conversion function that prioritizes BigInteger if possible;
+        /// </summary>
+        public static IntFloat FromDoudec(Doudec d)
+        {
+            BigInteger intAttempt = (BigInteger)d;
+            if ((Doudec)intAttempt == d)
+            {
+                return new IntFloat(intAttempt);
+            }
+            else
+            {
+                return new IntFloat(d);
+            }
+        }
+
+        /// <summary>
+        /// Conversion function that prioritizes BigInteger if possible;
+        /// </summary>
+        public static IntFloat FromDouble(double d)
+        {
+            BigInteger intAttempt = (BigInteger)d;
+            if ((double)intAttempt == d)
+            {
+                return new IntFloat(intAttempt);
+            }
+            else
+            {
+                return new IntFloat(d);
+            }
+        }
+
+        /// <summary>
+        /// Conversion function that prioritizes BigInteger if possible;
+        /// </summary>
+        public static IntFloat FromDecimal(decimal d)
+        {
+            BigInteger intAttempt = (BigInteger)d;
+            if ((decimal)intAttempt == d)
+            {
+                return new IntFloat(intAttempt);
+            }
+            else
+            {
+                return new IntFloat(d);
+            }
+        }
+
+        /// <summary>
+        /// Conversion function that prioritizes BigInteger if possible;
+        /// </summary>
+        public static IntFloat FromFraction(Fraction f)
+        {
+            if (f.IsWhole)
+            {
+                return new IntFloat(f.ToBigInteger());
+            }
+            else
+            {
+                return new IntFloat((Doudec)f);
+            }
+        }
         #endregion
         #endregion
 
