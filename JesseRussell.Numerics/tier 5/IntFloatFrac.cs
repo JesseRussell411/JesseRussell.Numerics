@@ -129,25 +129,25 @@ namespace JesseRussell.Numerics
         #region Math
         public static IntFloatFrac Add(IntFloatFrac left, IntFloatFrac right)
         {
-            if (left.IsFloat || right.IsFloat) return left.Float + right.Float;
+            if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float + right.Float);
             if (left.IsFraction || right.IsFraction) return left.Fraction + right.Fraction;
             return left.Int + right.Int;
         }
         public static IntFloatFrac Subtract(IntFloatFrac left, IntFloatFrac right)
         {
-            if (left.IsFloat || right.IsFloat) return left.Float - right.Float;
+            if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float - right.Float);
             if (left.IsFraction || right.IsFraction) return left.Fraction - right.Fraction;
             return left.Int - right.Int;
         }
         public static IntFloatFrac Multiply(IntFloatFrac left, IntFloatFrac right)
         {
-            if (left.IsFloat || right.IsFloat) return left.Float * right.Float;
+            if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float * right.Float);
             if (left.IsFraction || right.IsFraction) return left.Fraction * right.Fraction;
             return left.Int * right.Int;
         }
         public static IntFloatFrac Divide(IntFloatFrac left, IntFloatFrac right)
         {
-            if (left.IsFloat || right.IsFloat) return left.Float / right.Float;
+            if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float / right.Float);
             if (left.IsFraction || right.IsFraction) return left.Fraction / right.Fraction;
             BigInteger l_i = left.Int;
             BigInteger r_i = right.Int;
@@ -159,7 +159,7 @@ namespace JesseRussell.Numerics
 
         public static IntFloatFrac Remainder(IntFloatFrac left, IntFloatFrac right)
         {
-            if (left.IsFloat || right.IsFloat) return left.Float % right.Float;
+            if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float % right.Float); ;
             if (left.IsFraction || right.IsFraction) return left.Fraction % right.Fraction;
             return left.Int % right.Int;
         }
@@ -181,8 +181,8 @@ namespace JesseRussell.Numerics
 
         public static IntFloatFrac Pow(IntFloatFrac x, double y) => x.intFloatNotFraction switch
         {
-            true => IntFloat.Pow(x.ifloat, y),
-            false => Doudec.Pow((Doudec)x.frac, y)
+            true => new IntFloatFrac(IntFloat.Pow(x.ifloat, y)),
+            false => new IntFloatFrac(Doudec.Pow((Doudec)x.frac, y))
         };
 
         public static IntFloatFrac Pow(IntFloatFrac x, IntFloat y) => y.IsInt switch
@@ -191,15 +191,15 @@ namespace JesseRussell.Numerics
             false => Pow(x, y.Float)
         };
 
-        public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? (IntFloatFrac)IntFloat.Abs(x.ifloat) : Fraction.Abs(x.frac);
-        public static IntFloatFrac Neg(IntFloatFrac x) => x.intFloatNotFraction ? (IntFloatFrac)IntFloat.Negate(x.ifloat) : x.frac.Negate();
-        public static IntFloatFrac Floor(IntFloatFrac x) => x.intFloatNotFraction ? (IntFloatFrac)IntFloat.Floor(x.ifloat) : x.frac.Floor();
-        public static IntFloatFrac Ceiling(IntFloatFrac x) => x.intFloatNotFraction ? (IntFloatFrac)IntFloat.Ceiling(x.ifloat) : x.frac.Ceiling();
-        public static IntFloatFrac Truncate(IntFloatFrac x) => x.intFloatNotFraction ? (IntFloatFrac)IntFloat.Truncate(x.ifloat) : x.frac.Truncate();
+        public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Abs(x.ifloat)) : Fraction.Abs(x.frac);
+        public static IntFloatFrac Neg(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Negate(x.ifloat)) : x.frac.Negate();
+        public static IntFloatFrac Floor(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Floor(x.ifloat)) : x.frac.Floor();
+        public static IntFloatFrac Ceiling(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Ceiling(x.ifloat)) : x.frac.Ceiling();
+        public static IntFloatFrac Truncate(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Truncate(x.ifloat)) : x.frac.Truncate();
         public static int Sign(IntFloatFrac iff) => iff.intFloatNotFraction ? IntFloat.Sign(iff.ifloat) : iff.frac.Sign;
-        public static IntFloatFrac Log(IntFloatFrac iff) => iff.intFloatNotFraction ? IntFloat.Log(iff.ifloat) : Fraction.Log(iff.frac);
-        public static IntFloatFrac Log(IntFloatFrac iff, double newBase) => iff.intFloatNotFraction ? IntFloat.Log(iff.ifloat, newBase) : Fraction.Log(iff.frac, newBase);
-        public static IntFloatFrac Log10(IntFloatFrac iff) => iff.intFloatNotFraction ? IntFloat.Log10(iff.ifloat) : Fraction.Log10(iff.frac);
+        public static IntFloatFrac Log(IntFloatFrac iff) => new IntFloatFrac(iff.intFloatNotFraction ? IntFloat.Log(iff.ifloat) : Fraction.Log(iff.frac));
+        public static IntFloatFrac Log(IntFloatFrac iff, double newBase) => new IntFloatFrac(iff.intFloatNotFraction ? IntFloat.Log(iff.ifloat, newBase) : Fraction.Log(iff.frac, newBase));
+        public static IntFloatFrac Log10(IntFloatFrac iff) => new IntFloatFrac(iff.intFloatNotFraction ? IntFloat.Log10(iff.ifloat) : Fraction.Log10(iff.frac));
         public static IntFloatFrac Min(IntFloatFrac a, IntFloatFrac b) => a > b ? b : a;
         public static IntFloatFrac Max(IntFloatFrac a, IntFloatFrac b) => a < b ? b : a;
         #endregion
@@ -207,26 +207,18 @@ namespace JesseRussell.Numerics
         #region Parse
         public static bool TryParse(string s, out IntFloatFrac result)
         {
-            if (BigInteger.TryParse(s, out BigInteger b))
+            if (BigInteger.TryParse(s, out BigInteger bi))
             {
-                result = b;
+                result = bi;
                 return true;
             }
-            else if (Doudec.TryParse(s, out Doudec d))
+            if (IntFloat.TryParse(s, out IntFloat i))
             {
-                result = d;
+                result = new IntFloatFrac(i);
                 return true;
             }
-            else if (Fraction.TryParse(s, out Fraction f))
-            {
-                result = f;
-                return true;
-            }
-            else
-            {
-                result = default;
-                return false;
-            }
+            result = default;
+            return false;
         }
         public static IntFloatFrac Parse(string s)
         {
