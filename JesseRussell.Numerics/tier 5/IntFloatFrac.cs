@@ -327,9 +327,8 @@ namespace JesseRussell.Numerics
         /// </summary>
         public static IntFloatFrac FromDouble(double d)
         {
-            Fraction fracAttempt = Fraction.FromDouble(d);
 
-            if (fracAttempt.ToDouble() == d)
+            if (MathUtils.TryToFraction(d, out Fraction fracAttempt) && ((double)fracAttempt == d))
             {
                 return fracAttempt;
             }
@@ -342,18 +341,15 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// Conversion that prioritizes Fraction.
         /// </summary>
-        public static IntFloatFrac FromDecimal(decimal dec)
-        {
-            return Fraction.FromDecimal(dec);
-        }
+        public static IntFloatFrac FromDecimal(decimal dec) => Fraction.FromDecimal(dec);
 
         /// <summary>
         /// Conversion that prioritizes Fraction.
         /// </summary>
         public static IntFloatFrac FromDoudec(Doudec d)
         {
-            Fraction fracAttempt = Fraction.FromDoudec(d);
-            if (fracAttempt.ToDoudec() == d)
+
+            if (MathUtils.TryToFraction(d, out Fraction fracAttempt) && ((Doudec)fracAttempt == d))
             {
                 return fracAttempt;
             }

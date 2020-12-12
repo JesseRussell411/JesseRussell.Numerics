@@ -643,6 +643,8 @@ namespace JesseRussell.Numerics
 
         public static Fraction FromDouble(double d)
         {
+            if (double.IsInfinity(d)) throw new OverflowException("Fraction cannot represent infinity.");
+
             // Trying to convert to decimal first...
             if (MathUtils.TryToDecimalStrictly(d, out decimal dec))
             {

@@ -613,8 +613,7 @@ namespace JesseRussell.Numerics
         /// </summary>
         public static IntFloat FromDoudec(Doudec d)
         {
-            BigInteger intAttempt = (BigInteger)d;
-            if ((Doudec)intAttempt == d)
+            if (MathUtils.TryToBigInteger(d, out BigInteger intAttempt) && ((Doudec)intAttempt == d))
             {
                 return new IntFloat(intAttempt);
             }
@@ -629,8 +628,7 @@ namespace JesseRussell.Numerics
         /// </summary>
         public static IntFloat FromDouble(double d)
         {
-            BigInteger intAttempt = (BigInteger)d;
-            if ((double)intAttempt == d)
+            if (MathUtils.TryToBigInteger(d, out BigInteger intAttempt) && ((double)intAttempt == d))
             {
                 return new IntFloat(intAttempt);
             }

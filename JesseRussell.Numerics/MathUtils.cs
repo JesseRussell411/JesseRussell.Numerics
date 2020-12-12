@@ -88,6 +88,88 @@ namespace JesseRussell.Numerics
             return false;
         }
 
+        /// <summary>
+        /// Tries to convert the given Doudec to a BigInteger. One way for this to fail is if the Doudec is infinite.
+        /// </summary>
+        public static bool TryToBigInteger(Doudec d, out BigInteger result)
+        {
+            if (Doudec.IsFinite(d))
+            {
+                try
+                {
+                    result = (BigInteger)d;
+                    return true;
+                }
+                catch (Exception)
+                {
+                    result = default;
+                    return false;
+                }
+            }
+            else
+            {
+                result = default;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Tries to convert the given double to a BigInteger. One way for this to fail is if the double is infinite.
+        /// </summary>
+        public static bool TryToBigInteger(double d, out BigInteger result)
+        {
+            if (double.IsFinite(d))
+            {
+                try
+                {
+                    result = (BigInteger)d;
+                    return true;
+                }
+                catch (Exception)
+                {
+                    result = default;
+                    return false;
+                }
+            }
+            else
+            {
+                result = default;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Tries to convert the given Doudec to a Fraction. One way for this to fail is if the Doudec is infinite.
+        /// </summary>
+        public static bool TryToFraction(Doudec d, out Fraction result)
+        {
+            try
+            {
+                result = Fraction.FromDoudec(d);
+                return true;
+            }
+            catch (Exception)
+            {
+                result = default;
+                return false;
+            }
+        }
+        /// <summary>
+        /// Tries to convert the given double to a Fraction. One way for this to fail is if the double is infinite.
+        /// </summary>
+        public static bool TryToFraction(double d, out Fraction result)
+        {
+            try
+            {
+                result = Fraction.FromDouble(d);
+                return true;
+            }
+            catch (Exception)
+            {
+                result = default;
+                return false;
+            }
+        }
 
         public static bool NextBool(this Random rand) => rand.NextDouble() >= 0.5;
 
