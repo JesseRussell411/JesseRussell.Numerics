@@ -278,7 +278,7 @@ namespace JesseRussell.Numerics
 
         // Fraction -> IntFloatFrac
         public static implicit operator IntFloatFrac(Fraction f) => FromFraction(f);
-        public static implicit operator IntFloatFrac(FractionOperation fo) => FromFraction(fo.Unsimplified);
+        public static implicit operator IntFloatFrac(FractionOperation fo) => FromFraction(fo);
 
         // IntFloat -> IntFloatFrac
         public static implicit operator IntFloatFrac(IntFloat ift) => FromIntFloat(ift);
