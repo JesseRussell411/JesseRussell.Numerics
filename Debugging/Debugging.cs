@@ -15,7 +15,7 @@ namespace Debugging
         static void println(object obj) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            IntFloatFrac bob = .5;
+            Fraction f = new Fraction(76, 64).Simplify();
 
             //IntFloatFrac steve = default;
             ////IntFloat bob = default;
