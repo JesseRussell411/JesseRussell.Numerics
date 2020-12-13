@@ -185,11 +185,21 @@ namespace JesseRussell.Numerics
             false => new IntFloatFrac(Doudec.Pow((Doudec)x.frac, y))
         };
 
-        public static IntFloatFrac Pow(IntFloatFrac x, IntFloat y) => y.IsInt switch
+        public static IntFloatFrac Pow(IntFloatFrac x, IntFloat y)
         {
-            true => Pow(x, y.Int),
-            false => Pow(x, y.Float)
-        };
+            if (y.IsInt)
+            {
+                BigInteger bi = y.Int;
+                if (bi < int.MinValue) return Pow(x, double.NegativeInfinity);
+                if (bi > int.MaxValue) return Pow(x, double.PositiveInfinity);
+                
+                return Pow(x, (int)bi);
+            }
+            else
+            {
+                return Pow(x, y.Float.Double);
+            }
+        }
 
         public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Abs(x.ifloat)) : Fraction.Abs(x.frac);
         public static IntFloatFrac Neg(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Negate(x.ifloat)) : x.frac.Negate();
