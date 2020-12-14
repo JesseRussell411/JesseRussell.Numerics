@@ -2,6 +2,9 @@
 A collection of useful number types. Uploaded as a NuGet package: https://www.nuget.org/packages/JesseRussell.Numerics/
 All of these types are readonly structs with out-of-place operations. They have been designed with precision and safety taking priority over speed.
 
+UBigInteger:
+  Unsigned wrapper for BigInteger.
+
 Fraction:
   A fraction using BigInteger for the numerator and denominator
   
