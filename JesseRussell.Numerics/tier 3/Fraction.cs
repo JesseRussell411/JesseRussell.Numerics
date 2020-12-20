@@ -242,7 +242,7 @@ namespace JesseRussell.Numerics
         /// Returns the fractions rounded to the next lowest integer.
         /// </summary>
         /// <returns></returns>
-        public Fraction Floor()
+        public FractionOperation Floor()
         {
             if (IsWhole) return this;
             else if (IsNegative) return ToBigInteger() - 1;
@@ -253,7 +253,7 @@ namespace JesseRussell.Numerics
         /// Returns the fraction rounded to the next highest integer.
         /// </summary>
         /// <returns></returns>
-        public Fraction Ceiling()
+        public FractionOperation Ceiling()
         {
             if (IsWhole) return this;
             else if (IsNegative) return ToBigInteger();

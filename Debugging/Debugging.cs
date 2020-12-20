@@ -2,9 +2,9 @@
 using System.Diagnostics;
 using System.Linq;
 using System.Collections.Generic;
-using System.Numerics;
 
 using JesseRussell.Numerics;
+using JesseRussell.Numerics.WorkInProgress;
 
 
 namespace Debugging
@@ -15,7 +15,15 @@ namespace Debugging
         static void println(object obj) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            Fraction f = new Fraction(76, 64).Simplify();
+            Vector2 a = new JesseRussell.Numerics.WorkInProgress.Vector2(2, 1);
+            Vector2 xT = new Vector2(0, 1);
+            Vector2 yT = new Vector2(-1, 0);
+            var aT = a.Transform(xT, yT);
+
+            println(a);
+            println(xT);
+            println(yT);
+            println(aT);
 
             //IntFloatFrac steve = default;
             ////IntFloat bob = default;
