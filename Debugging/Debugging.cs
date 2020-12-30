@@ -15,15 +15,19 @@ namespace Debugging
         static void println(object obj) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            Vector2 a = new JesseRussell.Numerics.WorkInProgress.Vector2(2, 1);
-            Vector2 xT = new Vector2(0, 1);
-            Vector2 yT = new Vector2(-1, 0);
-            var aT = a.Transform(xT, yT);
+            IntFloatFrac x = 2.3;
+            IntFloatFrac y = 333.4;
+            Console.WriteLine(IntFloatFrac.Pow(x, y.IntFloat));
 
-            println(a);
-            println(xT);
-            println(yT);
-            println(aT);
+            //Vector2 a = new JesseRussell.Numerics.WorkInProgress.Vector2(2, 1);
+            //Vector2 xT = new Vector2(0, 1);
+            //Vector2 yT = new Vector2(-1, 0);
+            //var aT = a.Transform(xT, yT);
+
+            //println(a);
+            //println(xT);
+            //println(yT);
+            //println(aT);
 
             //IntFloatFrac steve = default;
             ////IntFloat bob = default;

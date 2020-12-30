@@ -5,13 +5,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
-using System.Reflection;
-using System.Text;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Data.SqlTypes;
 
 namespace JesseRussell.Numerics
 {
@@ -902,5 +897,7 @@ namespace JesseRussell.Numerics
         {
             return new Fraction(rand.Next(minNumerator, maxNumerator), rand.Next(minDenominator, maxDenominator));
         }
+
+        public static Fraction Sum(this IEnumerable<Fraction> items) => items.Aggregate((total, next) => total + next);
     }
 }

@@ -81,7 +81,11 @@ namespace JesseRussell.Numerics
                     result = (decimal)bi;
                     return true;
                 }
-                finally { }
+                catch (Exception)
+                {
+                    result = default;
+                    return false;
+                }
             }
 
             result = default;

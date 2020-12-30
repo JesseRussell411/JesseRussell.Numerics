@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Runtime.InteropServices;
 using System.Numerics;
+using System.Linq;
 
 namespace JesseRussell.Numerics
 {
@@ -453,5 +453,10 @@ namespace JesseRussell.Numerics
         [FieldOffset(1)]
         private readonly decimal decim;
         #endregion
+    }
+
+    public static class DoudecUtils
+    {
+        public static Doudec Sum(this IEnumerable<Doudec> items) => items.Aggregate((total, next) => total + next);
     }
 }

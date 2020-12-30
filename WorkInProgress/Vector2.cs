@@ -32,7 +32,5 @@ namespace JesseRussell.Numerics.WorkInProgress
             return $"[ {X} {Y} ]";
         }
         #endregion
-
-
     }
 }
