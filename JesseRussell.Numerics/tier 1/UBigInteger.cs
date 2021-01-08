@@ -187,6 +187,7 @@ namespace JesseRussell.Numerics
         public static bool operator ==(UBigInteger self, UBigInteger other) => self.Value == other.Value;
         public static bool operator !=(UBigInteger self, UBigInteger other) => self.Value != other.Value;
         #endregion
+        #region Math
 
         public static UBigInteger Abs(UBigInteger value) => value; //* What's the point! I love it!
 
@@ -213,9 +214,10 @@ namespace JesseRussell.Numerics
         public static UBigInteger Remainder(UBigInteger dividend, UBigInteger divisor) => (UBigInteger)BigInteger.Remainder(dividend, divisor);
         public static UBigInteger DivRem(UBigInteger dividend, UBigInteger divisor, out UBigInteger remainder) => UBigInteger.DivRem(dividend, divisor, out remainder);
         public static UBigInteger Pow(UBigInteger value, int exponent) => (UBigInteger)BigInteger.Pow(value, exponent);
-
+        
 
         public static UBigInteger ModPow(UBigInteger value, UBigInteger exponent, UBigInteger modulus) => (UBigInteger)BigInteger.ModPow(value, exponent, modulus);
+        #endregion
         #endregion
 
         #region public static Properties
