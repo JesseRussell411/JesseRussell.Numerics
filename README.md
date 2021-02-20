@@ -18,5 +18,5 @@ IntFloat:
   Combination BigInteger and Doudec. Always tries to store as a BigInteger if possible.
 
 IntFloatFrac:
-  Combination IntFloat and Fraction. Always tries to store as a Fraction if possible.
+  Combination IntFloat and Fraction. Always tries to store as a BigInteger or Fraction if possible.
   
