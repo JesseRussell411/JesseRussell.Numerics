@@ -216,9 +216,9 @@ namespace JesseRussell.Numerics
         #region Parse
         public static bool TryParse(string s, out IntFloatFrac result)
         {
-            if (BigInteger.TryParse(s, out BigInteger bi))
+            if (Fraction.TryParse(s, out Fraction f))
             {
-                result = bi;
+                result = f;
                 return true;
             }
             if (IntFloat.TryParse(s, out IntFloat i))

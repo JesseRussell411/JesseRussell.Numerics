@@ -15,10 +15,43 @@ namespace Debugging
         static void println(object obj) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            IntFloatFrac x = 2.3;
-            IntFloatFrac y = 333.4;
-            Console.WriteLine(IntFloatFrac.Pow(x, y.IntFloat));
+            List<Fraction> fracBuilder = new List<Fraction>();
+            Random rand = new Random(12345);
+            for(int i = 0; i < 1000000; i++)
+                fracBuilder.Add(rand.NextFraction(-15, 15, 15, 15));
 
+            Fraction[] fracs = fracBuilder.ToArray();
+
+            
+            Stopwatch sw = new Stopwatch();
+            long totalMs = 0;
+            int count = 0;
+            for (int i = 0; i < 20; i++)
+            {
+                sw.Restart();
+                Console.WriteLine(fracs.Sum());
+                sw.Stop();
+                Console.WriteLine(sw.ElapsedMilliseconds);
+
+                if (i > 6)
+                {
+                    count++;
+                    totalMs += sw.ElapsedMilliseconds;
+                }
+            }
+            Console.WriteLine((double)totalMs / count);
+
+
+            // new: 54.857142857142854
+            // new: 43.57142857142857
+            // new: 68.28571428571429
+
+            // old: 78.57142857142857
+            // old: 89.57142857142857
+            // old: 89.85714285714286
+
+
+            Console.ReadLine();
             //Vector2 a = new JesseRussell.Numerics.WorkInProgress.Vector2(2, 1);
             //Vector2 xT = new Vector2(0, 1);
             //Vector2 yT = new Vector2(-1, 0);

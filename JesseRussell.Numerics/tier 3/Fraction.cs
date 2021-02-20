@@ -218,6 +218,11 @@ namespace JesseRussell.Numerics
         }
 
         /// <summary>
+        /// Returns the naive sum (numerator + other.numerator / denominator + other.denominator) with the given fraction.
+        /// </summary>
+        public Fraction NaiveSum(Fraction other) => new Fraction(Numerator + other.Numerator, Denominator + other.Denominator);
+
+        /// <summary>
         /// Returns the current fraction plus 1.
         /// </summary>
         public Fraction Increment() => new Fraction(Numerator + Denominator, Denominator);
@@ -228,7 +233,7 @@ namespace JesseRussell.Numerics
         public Fraction Decrement() => new Fraction(Numerator - Denominator, Denominator);
 
         /// <summary>
-        /// Returns the whole portion of the fraction. Example: 5/2 equals 2 + 1/2, so the Floor of 5/2 would return 2.
+        /// Returns the whole portion of the fraction. Example: 5/2 equals 2 + 1/2, so the Truncation of 5/2 would return 2.
         /// </summary>
         /// <returns>The whole portion of the fraction.</returns>
         public Fraction Truncate() => ToBigInteger();
@@ -809,6 +814,8 @@ namespace JesseRussell.Numerics
         public static FractionOperation operator +(Fraction left, FractionOperation right) => left + right.Unsimplified;
         public static FractionOperation operator +(FractionOperation left, FractionOperation right) => left.Unsimplified + right.Unsimplified;
 
+        public static FractionOperation operator -(FractionOperation left, Fraction right) => left.Unsimplified - right;
+        public static FractionOperation operator -(Fraction left, FractionOperation right) => left - right.Unsimplified;
         public static FractionOperation operator -(FractionOperation left, FractionOperation right) => left.Unsimplified - right.Unsimplified;
 
         public static FractionOperation operator *(FractionOperation left, Fraction right) => left.Unsimplified * right;
@@ -818,6 +825,10 @@ namespace JesseRussell.Numerics
         public static FractionOperation operator /(FractionOperation left, Fraction right) => left.Unsimplified / right;
         public static FractionOperation operator /(Fraction left, FractionOperation right) => left / right.Unsimplified;
         public static FractionOperation operator /(FractionOperation left, FractionOperation right) => left.Unsimplified / right.Unsimplified;
+
+        public static FractionOperation operator %(FractionOperation left, Fraction right) => left.Unsimplified % right;
+        public static FractionOperation operator %(Fraction left, FractionOperation right) => left % right.Unsimplified;
+        public static FractionOperation operator %(FractionOperation left, FractionOperation right) => left.Unsimplified % right.Unsimplified;
 
         public static FractionOperation operator ++(FractionOperation fo) => fo.Unsimplified.Increment();
         public static FractionOperation operator --(FractionOperation fo) => fo.Unsimplified.Decrement();
@@ -884,9 +895,9 @@ namespace JesseRussell.Numerics
     }
 
     /// <summary>
-    /// Static utility methods and extension methods for other classes.
+    /// Extension methods for Fraction.
     /// </summary>
-    public static class FractionUtils
+    public static class FractionExtensions
     {
         public static Fraction NextFraction(this Random rand)
         {
@@ -898,6 +909,18 @@ namespace JesseRussell.Numerics
             return new Fraction(rand.Next(minNumerator, maxNumerator), rand.Next(minDenominator, maxDenominator));
         }
 
-        public static Fraction Sum(this IEnumerable<Fraction> items) => items.Aggregate((total, next) => total + next);
+        public static Fraction Sum(this IEnumerable<Fraction> items)
+        {
+            Fraction total = new Fraction(0);
+            int count = 0;
+            foreach (Fraction f in items)
+            {
+                total = total.Add(f);
+                count++;
+                if (count % 8 == 0)
+                    total = total.Simplify();
+            }
+            return total.Simplify();
+        }
     }
 }

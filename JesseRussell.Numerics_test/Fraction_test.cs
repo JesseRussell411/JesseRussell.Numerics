@@ -54,15 +54,15 @@ namespace JesseRussell.Numerics_test
             Fraction f;
             f= new Fraction(25, 3);
 
-            if (f.Floor() != 8) Assert.Fail();
-            if (f.Ceiling() != 9) Assert.Fail();
-            if (f.Truncate() != 8) Assert.Fail();
+            if (f.Floor() != 8) Assert.Fail("floor");
+            if (f.Ceiling() != 9) Assert.Fail("ceiling");
+            if (f.Truncate() != 8) Assert.Fail("truncate");
 
             f = new Fraction(-25, 3);
 
-            if (f.Floor() != -9) Assert.Fail();
-            if (f.Ceiling() != -8) Assert.Fail();
-            if (f.Truncate() != -8) Assert.Fail();
+            if (f.Floor() != -9) Assert.Fail("floor");
+            if (f.Ceiling() != -8) Assert.Fail("ceiling");
+            if (f.Truncate() != -8) Assert.Fail("truncate");
         }
 
         [Test]
@@ -86,6 +86,19 @@ namespace JesseRussell.Numerics_test
             f1 = new Fraction(-50, 1);
             f2 = new Fraction(-9, 1);
             if (f1 % f2 != -5) Assert.Fail();
+        }
+
+        [Test]
+        public void NaiveSum()
+        {
+            int lim = 10;
+            // Big O(n^4). hey, If it's for a unit test, bad code is good code. this only takes 125ms by the way. 
+            for (int n1 = -lim; n1 <= lim; ++n1)
+                for (int d1 = -lim; d1 <= lim; ++d1)
+                    for (int n2 = -lim; n2 <= lim; ++n2)
+                        for (int d2 = -lim; d2 <= lim; ++d2)
+                            if (new Fraction(n1, d1).NaiveSum(new Fraction(n2, d2)) != new Fraction(n1 + n2, d1 + d2))
+                                Assert.Fail($"{n1}/{d1} ~+~ {n2}/{d2}");
         }
     }
 }
