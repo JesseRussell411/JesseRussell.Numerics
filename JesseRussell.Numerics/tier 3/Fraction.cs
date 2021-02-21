@@ -512,20 +512,22 @@ namespace JesseRussell.Numerics
         #region Math
 
         /// <summary>
-        /// Returns two fractions representing left and right with the denominators equalized by cross multiplication.
+        /// Returns two fractions representing a and b with the denominators equalized by cross multiplication.
         /// </summary>
-        public static (Fraction left, Fraction right) EqualizeDenominators(Fraction left, Fraction right)
+        public static (Fraction a, Fraction b) EqualizeDenominators(Fraction a, Fraction b)
         {
-            int left_sign = left.Sign, 
-                right_sign = right.Sign;
+            int a_sign = a.Sign, 
+                b_sign = b.Sign;
 
             BigInteger
-                left_den_abs = BigInteger.Abs(left.Denominator),
-                right_den_abs = BigInteger.Abs(right.Denominator),
-                common_den_abs = left_den_abs * right_den_abs;
+                a_den_abs = BigInteger.Abs(a.Denominator),
+                b_den_abs = BigInteger.Abs(b.Denominator),
+                common_den_abs = a_den_abs * b_den_abs;
 
-            return (new Fraction(left_den_abs * left_sign, common_den_abs),
-                new Fraction(right_den_abs * right_sign, common_den_abs));
+            return (
+                new Fraction(BigInteger.Abs(a.Numerator) * b_den_abs * a_sign, common_den_abs),
+                new Fraction(BigInteger.Abs(b.Numerator) * a_den_abs * b_sign, common_den_abs)
+                );
         }
 
         /// <summary>

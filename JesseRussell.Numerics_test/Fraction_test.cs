@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using JesseRussell.Numerics;
+using System;
 
 namespace JesseRussell.Numerics_test
 {
@@ -99,6 +100,26 @@ namespace JesseRussell.Numerics_test
                         for (int d2 = -lim; d2 <= lim; ++d2)
                             if (new Fraction(n1, d1).NaiveSum(new Fraction(n2, d2)) != new Fraction(n1 + n2, d1 + d2))
                                 Assert.Fail($"{n1}/{d1} ~+~ {n2}/{d2}");
+        }
+
+        [Test]
+        public void EqualizeDenominators()
+        {
+            int lim = 10;
+            for (int n1 = -lim; n1 <= lim; ++n1)
+                for (int d1 = -lim; d1 <= lim; ++d1)
+                    for (int n2 = -lim; n2 <= lim; ++n2)
+                        for (int d2 = -lim; d2 <= lim; ++d2)
+                        {
+                            if (d1 == 0 || d2 == 0) continue;
+                            Fraction f1, f2;
+                            (f1, f2) = Fraction.EqualizeDenominators(new Fraction(n1, d1), new Fraction(n2, d2));
+                            if (f1 != new Fraction(n1, d1)) Assert.Fail($"{f1} != {n1}/{d1}");
+                            if (f2 != new Fraction(n2, d2)) Assert.Fail($"{f2} != {n2}/{d2}");
+                            if (f1.AbsoluteValue.Denominator != Math.Abs(d1 * d2)) Assert.Fail($"denominator {f1.AbsoluteValue.Denominator} != {Math.Abs(d1 * d2)}");
+                            if (f2.AbsoluteValue.Denominator != Math.Abs(d1 * d2)) Assert.Fail($"denominator {f2.AbsoluteValue.Denominator} != {Math.Abs(d1 * d2)}");
+                        }
+                            
         }
     }
 }
