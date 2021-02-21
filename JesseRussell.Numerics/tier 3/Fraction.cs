@@ -836,28 +836,12 @@ namespace JesseRussell.Numerics
         public static FractionOperation operator --(FractionOperation fo) => fo.Unsimplified.Decrement();
 
         public static bool operator <(FractionOperation left, FractionOperation right) => left.CompareTo(right) < 0;
-        public static bool operator <(Fraction left, FractionOperation right) => left.CompareTo(right) < 0;
-        public static bool operator <(FractionOperation left, Fraction right) => left.CompareTo(right) < 0;
-
         public static bool operator >(FractionOperation left, FractionOperation right) => left.CompareTo(right) > 0;
-        public static bool operator >(Fraction left, FractionOperation right) => left.CompareTo(right) > 0;
-        public static bool operator >(FractionOperation left, Fraction right) => left.CompareTo(right) > 0;
-
         public static bool operator <=(FractionOperation left, FractionOperation right) => left.CompareTo(right) <= 0;
-        public static bool operator <=(Fraction left, FractionOperation right) => left.CompareTo(right) <= 0;
-        public static bool operator <=(FractionOperation left, Fraction right) => left.CompareTo(right) <= 0;
-
         public static bool operator >=(FractionOperation left, FractionOperation right) => left.CompareTo(right) >= 0;
-        public static bool operator >=(Fraction left, FractionOperation right) => left.CompareTo(right) >= 0;
-        public static bool operator >=(FractionOperation left, Fraction right) => left.CompareTo(right) >= 0;
 
         public static bool operator ==(FractionOperation left, FractionOperation right) => left.Equals(right);
-        public static bool operator ==(Fraction left, FractionOperation right) => left.Equals(right);
-        public static bool operator ==(FractionOperation left, Fraction right) => left.Equals(right);
-
         public static bool operator !=(FractionOperation left, FractionOperation right) => !left.Equals(right);
-        public static bool operator !=(Fraction left, FractionOperation right) => !left.Equals(right);
-        public static bool operator !=(FractionOperation left, Fraction right) => !left.Equals(right);
         #endregion
 
         #region Casts
@@ -866,47 +850,47 @@ namespace JesseRussell.Numerics
         public static implicit operator Fraction(FractionOperation fo) => fo.Unsimplified.Simplify();
 
         // FractionOperation -> floating point
-        public static explicit operator float(FractionOperation fo) => (float)fo.Unsimplified;
-        public static explicit operator double(FractionOperation fo) => (double)fo.Unsimplified;
-        public static explicit operator decimal(FractionOperation fo) => (decimal)fo.Unsimplified;
-        public static explicit operator Doudec(FractionOperation fo) => (Doudec)fo.Unsimplified;
+        public static explicit operator float(FractionOperation fo) => (float) fo.Unsimplified;
+        public static explicit operator double(FractionOperation fo) => (double) fo.Unsimplified;
+        public static explicit operator decimal(FractionOperation fo) => (decimal) fo.Unsimplified;
+        public static explicit operator Doudec(FractionOperation fo) => (Doudec) fo.Unsimplified;
 
         // FracitonOperation -> integer
-        public static explicit operator BigInteger(FractionOperation fo) => (BigInteger)fo.Unsimplified;
-        public static explicit operator long(FractionOperation fo) => (long)fo.Unsimplified;
-        public static explicit operator int(FractionOperation fo) => (int)fo.Unsimplified;
-        public static explicit operator short(FractionOperation fo) => (short)fo.Unsimplified;
-        public static explicit operator sbyte(FractionOperation fo) => (sbyte)fo.Unsimplified;
+        public static explicit operator BigInteger(FractionOperation fo) => (BigInteger) fo.Unsimplified;
+        public static explicit operator long(FractionOperation fo) => (long) fo.Unsimplified;
+        public static explicit operator int(FractionOperation fo) => (int) fo.Unsimplified;
+        public static explicit operator short(FractionOperation fo) => (short) fo.Unsimplified;
+        public static explicit operator sbyte(FractionOperation fo) => (sbyte) fo.Unsimplified;
 
-        public static explicit operator UBigInteger(FractionOperation fo) => (UBigInteger)fo.Unsimplified;
-        public static explicit operator ulong(FractionOperation fo) => (ulong)fo.Unsimplified;
-        public static explicit operator uint(FractionOperation fo) => (uint)fo.Unsimplified;
-        public static explicit operator ushort(FractionOperation fo) => (ushort)fo.Unsimplified;
-        public static explicit operator byte(FractionOperation fo) => (byte)fo.Unsimplified;
+        public static explicit operator UBigInteger(FractionOperation fo) => (UBigInteger) fo.Unsimplified;
+        public static explicit operator ulong(FractionOperation fo) => (ulong) fo.Unsimplified;
+        public static explicit operator uint(FractionOperation fo) => (uint) fo.Unsimplified;
+        public static explicit operator ushort(FractionOperation fo) => (ushort) fo.Unsimplified;
+        public static explicit operator byte(FractionOperation fo) => (byte) fo.Unsimplified;
         #endregion
 
         #region from
         // Fraction -> FractionOperation
         public static implicit operator FractionOperation(Fraction f) => new FractionOperation(f);
 
-        //// floating point -> FractionOperation
-        //public static explicit operator FractionOperation(float f) => new FractionOperation((Fraction)f);
-        //public static explicit operator FractionOperation(double f) => new FractionOperation((Fraction)f);
-        //public static explicit operator FractionOperation(decimal f) => new FractionOperation((Fraction)f);
-        //public static explicit operator FractionOperation(Doudec f) => new FractionOperation((Fraction)f);
+        // floating point -> FractionOperation
+        public static explicit operator FractionOperation(float f) => new FractionOperation((Fraction)f);
+        public static explicit operator FractionOperation(double f) => new FractionOperation((Fraction)f);
+        public static explicit operator FractionOperation(decimal f) => new FractionOperation((Fraction)f);
+        public static explicit operator FractionOperation(Doudec f) => new FractionOperation((Fraction)f);
 
-        //// integer -> FractionOperation
-        //public static implicit operator FractionOperation(BigInteger i) => new FractionOperation((Fraction) i);
-        //public static implicit operator FractionOperation(long i) => new FractionOperation((Fraction) i);
-        //public static implicit operator FractionOperation(int i) => new FractionOperation((Fraction) i);
-        //public static implicit operator FractionOperation(short i) => new FractionOperation((Fraction) i);
-        //public static implicit operator FractionOperation(sbyte i) => new FractionOperation((Fraction) i);
+        // integer -> FractionOperation
+        public static implicit operator FractionOperation(BigInteger i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(long i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(int i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(short i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(sbyte i) => new FractionOperation((Fraction) i);
 
-        //public static implicit operator FractionOperation(UBigInteger i) => new FractionOperation((Fraction) i);
-        //public static implicit operator FractionOperation(ulong i) => new FractionOperation((Fraction) i);
-        //public static implicit operator FractionOperation(uint i) => new FractionOperation((Fraction) i);
-        //public static implicit operator FractionOperation(ushort i) => new FractionOperation((Fraction) i);
-        //public static implicit operator FractionOperation(byte i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(UBigInteger i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(ulong i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(uint i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(ushort i) => new FractionOperation((Fraction) i);
+        public static implicit operator FractionOperation(byte i) => new FractionOperation((Fraction) i);
         #endregion
         #endregion
         #endregion
@@ -930,20 +914,14 @@ namespace JesseRussell.Numerics
         public static Fraction Sum(this IEnumerable<Fraction> items)
         {
             Fraction total = new Fraction(0);
-            int i = 0;
-
+            int count = 0;
             foreach (Fraction f in items)
             {
                 total = total.Add(f);
-                i++;
-
-                if (i >= 8)
-                {
-                    i = 0;
+                count++;
+                if (count % 8 == 0)
                     total = total.Simplify();
-                }
             }
-
             return total.Simplify();
         }
     }

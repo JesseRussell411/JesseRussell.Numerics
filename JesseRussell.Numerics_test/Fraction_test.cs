@@ -1,7 +1,6 @@
 using NUnit.Framework;
 using JesseRussell.Numerics;
 using System;
-using System.Collections.Generic;
 
 namespace JesseRussell.Numerics_test
 {
@@ -121,73 +120,6 @@ namespace JesseRussell.Numerics_test
                             if (f2.AbsoluteValue.Denominator != Math.Abs(d1 * d2)) Assert.Fail($"denominator {f2.AbsoluteValue.Denominator} != {Math.Abs(d1 * d2)}");
                         }
                             
-        }
-
-        [Test]
-        public void Sum()
-        {
-            // Hard coded values:
-            Fraction
-                f1 = new Fraction(9, 3),
-                f2 = new Fraction(8, -9),
-                f3 = new Fraction(4, 7),
-                f4 = new Fraction(0, 11),
-                f5 = new Fraction(456435, 5652),
-                f6 = new Fraction(456435, -2532),
-                f7 = new Fraction(42, 42),
-                f8 = new Fraction(420, 69),
-                f9 = new Fraction(256, 65536),
-                f10 = new Fraction(128, 32768),
-                f11 = new Fraction(1420, 69),
-                f12 = new Fraction(1256, 65536),
-                f13 = new Fraction(1128, 32768),
-                f14 = new Fraction(1420, -69),
-                f15 = new Fraction(1256, -65536),
-                f16 = new Fraction(1128, -32768),
-                f17 = new Fraction(1, 3),
-                f18 = new Fraction(1, 4),
-                f19 = new Fraction(1, 5),
-                f20 = new Fraction(1, 6),
-                f21 = new Fraction(1, 7),
-                f22 = new Fraction(1, 8),
-                f23 = new Fraction(1, 9);
-
-            if (
-            new[] {
-            f1,f2,f3,f4,f5,
-            f6,f7,f8,f9,f10,
-            f11,f12,f13,f14,
-            f15,f16,f17,f18,
-            f19,f20,f21,f22,
-            f23,
-            }.Sum() !=
-            f1 + f2 + f3 + f4 + f5 +
-            f6 + f7 + f8 + f9 + f10 +
-            f11 + f12 + f13 + f14 +
-            f15 + f16 + f17 + f18 +
-            f19 + f20 + f21 + f22 +
-            f23
-            )
-                Assert.Fail("Hard coded values");
-
-            // Random values
-            Random rand = new Random();
-            List<Fraction> fracs = new List<Fraction>();
-            Fraction total = new Fraction(0);
-
-            for(int i = 0; i < 1000; ++i)
-            {
-                Fraction next = rand.NextFraction(int.MinValue, int.MaxValue, 1, int.MaxValue);
-                
-                fracs.Add(next);
-                total += next;
-            }
-            if (fracs.Sum() != total) Assert.Fail("Random values");
-
-            // single item:
-            if (new[] { new Fraction(1, 2) }.Sum() != new Fraction(1, 2)) Assert.Fail("single item");
-            if (new Fraction[0].Sum() != new Fraction(0)) Assert.Fail("no items");
-
         }
     }
 }
