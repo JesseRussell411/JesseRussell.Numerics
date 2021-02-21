@@ -16,6 +16,14 @@ namespace JesseRussell.Numerics
     [StructLayout(LayoutKind.Explicit)]
     public readonly struct Doudec : IComparable<Doudec>, IComparable<double>, IComparable<decimal>, IEquatable<Doudec>, IEquatable<double>, IEquatable<decimal>
     {
+        #region private readonly Fields
+        [FieldOffset(0)]
+        private readonly bool doubleNotDecimal;
+        [FieldOffset(1)]
+        private readonly double doub;
+        [FieldOffset(1)]
+        private readonly decimal decim;
+        #endregion
         #region public Constructors
         public Doudec(double d)
         {
@@ -444,15 +452,6 @@ namespace JesseRussell.Numerics
         public static Doudec PositiveInfinity => new Doudec(double.PositiveInfinity);
         public static Doudec NegativeInfinity => new Doudec(double.NegativeInfinity);
         public static Doudec Epsilon => new Doudec(double.Epsilon);
-        #endregion
-
-        #region private readonly Fields
-        [FieldOffset(0)]
-        private readonly bool doubleNotDecimal;
-        [FieldOffset(1)]
-        private readonly double doub;
-        [FieldOffset(1)]
-        private readonly decimal decim;
         #endregion
     }
 
