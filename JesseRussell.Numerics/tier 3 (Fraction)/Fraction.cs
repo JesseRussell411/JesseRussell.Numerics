@@ -457,11 +457,14 @@ namespace JesseRussell.Numerics
     {
         public readonly Fraction Unsimplified;
         public Fraction Simplified => Unsimplified.Simplify();
+        //public Fraction Simplify() => Unsimplified.Simplify();
         public FractionOperation(Fraction unsimplified) => Unsimplified = unsimplified;
 
         // casting:
+            // to
         public static implicit operator Fraction(FractionOperation fo) => fo.Unsimplified.Simplify();
 
+            // from
         public static explicit operator FractionOperation(Fraction f) => new FractionOperation(f);
         public static implicit operator FractionOperation(BigInteger i) => new FractionOperation(i);
         public static implicit operator FractionOperation(long i) => new FractionOperation(i);
@@ -478,10 +481,20 @@ namespace JesseRussell.Numerics
         public static FractionOperation operator ++(FractionOperation self) => (FractionOperation)self.Unsimplified.Increment();
         public static FractionOperation operator --(FractionOperation self) => (FractionOperation)self.Unsimplified.Decrement();
         public static FractionOperation operator +(FractionOperation left, FractionOperation right) => (FractionOperation)left.Unsimplified.Add(right.Unsimplified);
+        public static FractionOperation operator +(FractionOperation left, Fraction right) => (FractionOperation)left.Unsimplified.Add(right);
+        public static FractionOperation operator +(Fraction left, FractionOperation right) => (FractionOperation)left.Add(right.Unsimplified);
         public static FractionOperation operator -(FractionOperation left, FractionOperation right) => (FractionOperation)left.Unsimplified.Subtract(right.Unsimplified);
+        public static FractionOperation operator -(FractionOperation left, Fraction right) => (FractionOperation)left.Unsimplified.Subtract(right);
+        public static FractionOperation operator -(Fraction left, FractionOperation right) => (FractionOperation)left.Subtract(right.Unsimplified);
         public static FractionOperation operator *(FractionOperation left, FractionOperation right) => (FractionOperation)left.Unsimplified.Multiply(right.Unsimplified);
+        public static FractionOperation operator *(FractionOperation left, Fraction right) => (FractionOperation)left.Unsimplified.Multiply(right);
+        public static FractionOperation operator *(Fraction left, FractionOperation right) => (FractionOperation)left.Multiply(right.Unsimplified);
         public static FractionOperation operator /(FractionOperation left, FractionOperation right) => (FractionOperation)left.Unsimplified.Divide(right.Unsimplified);
+        public static FractionOperation operator /(FractionOperation left, Fraction right) => (FractionOperation)left.Unsimplified.Divide(right);
+        public static FractionOperation operator /(Fraction left, FractionOperation right) => (FractionOperation)left.Divide(right.Unsimplified);
         public static FractionOperation operator %(FractionOperation left, FractionOperation right) => (FractionOperation)left.Unsimplified.Remainder(right.Unsimplified);
+        public static FractionOperation operator %(FractionOperation left, Fraction right) => (FractionOperation)left.Unsimplified.Remainder(right);
+        public static FractionOperation operator %(Fraction left, FractionOperation right) => (FractionOperation)left.Remainder(right.Unsimplified);
         public static bool operator ==(FractionOperation a, FractionOperation b) => a.Unsimplified.Equals(b.Unsimplified);
         public static bool operator !=(FractionOperation a, FractionOperation b) => !a.Unsimplified.Equals(b.Unsimplified);
         public static bool operator >(FractionOperation a, FractionOperation b) => a.Unsimplified.CompareTo(b.Unsimplified) > 0;
