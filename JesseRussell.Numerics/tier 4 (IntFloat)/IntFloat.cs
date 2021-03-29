@@ -557,7 +557,6 @@ namespace JesseRussell.Numerics
 
         // IntFloat -> Fraction
         public static explicit operator Fraction(IntFloat i) => i.ToFraction();
-        public static explicit operator FractionOperation(IntFloat i) => i.ToFraction();
 
         #endregion
 

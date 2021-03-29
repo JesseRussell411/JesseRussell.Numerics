@@ -79,10 +79,10 @@ namespace JesseRussell.Numerics
         #region Comparison
         #region CompareTo
         public int CompareTo(BigInteger bi) => intFloatNotFraction ? ifloat.CompareTo(bi) : frac.CompareTo(bi);
-        public int CompareTo(double d) => intFloatNotFraction ? ifloat.CompareTo(d) : frac.CompareTo(d);
-        public int CompareTo(float f) => intFloatNotFraction ? ifloat.CompareTo(f) : frac.CompareTo(f);
-        public int CompareTo(Doudec dd) => intFloatNotFraction ? ifloat.CompareTo(dd) : frac.CompareTo(dd);
-        public int CompareTo(IntFloat ift) => intFloatNotFraction ? ifloat.CompareTo(ift) : frac.CompareTo(ift);
+        public int CompareTo(double d) => intFloatNotFraction ? ifloat.CompareTo(d) : frac.ToDouble().CompareTo(d);
+        public int CompareTo(float f) => intFloatNotFraction ? ifloat.CompareTo(f) : frac.ToFloat().CompareTo(f);
+        public int CompareTo(Doudec dd) => intFloatNotFraction ? ifloat.CompareTo(dd) : frac.ToDoudec().CompareTo(dd);
+        public int CompareTo(IntFloat ift) => intFloatNotFraction ? ifloat.CompareTo(ift) : IntFloat.FromFraction(frac).CompareTo(ift);
         public int CompareTo(Fraction f) => Fraction.CompareTo(f);
         public int CompareTo(IntFloatFrac other) => other.intFloatNotFraction ? CompareTo(other.ifloat) : CompareTo(other.frac);
         #endregion
@@ -200,15 +200,15 @@ namespace JesseRussell.Numerics
             }
         }
 
-        public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Abs(x.ifloat)) : Fraction.Abs(x.frac);
+        public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Abs(x.ifloat)) : x.frac.Abs;
         public static IntFloatFrac Neg(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Negate(x.ifloat)) : x.frac.Negate();
         public static IntFloatFrac Floor(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Floor(x.ifloat)) : x.frac.Floor();
         public static IntFloatFrac Ceiling(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Ceiling(x.ifloat)) : x.frac.Ceiling();
         public static IntFloatFrac Truncate(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Truncate(x.ifloat)) : x.frac.Truncate();
         public static int Sign(IntFloatFrac iff) => iff.intFloatNotFraction ? IntFloat.Sign(iff.ifloat) : iff.frac.Sign;
-        public static IntFloatFrac Log(IntFloatFrac iff) => new IntFloatFrac(iff.intFloatNotFraction ? IntFloat.Log(iff.ifloat) : Fraction.Log(iff.frac));
-        public static IntFloatFrac Log(IntFloatFrac iff, double newBase) => new IntFloatFrac(iff.intFloatNotFraction ? IntFloat.Log(iff.ifloat, newBase) : Fraction.Log(iff.frac, newBase));
-        public static IntFloatFrac Log10(IntFloatFrac iff) => new IntFloatFrac(iff.intFloatNotFraction ? IntFloat.Log10(iff.ifloat) : Fraction.Log10(iff.frac));
+        public static IntFloatFrac Log(IntFloatFrac iff) => Math.Log(iff.Float.Double);
+        public static IntFloatFrac Log(IntFloatFrac iff, double newBase) => Math.Log(iff.Float.Double, newBase);
+        public static IntFloatFrac Log10(IntFloatFrac iff) => Math.Log10(iff.Float.Double);
         public static IntFloatFrac Min(IntFloatFrac a, IntFloatFrac b) => a > b ? b : a;
         public static IntFloatFrac Max(IntFloatFrac a, IntFloatFrac b) => a < b ? b : a;
         #endregion
@@ -315,7 +315,6 @@ namespace JesseRussell.Numerics
 
         // IntFloatFrac -> Fraction
         public static explicit operator Fraction(IntFloatFrac iff) => iff.Fraction;
-        public static explicit operator FractionOperation(IntFloatFrac iff) => iff.Fraction;
 
         // IntFloatFract -> IntFloat
         public static explicit operator IntFloat(IntFloatFrac iff) => iff.IntFloat;
