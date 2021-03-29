@@ -456,8 +456,8 @@ namespace JesseRussell.Numerics
     public readonly struct FractionOperation
     {
         public readonly Fraction Unsimplified;
-        public Fraction Simplified => Unsimplified.Simplify();
-        //public Fraction Simplify() => Unsimplified.Simplify();
+        //public Fraction Simplified => Unsimplified.Simplify();
+        public Fraction Simplify() => Unsimplified.Simplify();
         public FractionOperation(Fraction unsimplified) => Unsimplified = unsimplified;
 
         // casting:
