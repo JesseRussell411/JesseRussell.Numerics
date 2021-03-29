@@ -196,6 +196,15 @@ namespace JesseRussell.Numerics
         // o========o
         // | Casts: |
         // o========o
+        //to
+        public static explicit operator BigInteger(Fraction f) => f.ToBigInteger();
+        public static explicit operator float(Fraction f) => f.ToFloat();
+        public static explicit operator double(Fraction f) => f.ToDouble();
+        public static explicit operator decimal(Fraction f) => f.ToDecimal();
+        public static explicit operator Doudec(Fraction f) => f.ToDoudec();
+
+
+        //from
         public static implicit operator Fraction(BigInteger i) => new Fraction(i, 1);
         public static implicit operator Fraction(long i) => new Fraction(i, 1);
         public static implicit operator Fraction(int i) => new Fraction(i, 1);
@@ -211,11 +220,6 @@ namespace JesseRussell.Numerics
         public static implicit operator Fraction(decimal f) => FromDecimal(f);
         public static explicit operator Fraction(Doudec f) => FromDoudec(f);
 
-        public static explicit operator BigInteger(Fraction f) => f.ToBigInteger();
-        public static explicit operator float(Fraction f) => f.ToFloat();
-        public static explicit operator double(Fraction f) => f.ToDouble();
-        public static explicit operator decimal(Fraction f) => f.ToDecimal();
-        public static explicit operator Doudec(Fraction f) => f.ToDoudec();
 
         // o=============o
         // | Conversion: |

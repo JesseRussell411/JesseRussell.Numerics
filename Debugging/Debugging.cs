@@ -16,8 +16,8 @@ namespace Debugging
         static string readln() => Console.ReadLine();
         static void Main(string[] args)
         {
-            Fraction f = Fraction.FromDouble(.123456789);
-            println(f);
+            Fraction f = Fraction.FromDecimal(1.00M);
+            println(f * (Fraction)0.5);
             readln();
         }
     }
