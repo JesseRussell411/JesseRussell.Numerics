@@ -422,7 +422,7 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region Operators
-        public static Doudec operator -(Doudec dd) => Neg(dd);
+        public static Doudec operator -(Doudec dd) => dd.IsDouble ? new Doudec(-dd.floatingPoint) : new Doudec(-dd.fixedPoint);
         public static Doudec operator +(Doudec dd) => dd;
 
         public static Doudec operator +(Doudec left, Doudec right) => Add(left, right);

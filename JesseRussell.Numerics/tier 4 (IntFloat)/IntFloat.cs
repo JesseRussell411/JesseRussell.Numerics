@@ -70,8 +70,8 @@ namespace JesseRussell.Numerics
         public bool IsPositiveInfinity { get => floatNotInt && Doudec.IsPositiveInfinity(floating); }
         public bool IsNegativeInfinity { get => floatNotInt && Doudec.IsNegativeInfinity(floating); }
         public bool IsNaN { get => floatNotInt && Doudec.IsNaN(floating); }
-        public bool IsNormal { get => floatNotInt && Doudec.IsNormal(floating); }
-        public bool IsSubNormal { get => floatNotInt && Doudec.IsSubnormal(floating); }
+        public bool IsNormal { get => floatNotInt && floating.IsDouble && double.IsNormal(floating.Double); }
+        public bool IsSubnormal { get => floatNotInt && floating.IsDouble && double.IsSubnormal(floating.Double); }
 
         public bool IsZero => floatNotInt ? floating == 0 : integer.IsZero;
         #endregion
