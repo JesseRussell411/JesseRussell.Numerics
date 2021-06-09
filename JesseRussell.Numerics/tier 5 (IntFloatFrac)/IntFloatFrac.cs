@@ -200,7 +200,7 @@ namespace JesseRussell.Numerics
             }
         }
 
-        public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Abs(x.ifloat)) : x.frac.Abs;
+        public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Abs(x.ifloat)) : x.frac.Abs();
         public static IntFloatFrac Neg(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Negate(x.ifloat)) : x.frac.Negate();
         public static IntFloatFrac Floor(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Floor(x.ifloat)) : x.frac.Floor();
         public static IntFloatFrac Ceiling(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Ceiling(x.ifloat)) : x.frac.Ceiling();

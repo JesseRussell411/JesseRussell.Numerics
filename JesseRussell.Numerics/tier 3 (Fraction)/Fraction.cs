@@ -239,6 +239,11 @@ namespace JesseRussell.Numerics
         /// Returns the larger of the calling fraction and the given fraction. If equal, the calling fraction is returned.
         /// </summary>
         public Fraction Max(Fraction other) => Max(this, other);
+
+        /// <summary>
+        /// Returns the absolute value of the calling fraction without simplifying.
+        /// </summary>
+        public Fraction Abs() => new Fraction(BigInteger.Abs(Numerator), BigInteger.Abs(Denominator));
         #endregion
 
         // o============o

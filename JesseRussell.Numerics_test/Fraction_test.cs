@@ -114,7 +114,7 @@ namespace JesseRussell.Numerics_test
                         {
                             if (d1 == 0 || d2 == 0) continue;
                             Fraction f1, f2;
-                            (f1, f2) = Fraction.MakeCompatible(new Fraction(n1, d1), new Fraction(n2, d2));
+                            (f1, f2) = Fraction.EqualizeDenominators(new Fraction(n1, d1), new Fraction(n2, d2));
                             if (f1 != new Fraction(n1, d1)) Assert.Fail($"{f1} != {n1}/{d1}");
                             if (f2 != new Fraction(n2, d2)) Assert.Fail($"{f2} != {n2}/{d2}");
                             
