@@ -16,25 +16,58 @@ namespace JesseRussell.Numerics
     [StructLayout(LayoutKind.Explicit)]
     public readonly struct Doudec : IComparable<Doudec>, IComparable<double>, IComparable<decimal>, IEquatable<Doudec>, IEquatable<double>, IEquatable<decimal>
     {
+        /// <summary>
+        /// If the wrapped value is a double.
+        /// </summary>
         [FieldOffset(0)]
         public readonly bool IsDouble;
         [FieldOffset(1)]
         private readonly double floatingPoint;
         [FieldOffset(1)]
         private readonly decimal fixedPoint;
-        public double Double => IsDouble ? floatingPoint : Convert.ToDouble(fixedPoint);
-        public decimal Decimal => IsDouble ? Convert.ToDecimal(floatingPoint) : fixedPoint;
-        public object Value => IsDouble ? (object)floatingPoint : fixedPoint;
+
+        /// <summary>
+        /// If the wrapped value is a decimal.
+        /// </summary>
         public bool IsDecimal => !IsDouble;
+
+        /// <summary>
+        /// The Doudec as a Double. Is a direct conversion if IsDouble is true.
+        /// </summary>
+        public double Double => IsDouble ? floatingPoint : Convert.ToDouble(fixedPoint);
+
+        /// <summary>
+        /// The Doudec as a decimal. Is a direct conversion if IsDecimal is true.
+        /// </summary>
+        public decimal Decimal => IsDouble ? Convert.ToDecimal(floatingPoint) : fixedPoint;
+
+        /// <summary>
+        /// The wrapped value as an object.
+        /// </summary>
+        public object Value => IsDouble ? (object)floatingPoint : fixedPoint;
+
+        /// <summary>
+        /// If the value of the Doudec is a whole number.
+        /// </summary>
+        public bool IsWhole => IsDouble ? floatingPoint % 1.0 == 0.0 : fixedPoint % 1.0M == 0.0M;
 
         // o---------------o
         // | Constructors: |
         // o---------------o
         public Doudec(double d)
         {
-            IsDouble = true;
-            fixedPoint = default;
-            floatingPoint = d;
+            if (MathUtils.TryToDecimalStrictly(d, out decimal dec))
+            {
+                IsDouble = false;
+                floatingPoint = 0;
+                fixedPoint = dec;
+            }
+            else
+            {
+                IsDouble = true;
+                fixedPoint = default;
+                floatingPoint = d;
+            }
         }
         public Doudec(decimal dec)
         {
@@ -116,7 +149,10 @@ namespace JesseRussell.Numerics
                 {
                     return fixedPoint.Equals(other_dec);
                 }
-                else return false;
+                else
+                {
+                    return Double.Equals(other.Double);
+                }
             }
             else if (!other.IsDouble)
             {
@@ -124,7 +160,10 @@ namespace JesseRussell.Numerics
                 {
                     return this_dec.Equals(other.fixedPoint);
                 }
-                else return false;
+                else
+                {
+                    return Double.Equals(other.Double);
+                }
             }
             else
             {
@@ -132,17 +171,22 @@ namespace JesseRussell.Numerics
             }
         }
 
-
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given double.
+        /// </summary>
         public bool Equals(double d) => Equals((Doudec)d);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given decimal.
+        /// </summary>
         public bool Equals(decimal dec) => Equals((Doudec)dec);
 
-        public bool Equals(sbyte i) => Equals((Doudec)i);
-        public bool Equals(short i) => Equals((Doudec)i);
-        public bool Equals(int i) => Equals((Doudec)i);
-        public bool Equals(long i) => Equals((Doudec)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
         public bool Equals(BigInteger i)
         {
-            if (this % 1 != 0) return false;
+            if (!IsWhole) return false;
+
             if (IsDouble)
             {
                 if (double_minValue_BigInteger <= i && i <= double_maxValue_BigInteger)
@@ -165,13 +209,45 @@ namespace JesseRussell.Numerics
 
         private static readonly BigInteger decimal_maxValue_BigInteger = (BigInteger)Math.Truncate(decimal.MaxValue);
         private static readonly BigInteger decimal_minValue_BigInteger = (BigInteger)Math.Truncate(decimal.MinValue);
-
-
-        public bool Equals(byte i) => Equals((Doudec)i);
-        public bool Equals(ushort i) => Equals((Doudec)i);
-        public bool Equals(uint i) => Equals((Doudec)i);
-        public bool Equals(ulong i) => Equals((Doudec)i);
-        public bool Equals(UBigInteger ubig) => Equals((BigInteger)ubig);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(byte i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(ushort i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(uint i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(ulong i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(UBigInteger i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(sbyte i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(short i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(int i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given integer.
+        /// </summary>
+        public bool Equals(long i) => Equals((BigInteger)i);
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given Object. 
+        /// </summary>
         public override bool Equals(object obj) => obj switch
         {
             Doudec dd => Equals(dd),
@@ -179,36 +255,42 @@ namespace JesseRussell.Numerics
             float f => Equals(f),
             decimal dec => Equals(dec),
 
-            sbyte i => Equals(i),
-            short i => Equals(i),
-            int i => Equals(i),
-            long i => Equals(i),
+            BigInteger i => Equals(i),
 
-            byte i => Equals(i),
-            ushort i => Equals(i),
-            uint i => Equals(i),
+            long i => Equals(i),
+            int i => Equals(i),
+            short i => Equals(i),
+            sbyte i => Equals(i),
+
+            UBigInteger i => Equals(i),
+
             ulong i => Equals(i),
-            _ => throw new ArgumentException("Argument must be a Doudec, double, float, decimal, or integer")
+            uint i => Equals(i),
+            ushort i => Equals(i),
+            byte i => Equals(i),
+            _ => throw new ArgumentException("Argument must be a Doudec, double, float, decimal, BigInteger, long, int, short, sbyte, UBigInteger, ulong, uint, ushort, or byte"),
         };
 
-        public override int GetHashCode()
-        {
-            if (TryToDecimal(out decimal result))
-            {
-                return result.GetHashCode();
-            }
-            else
-            {
-                return Double.GetHashCode();
-            }
-        }
+        /// <summary>
+        /// Returns a HashCode representing the Doudec.
+        /// </summary>
+        public override int GetHashCode() => IsDouble ? floatingPoint.GetHashCode() : fixedPoint.GetHashCode();
 
         #endregion
+
+        /// <summary>
+        /// Returns a string encoding of the Doudec.
+        /// </summary>
         public override string ToString() => IsDouble ? floatingPoint.ToString() : fixedPoint.ToString();
         
+        /// <summary>
+        /// Tries to convert to a decimal.
+        /// </summary>
+        /// <param name="result">The resulting decimal if the conversion was successful</param>
+        /// <returns>Whether the conversion was successful or not.</returns>
         public bool TryToDecimal(out decimal result)
         {
-            if (!IsDouble)
+            if (IsDecimal)
             {
                 result = fixedPoint;
                 return true;
@@ -219,8 +301,11 @@ namespace JesseRussell.Numerics
             }
         }
         #endregion
-
         #region public static Methods
+
+        // o----------o
+        // | casting: |
+        // o----------o
         #region Casts
         #region from
         // int -> Doudec
@@ -237,9 +322,9 @@ namespace JesseRussell.Numerics
         public static explicit operator Doudec(UBigInteger i) => FromBigInteger(i);
 
         // floating point -> Doudec
-        public static implicit operator Doudec(float f) => FromDouble(f);
-        public static implicit operator Doudec(double f) => FromDouble(f);
-        public static implicit operator Doudec(decimal dec) => FromDecimal(dec);
+        public static implicit operator Doudec(float f) => new Doudec(f);
+        public static implicit operator Doudec(double f) => new Doudec(f);
+        public static implicit operator Doudec(decimal dec) => new Doudec(dec);
         #endregion
 
         #region to
@@ -263,69 +348,66 @@ namespace JesseRussell.Numerics
         #endregion
         #endregion
 
-        #region double Passthrough
+        #region double Pass-through
+        /// <summary>
+        /// If the Doudec is not a number.
+        /// </summary>
         public static bool IsNaN(Doudec d) => d.IsDouble && double.IsNaN(d.floatingPoint);
+        /// <summary>
+        /// If the Doudec is infinity.
+        /// </summary>
         public static bool IsInfinity(Doudec d) => d.IsDouble && double.IsInfinity(d.floatingPoint);
-        public static bool IsFinite(Doudec d) => !d.IsDouble || double.IsFinite(d.floatingPoint);
-        public static bool IsNegative(Doudec d) => d.IsDouble ? double.IsNegative(d.floatingPoint) : d.fixedPoint < 0;
-        public static bool IsNormal(Doudec d) => d.IsDouble && double.IsNormal(d.floatingPoint);
-        public static bool IsSubnormal(Doudec d) => d.IsDouble && double.IsSubnormal(d.floatingPoint);
+
+        /// <summary>
+        /// If the Doudec is finite.
+        /// </summary>
+        public static bool IsFinite(Doudec d) => d.IsDecimal || double.IsFinite(d.floatingPoint);
+
+        /// <summary>
+        /// If the Doudec is Negative.
+        /// </summary>
+        public static bool IsNegative(Doudec d) => d.IsDouble ? double.IsNegative(d.floatingPoint) : d.fixedPoint < 0.0M;
+
+        /// <summary>
+        /// If the Doudec is positive infinity
+        /// </summary>
         public static bool IsPositiveInfinity(Doudec d) => d.IsDouble && double.IsPositiveInfinity(d.floatingPoint);
+
+        /// <summary>
+        /// If the Doudec is negative infinity
+        /// </summary>
         public static bool IsNegativeInfinity(Doudec d) => d.IsDouble && double.IsNegativeInfinity(d.floatingPoint);
         #endregion
 
         #region Parse
+        /// <summary>
+        /// Tries to parse the given string to a Doudec.
+        /// </summary>
+        /// <param name="s">the string to parse</param>
+        /// <param name="result">The resulting Doudec if the parse was successful.</param>
+        /// <returns>Whether the parse was successful.</returns>
         public static bool TryParse(string s, out Doudec result)
         {
-            // Try Parsing both double and decimal. Null means failed:
-            decimal? dec = decimal.TryParse(s, out decimal decr) ? (decimal?)decr : null;
-            double? d = double.TryParse(s, out double dr) ? (double?)dr : null;
-            //
-
-            // Base the result on that...
-            if (d != null)
+            if (decimal.TryParse(s, out decimal dec))
             {
-                if (dec != null)
-                {
-                    //  double & decimal
-
-                    if ((double)dec == d)
-                    {
-                        result = (decimal)dec;
-                        return true;
-                    }
-                    else
-                    {
-                        result = (double)d;
-                        return true;
-                    }
-                }
-                else
-                {
-                    //  double & !decimal
-
-                    result = (double)d;
-                    return true;
-                }
+                result = new Doudec(dec);
+                return true;
+            }
+            else if (double.TryParse(s, out double d))
+            {
+                result = new Doudec(d);
+                return true;
             }
             else
             {
-                if (dec != null)
-                {
-                    //  !double & decimal
-
-                    result = (decimal)dec;
-                    return true;
-                }
-                else
-                {
-                    //  !double & !decimal
-
-                    result = default;
-                    return false;
-                }
+                result = default;
+                return false;
             }
         }
+
+        /// <summary>
+        /// Parses the given string to a Doudec.
+        /// </summary>
         public static Doudec Parse(string s)
         {
             if (TryParse(s, out Doudec result))
@@ -362,6 +444,9 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region Math
+        /// <summary>
+        /// Returns the sum of the two given Doudecs.
+        /// </summary>
         public static Doudec Add(Doudec left, Doudec right)
         {
             if (left.IsDouble || right.IsDouble)
@@ -380,6 +465,10 @@ namespace JesseRussell.Numerics
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the difference of the two given Doudecs.
+        /// </summary>
         public static Doudec Subtract(Doudec left, Doudec right)
         {
             if (left.IsDouble || right.IsDouble)
@@ -398,6 +487,10 @@ namespace JesseRussell.Numerics
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the product of the two given Doudecs.
+        /// </summary>
         public static Doudec Multiply(Doudec left, Doudec right)
         {
             if (left.IsDouble || right.IsDouble)
@@ -416,6 +509,10 @@ namespace JesseRussell.Numerics
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the quotient of the two given Doudecs.
+        /// </summary>
         public static Doudec Divide(Doudec left, Doudec right)
         {
             if (left.IsDouble || right.IsDouble)
@@ -434,6 +531,10 @@ namespace JesseRussell.Numerics
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the remainder of the two given Doudecs.
+        /// </summary>
         public static Doudec Remainder(Doudec left, Doudec right)
         {
             if (left.IsDouble || right.IsDouble)
@@ -452,26 +553,58 @@ namespace JesseRussell.Numerics
                 }
             }
         }
+
+        /// <summary>
+        /// Returns the square root of the given Doudec.
+        /// </summary>
         public static Doudec Sqrt(Doudec x) => Math.Sqrt(x.Double);
+        /// <summary>
+        /// Returns the power of the given Doudec raised to the given double.
+        /// </summary>
         public static Doudec Pow(Doudec x, double y) => Math.Pow(x.Double, y);
+
+        /// <summary>
+        /// Returns the Given Doudec rounded down to the nearest whole number.
+        /// </summary>
         public static Doudec Floor(Doudec dd) => dd.IsDouble ? (Doudec) Math.Floor(dd.Double) : Math.Floor(dd.Decimal);
+        /// <summary>
+        /// Returns the Given Doudec rounded up to the nearest whole number.
+        /// </summary>
         public static Doudec Ceiling(Doudec dd) => dd.IsDouble ? (Doudec) Math.Ceiling(dd.Double) : Math.Ceiling(dd.Decimal);
+        /// <summary>
+        /// Returns whole number portion of the given Doudec.
+        /// </summary>
         public static Doudec Truncate(Doudec dd) => dd.IsDouble ? (Doudec) Math.Truncate(dd.Double) : Math.Truncate(dd.Decimal);
+
+        /// <summary>
+        /// Returns the absolute value of the given Doudec.
+        /// </summary>
         public static Doudec Abs(Doudec dd) => dd.IsDouble ? (Doudec) Math.Abs(dd.Double) : Math.Abs(dd.Decimal);
+
+
+        /// <summary>
+        /// Returns the natural (base e) logarithm of the given Doudec.
+        /// </summary>
         public static Doudec Log(Doudec x) => Math.Log(x.Double);
+        /// <summary>
+        /// Returns the largarithm of the specified Doudec in the specified base.
+        /// </summary>
         public static Doudec Log(Doudec x, Doudec newbase) => Math.Log(x.Double, newbase.Double);
+        /// <summary>
+        /// Returns the base 10 logarithm of the given Doudec.
+        /// </summary>
         public static Doudec Log10(Doudec x) => Math.Log10(x.Double);
+
+        /// <summary>
+        /// Returns an integer that represents the sign of hte given Doudec.
+        /// </summary>
         public static int Sign(Doudec x) => x.IsDouble ? Math.Sign(x.floatingPoint) : Math.Sign(x.fixedPoint);
-        public static Doudec Neg(Doudec x) => x.IsDouble ? (Doudec)(-x.floatingPoint) : -x.fixedPoint;
         #endregion
 
         #region Conversion
-        public static Doudec FromDouble(double d) => MathUtils.TryToDecimalStrictly(d, out decimal dec) ? new Doudec(dec) : new Doudec(d);
-        public static Doudec FromDecimal(decimal dec)
-        {
-            if (dec == 0) return new Doudec(decimal.Zero);
-            return new Doudec(dec);
-        }
+        /// <summary>
+        /// Returns a Doudec converted from the given BigInteger.
+        /// </summary>
         public static Doudec FromBigInteger(BigInteger bi)
         {
             if (MathUtils.TryToDecimal(bi, out decimal dec))
@@ -486,12 +619,23 @@ namespace JesseRussell.Numerics
         #endregion
         #endregion
 
-        #region public static Properties { get; }
-        public static Doudec NaN => new Doudec(double.NaN);
-        public static Doudec PositiveInfinity => new Doudec(double.PositiveInfinity);
-        public static Doudec NegativeInfinity => new Doudec(double.NegativeInfinity);
-        public static Doudec Epsilon => new Doudec(double.Epsilon);
-        #endregion
+        /// <summary>
+        /// Doudec that is not a number.
+        /// </summary>
+        public static readonly Doudec NaN = new Doudec(double.NaN);
+        /// <summary>
+        /// Doudec equal to positive infinity.
+        /// </summary>
+        public static readonly Doudec PositiveInfinity = new Doudec(double.PositiveInfinity);
+        /// <summary>
+        /// Doudec equal to negative infinity.
+        /// </summary>
+        public static readonly Doudec NegativeInfinity = new Doudec(double.NegativeInfinity);
+        /// <summary>
+        /// Doudec equal to the smallest value of double that is greater than 0.
+        /// </summary>
+        public static readonly Doudec Epsilon = new Doudec(double.Epsilon);
+        
     }
 
     /// <summary>
