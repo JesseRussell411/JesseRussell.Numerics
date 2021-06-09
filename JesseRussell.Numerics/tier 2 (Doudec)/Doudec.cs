@@ -16,26 +16,31 @@ namespace JesseRussell.Numerics
     [StructLayout(LayoutKind.Explicit)]
     public readonly struct Doudec : IComparable<Doudec>, IComparable<double>, IComparable<decimal>, IEquatable<Doudec>, IEquatable<double>, IEquatable<decimal>
     {
-        #region private readonly Fields
         [FieldOffset(0)]
-        private readonly bool doubleNotDecimal;
+        public readonly bool IsDouble;
         [FieldOffset(1)]
-        private readonly double doub;
+        private readonly double floatingPoint;
         [FieldOffset(1)]
-        private readonly decimal decim;
-        #endregion
-        #region public Constructors
+        private readonly decimal fixedPoint;
+        public double Double => IsDouble ? floatingPoint : Convert.ToDouble(fixedPoint);
+        public decimal Decimal => IsDouble ? Convert.ToDecimal(floatingPoint) : fixedPoint;
+        public object Value => IsDouble ? (object)floatingPoint : fixedPoint;
+        public bool IsDecimal => !IsDouble;
+
+        // o---------------o
+        // | Constructors: |
+        // o---------------o
         public Doudec(double d)
         {
-            doubleNotDecimal = true;
-            decim = default;
-            doub = d;
+            IsDouble = true;
+            fixedPoint = default;
+            floatingPoint = d;
         }
         public Doudec(decimal dec)
         {
-            doubleNotDecimal = false;
-            doub = default;
-            decim = dec;
+            IsDouble = false;
+            floatingPoint = default;
+            fixedPoint = dec;
         }
 
         public Doudec(sbyte i) : this((decimal)i) { }
@@ -47,53 +52,87 @@ namespace JesseRussell.Numerics
         public Doudec(ushort i) : this((decimal)i) { }
         public Doudec(uint i) : this((decimal)i) { }
         public Doudec(ulong i) : this((decimal)i) { }
-        #endregion
 
-        #region public Properties
-        public double Double => doubleNotDecimal ? doub : Convert.ToDouble(decim);
-        public decimal Decimal => doubleNotDecimal ? Convert.ToDecimal(doub) : decim;
-        public object Value => doubleNotDecimal ? (object)doub : decim;
-        public bool IsDouble => doubleNotDecimal;
-        public bool IsDecimal => !doubleNotDecimal;
-        #endregion
-
+        // o------------o
+        // | Operations |
+        // o------------o
+        /// <summary>
+        /// Returns the calling Doudec plus 1.0
+        /// </summary>
+        public Doudec Increment() => IsDouble ? (Doudec)floatingPoint + 1.0 : fixedPoint + 1M;
+        /// <summary>
+        /// Returns the calling Doudec minus 1.0
+        /// </summary>
+        public Doudec Decrement() => IsDouble ? (Doudec)floatingPoint - 1.0 : fixedPoint - 1M;
         #region public Methods
         #region Math
-        public Doudec Increment() => doubleNotDecimal ? (Doudec)doub + 1.0 : decim + 1M;
-        public Doudec Decrement() => doubleNotDecimal ? (Doudec)doub - 1.0 : decim - 1M;
         #endregion
 
         #region Comparison
+        /// <summary>
+        /// Returns a comparison of the calling Doudec and the given Doudec.
+        /// </summary>
+        /// <returns>
+        /// (-1): calling &lt; given
+        /// (0): calling == given
+        /// (1): calling &gt; given
+        /// </returns>
         public int CompareTo(Doudec other)
         {
-            if (doubleNotDecimal || other.doubleNotDecimal) return Double.CompareTo(other.Double);
-            else return decim.CompareTo(other.decim);
+            if (IsDouble || other.IsDouble) return Double.CompareTo(other.Double);
+            else return fixedPoint.CompareTo(other.fixedPoint);
         }
-        public int CompareTo(double d) => CompareTo((Doudec)d);
-        public int CompareTo(decimal dec) => CompareTo((Doudec)dec);
+
+        /// <summary>
+        /// Returns a comparison of the calling Doudec and the given double.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns>
+        /// (-1): calling &lt; given
+        /// (0): calling == given
+        /// (1): calling &gt; given
+        /// </returns>
+        public int CompareTo(double d) => Double.CompareTo(d);
+
+        /// <summary>
+        /// Returns a comparison of the calling Doudec and the given decimal.
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns>
+        /// (-1): calling &lt; given
+        /// (0): calling == given
+        /// (1): calling &gt; given
+        /// </returns>
+        public int CompareTo(decimal dec) => Decimal.CompareTo(dec);
+
+        /// <summary>
+        /// Returns whether the calling Doudec is equal to the given Doudec.
+        /// </summary>
         public bool Equals(Doudec other)
         {
-            if (!doubleNotDecimal)
+            if (IsDecimal)
             {
                 if (other.TryToDecimal(out decimal other_dec))
                 {
-                    return decim.Equals(other_dec);
+                    return fixedPoint.Equals(other_dec);
                 }
                 else return false;
             }
-            else if (!other.doubleNotDecimal)
+            else if (!other.IsDouble)
             {
                 if (TryToDecimal(out decimal this_dec))
                 {
-                    return this_dec.Equals(other.decim);
+                    return this_dec.Equals(other.fixedPoint);
                 }
                 else return false;
             }
             else
             {
-                return doub.Equals(other.doub);
+                return floatingPoint.Equals(other.floatingPoint);
             }
         }
+
+
         public bool Equals(double d) => Equals((Doudec)d);
         public bool Equals(decimal dec) => Equals((Doudec)dec);
 
@@ -104,11 +143,11 @@ namespace JesseRussell.Numerics
         public bool Equals(BigInteger i)
         {
             if (this % 1 != 0) return false;
-            if (doubleNotDecimal)
+            if (IsDouble)
             {
                 if (double_minValue_BigInteger <= i && i <= double_maxValue_BigInteger)
                 {
-                    return (BigInteger)doub == i;
+                    return (BigInteger)floatingPoint == i;
                 }
                 else return false;
             }
@@ -116,7 +155,7 @@ namespace JesseRussell.Numerics
             {
                 if (decimal_minValue_BigInteger <= i && i <= decimal_maxValue_BigInteger)
                 {
-                    return (BigInteger)decim == i;
+                    return (BigInteger)fixedPoint == i;
                 }
                 else return false;
             }
@@ -165,18 +204,18 @@ namespace JesseRussell.Numerics
         }
 
         #endregion
-        public override string ToString() => doubleNotDecimal ? doub.ToString() : decim.ToString();
+        public override string ToString() => IsDouble ? floatingPoint.ToString() : fixedPoint.ToString();
         
         public bool TryToDecimal(out decimal result)
         {
-            if (!doubleNotDecimal)
+            if (!IsDouble)
             {
-                result = decim;
+                result = fixedPoint;
                 return true;
             }
             else
             {
-                return MathUtils.TryToDecimalStrictly(doub, out result);
+                return MathUtils.TryToDecimalStrictly(floatingPoint, out result);
             }
         }
         #endregion
@@ -205,17 +244,17 @@ namespace JesseRussell.Numerics
 
         #region to
         // Doudec -> int
-        public static explicit operator sbyte(Doudec d) => d.doubleNotDecimal ? (sbyte)d.doub : (sbyte)d.decim;
-        public static explicit operator short(Doudec d) => d.doubleNotDecimal ? (short)d.doub : (short)d.decim;
-        public static explicit operator int(Doudec d) => d.doubleNotDecimal ? (int)d.doub : (int)d.decim;
-        public static explicit operator long(Doudec d) => d.doubleNotDecimal ? (long)d.doub : (long)d.decim;
-        public static explicit operator BigInteger(Doudec d) => d.doubleNotDecimal ? (BigInteger)d.doub : (BigInteger)d.decim;
+        public static explicit operator sbyte(Doudec d) => d.IsDouble ? (sbyte)d.floatingPoint : (sbyte)d.fixedPoint;
+        public static explicit operator short(Doudec d) => d.IsDouble ? (short)d.floatingPoint : (short)d.fixedPoint;
+        public static explicit operator int(Doudec d) => d.IsDouble ? (int)d.floatingPoint : (int)d.fixedPoint;
+        public static explicit operator long(Doudec d) => d.IsDouble ? (long)d.floatingPoint : (long)d.fixedPoint;
+        public static explicit operator BigInteger(Doudec d) => d.IsDouble ? (BigInteger)d.floatingPoint : (BigInteger)d.fixedPoint;
 
-        public static explicit operator byte(Doudec d) => d.doubleNotDecimal ? (byte)d.doub : (byte)d.decim;
-        public static explicit operator ushort(Doudec d) => d.doubleNotDecimal ? (ushort)d.doub : (ushort)d.decim;
-        public static explicit operator uint(Doudec d) => d.doubleNotDecimal ? (uint)d.doub : (uint)d.decim;
-        public static explicit operator ulong(Doudec d) => d.doubleNotDecimal ? (ulong)d.doub : (ulong)d.decim;
-        public static explicit operator UBigInteger(Doudec d) => d.doubleNotDecimal ? (UBigInteger)d.doub : (UBigInteger)d.decim;
+        public static explicit operator byte(Doudec d) => d.IsDouble ? (byte)d.floatingPoint : (byte)d.fixedPoint;
+        public static explicit operator ushort(Doudec d) => d.IsDouble ? (ushort)d.floatingPoint : (ushort)d.fixedPoint;
+        public static explicit operator uint(Doudec d) => d.IsDouble ? (uint)d.floatingPoint : (uint)d.fixedPoint;
+        public static explicit operator ulong(Doudec d) => d.IsDouble ? (ulong)d.floatingPoint : (ulong)d.fixedPoint;
+        public static explicit operator UBigInteger(Doudec d) => d.IsDouble ? (UBigInteger)d.floatingPoint : (UBigInteger)d.fixedPoint;
 
         // Doudec -> floating point
         public static explicit operator float(Doudec d) => (float)d.Double;
@@ -225,14 +264,14 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region double Passthrough
-        public static bool IsNaN(Doudec d) => d.doubleNotDecimal && double.IsNaN(d.doub);
-        public static bool IsInfinity(Doudec d) => d.doubleNotDecimal && double.IsInfinity(d.doub);
-        public static bool IsFinite(Doudec d) => !d.doubleNotDecimal || double.IsFinite(d.doub);
-        public static bool IsNegative(Doudec d) => d.doubleNotDecimal ? double.IsNegative(d.doub) : d.decim < 0;
-        public static bool IsNormal(Doudec d) => d.doubleNotDecimal && double.IsNormal(d.doub);
-        public static bool IsSubnormal(Doudec d) => d.doubleNotDecimal && double.IsSubnormal(d.doub);
-        public static bool IsPositiveInfinity(Doudec d) => d.doubleNotDecimal && double.IsPositiveInfinity(d.doub);
-        public static bool IsNegativeInfinity(Doudec d) => d.doubleNotDecimal && double.IsNegativeInfinity(d.doub);
+        public static bool IsNaN(Doudec d) => d.IsDouble && double.IsNaN(d.floatingPoint);
+        public static bool IsInfinity(Doudec d) => d.IsDouble && double.IsInfinity(d.floatingPoint);
+        public static bool IsFinite(Doudec d) => !d.IsDouble || double.IsFinite(d.floatingPoint);
+        public static bool IsNegative(Doudec d) => d.IsDouble ? double.IsNegative(d.floatingPoint) : d.fixedPoint < 0;
+        public static bool IsNormal(Doudec d) => d.IsDouble && double.IsNormal(d.floatingPoint);
+        public static bool IsSubnormal(Doudec d) => d.IsDouble && double.IsSubnormal(d.floatingPoint);
+        public static bool IsPositiveInfinity(Doudec d) => d.IsDouble && double.IsPositiveInfinity(d.floatingPoint);
+        public static bool IsNegativeInfinity(Doudec d) => d.IsDouble && double.IsNegativeInfinity(d.floatingPoint);
         #endregion
 
         #region Parse
@@ -325,7 +364,7 @@ namespace JesseRussell.Numerics
         #region Math
         public static Doudec Add(Doudec left, Doudec right)
         {
-            if (left.doubleNotDecimal || right.doubleNotDecimal)
+            if (left.IsDouble || right.IsDouble)
             {
                 return left.Double + right.Double;
             }
@@ -333,7 +372,7 @@ namespace JesseRussell.Numerics
             {
                 try
                 {
-                    return left.decim + right.decim;
+                    return left.fixedPoint + right.fixedPoint;
                 }
                 catch (OverflowException)
                 {
@@ -343,7 +382,7 @@ namespace JesseRussell.Numerics
         }
         public static Doudec Subtract(Doudec left, Doudec right)
         {
-            if (left.doubleNotDecimal || right.doubleNotDecimal)
+            if (left.IsDouble || right.IsDouble)
             {
                 return left.Double - right.Double;
             }
@@ -351,7 +390,7 @@ namespace JesseRussell.Numerics
             {
                 try
                 {
-                    return left.decim - right.decim;
+                    return left.fixedPoint - right.fixedPoint;
                 }
                 catch (OverflowException)
                 {
@@ -361,7 +400,7 @@ namespace JesseRussell.Numerics
         }
         public static Doudec Multiply(Doudec left, Doudec right)
         {
-            if (left.doubleNotDecimal || right.doubleNotDecimal)
+            if (left.IsDouble || right.IsDouble)
             {
                 return left.Double * right.Double;
             }
@@ -369,7 +408,7 @@ namespace JesseRussell.Numerics
             {
                 try
                 {
-                    return left.decim * right.decim;
+                    return left.fixedPoint * right.fixedPoint;
                 }
                 catch (OverflowException)
                 {
@@ -379,7 +418,7 @@ namespace JesseRussell.Numerics
         }
         public static Doudec Divide(Doudec left, Doudec right)
         {
-            if (left.doubleNotDecimal || right.doubleNotDecimal)
+            if (left.IsDouble || right.IsDouble)
             {
                 return left.Double / right.Double;
             }
@@ -387,7 +426,7 @@ namespace JesseRussell.Numerics
             {
                 try
                 {
-                    return left.decim / right.decim;
+                    return left.fixedPoint / right.fixedPoint;
                 }
                 catch (OverflowException)
                 {
@@ -397,7 +436,7 @@ namespace JesseRussell.Numerics
         }
         public static Doudec Remainder(Doudec left, Doudec right)
         {
-            if (left.doubleNotDecimal || right.doubleNotDecimal)
+            if (left.IsDouble || right.IsDouble)
             {
                 return left.Double % right.Double;
             }
@@ -405,7 +444,7 @@ namespace JesseRussell.Numerics
             {
                 try
                 {
-                    return left.decim % right.decim;
+                    return left.fixedPoint % right.fixedPoint;
                 }
                 catch (OverflowException)
                 {
@@ -415,15 +454,15 @@ namespace JesseRussell.Numerics
         }
         public static Doudec Sqrt(Doudec x) => Math.Sqrt(x.Double);
         public static Doudec Pow(Doudec x, double y) => Math.Pow(x.Double, y);
-        public static Doudec Floor(Doudec dd) => dd.doubleNotDecimal ? (Doudec) Math.Floor(dd.Double) : Math.Floor(dd.Decimal);
-        public static Doudec Ceiling(Doudec dd) => dd.doubleNotDecimal ? (Doudec) Math.Ceiling(dd.Double) : Math.Ceiling(dd.Decimal);
-        public static Doudec Truncate(Doudec dd) => dd.doubleNotDecimal ? (Doudec) Math.Truncate(dd.Double) : Math.Truncate(dd.Decimal);
-        public static Doudec Abs(Doudec dd) => dd.doubleNotDecimal ? (Doudec) Math.Abs(dd.Double) : Math.Abs(dd.Decimal);
+        public static Doudec Floor(Doudec dd) => dd.IsDouble ? (Doudec) Math.Floor(dd.Double) : Math.Floor(dd.Decimal);
+        public static Doudec Ceiling(Doudec dd) => dd.IsDouble ? (Doudec) Math.Ceiling(dd.Double) : Math.Ceiling(dd.Decimal);
+        public static Doudec Truncate(Doudec dd) => dd.IsDouble ? (Doudec) Math.Truncate(dd.Double) : Math.Truncate(dd.Decimal);
+        public static Doudec Abs(Doudec dd) => dd.IsDouble ? (Doudec) Math.Abs(dd.Double) : Math.Abs(dd.Decimal);
         public static Doudec Log(Doudec x) => Math.Log(x.Double);
         public static Doudec Log(Doudec x, Doudec newbase) => Math.Log(x.Double, newbase.Double);
         public static Doudec Log10(Doudec x) => Math.Log10(x.Double);
-        public static int Sign(Doudec x) => x.doubleNotDecimal ? Math.Sign(x.doub) : Math.Sign(x.decim);
-        public static Doudec Neg(Doudec x) => x.doubleNotDecimal ? (Doudec)(-x.doub) : -x.decim;
+        public static int Sign(Doudec x) => x.IsDouble ? Math.Sign(x.floatingPoint) : Math.Sign(x.fixedPoint);
+        public static Doudec Neg(Doudec x) => x.IsDouble ? (Doudec)(-x.floatingPoint) : -x.fixedPoint;
         #endregion
 
         #region Conversion
@@ -455,8 +494,14 @@ namespace JesseRussell.Numerics
         #endregion
     }
 
-    public static class DoudecUtils
+    /// <summary>
+    /// Extension methods for Doudec.
+    /// </summary>
+    public static class DoudecExtensions
     {
+        /// <summary>
+        /// Returns the total value of all the fractions in the calling enumerable.
+        /// </summary>
         public static Doudec Sum(this IEnumerable<Doudec> items) => items.Aggregate((total, next) => total + next);
     }
 }
