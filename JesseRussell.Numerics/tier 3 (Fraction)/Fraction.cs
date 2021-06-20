@@ -6,6 +6,10 @@ namespace JesseRussell.Numerics
 {
     public readonly struct Fraction
     {
+        // 0---------0
+        // | Fields: |
+        // 0---------0
+
         /// <summary>
         /// Dividend (top number)
         /// </summary>
@@ -15,6 +19,9 @@ namespace JesseRussell.Numerics
         /// </summary>
         public readonly BigInteger Denominator;
 
+        // o---------------o
+        // | Constructors: |
+        // o---------------o
         public Fraction(BigInteger numerator, BigInteger denominator)
         {
             Numerator = numerator;
@@ -145,15 +152,11 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// Returns the unsimplified quotient of the calling fraction divided by the given fraction.
         /// </summary>
-        /// <param name="other"></param>
-        /// <returns></returns>
         public Fraction Divide(Fraction other) => new Fraction(Numerator * other.Denominator, Denominator * other.Numerator);
 
         /// <summary>
         /// Returns the unsimplified remainder of the division of the calling fraction and other.
         /// </summary>
-        /// <param name="other">The Fraction that the calling fraction is being divided by.</param>
-        /// <returns>The remainder from the division.</returns>
         public Fraction Remainder(Fraction other) => Subtract(Divide(other).Truncate().Multiply(other));
 
         /// <summary>
@@ -241,7 +244,7 @@ namespace JesseRussell.Numerics
         public Fraction Max(Fraction other) => Max(this, other);
 
         /// <summary>
-        /// Returns the absolute value of the calling fraction without simplifying.
+        /// Returns the unsimplified absolute value of the calling fraction.
         /// </summary>
         public Fraction Abs() => new Fraction(BigInteger.Abs(Numerator), BigInteger.Abs(Denominator));
         #endregion
