@@ -8,10 +8,6 @@ namespace JesseRussell.Numerics
     /// <summary>
     /// Combination BigInteger and Doudec. Automatically chooses best way of storing value based on context.
     /// </summary>
-    /// 
-    /// <Author>
-    /// Jesse Russell
-    /// </Author>
     public readonly struct IntFloat : IComparable, IComparable<IntFloat>, IEquatable<IntFloat>
     {
         #region public Constructors

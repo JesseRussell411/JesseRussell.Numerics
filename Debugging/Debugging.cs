@@ -11,12 +11,15 @@ namespace Debugging
 {
     class Debugging
     {
-        static void print(object obj) => Console.Write(obj);
-        static void println(object obj) => Console.WriteLine(obj);
+        static void print(object obj = null) => Console.Write(obj);
+        static void println(object obj = null) => Console.WriteLine(obj);
         static void Main(string[] args)
         {
-            Fraction f = Fraction.FromDouble(.123456789);
-            println(f);
-        }
+            var d = Doudec.Parse("4e5");
+            var d2 = Doudec.Parse(".000001000000000");
+            Console.WriteLine(d);
+            Console.WriteLine(d2.IsDecimal);
+            println(TextUtils.TrimNumberStringStart(",-0,,00,0654.5345000"));
+         }
     }
 }

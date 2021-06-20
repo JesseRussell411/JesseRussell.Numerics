@@ -282,7 +282,7 @@ namespace JesseRussell.Numerics
         /// Returns a string encoding of the Doudec.
         /// </summary>
         public override string ToString() => IsDouble ? floatingPoint.ToString() : fixedPoint.ToString();
-        
+
         /// <summary>
         /// Tries to convert to a decimal.
         /// </summary>
@@ -309,16 +309,16 @@ namespace JesseRussell.Numerics
         #region Casts
         #region from
         // int -> Doudec
-        public static implicit operator Doudec(sbyte i) => new Doudec((decimal) i);
-        public static implicit operator Doudec(short i) => new Doudec((decimal) i);
-        public static implicit operator Doudec(int i) => new Doudec((decimal) i);
-        public static implicit operator Doudec(long i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(sbyte i) => new Doudec((decimal)i);
+        public static implicit operator Doudec(short i) => new Doudec((decimal)i);
+        public static implicit operator Doudec(int i) => new Doudec((decimal)i);
+        public static implicit operator Doudec(long i) => new Doudec((decimal)i);
         public static explicit operator Doudec(BigInteger i) => FromBigInteger(i);
 
-        public static implicit operator Doudec(byte i) => new Doudec((decimal) i);
-        public static implicit operator Doudec(ushort i) => new Doudec((decimal) i);
-        public static implicit operator Doudec(uint i) => new Doudec((decimal) i);
-        public static implicit operator Doudec(ulong i) => new Doudec((decimal) i);
+        public static implicit operator Doudec(byte i) => new Doudec((decimal)i);
+        public static implicit operator Doudec(ushort i) => new Doudec((decimal)i);
+        public static implicit operator Doudec(uint i) => new Doudec((decimal)i);
+        public static implicit operator Doudec(ulong i) => new Doudec((decimal)i);
         public static explicit operator Doudec(UBigInteger i) => FromBigInteger(i);
 
         // floating point -> Doudec
@@ -585,20 +585,20 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// Returns the Given Doudec rounded down to the nearest whole number.
         /// </summary>
-        public static Doudec Floor(Doudec dd) => dd.IsDouble ? (Doudec) Math.Floor(dd.Double) : Math.Floor(dd.Decimal);
+        public static Doudec Floor(Doudec dd) => dd.IsDouble ? (Doudec)Math.Floor(dd.Double) : Math.Floor(dd.Decimal);
         /// <summary>
         /// Returns the Given Doudec rounded up to the nearest whole number.
         /// </summary>
-        public static Doudec Ceiling(Doudec dd) => dd.IsDouble ? (Doudec) Math.Ceiling(dd.Double) : Math.Ceiling(dd.Decimal);
+        public static Doudec Ceiling(Doudec dd) => dd.IsDouble ? (Doudec)Math.Ceiling(dd.Double) : Math.Ceiling(dd.Decimal);
         /// <summary>
         /// Returns whole number portion of the given Doudec.
         /// </summary>
-        public static Doudec Truncate(Doudec dd) => dd.IsDouble ? (Doudec) Math.Truncate(dd.Double) : Math.Truncate(dd.Decimal);
+        public static Doudec Truncate(Doudec dd) => dd.IsDouble ? (Doudec)Math.Truncate(dd.Double) : Math.Truncate(dd.Decimal);
 
         /// <summary>
         /// Returns the absolute value of the given Doudec.
         /// </summary>
-        public static Doudec Abs(Doudec dd) => dd.IsDouble ? (Doudec) Math.Abs(dd.Double) : Math.Abs(dd.Decimal);
+        public static Doudec Abs(Doudec dd) => dd.IsDouble ? (Doudec)Math.Abs(dd.Double) : Math.Abs(dd.Decimal);
 
 
         /// <summary>
@@ -654,7 +654,7 @@ namespace JesseRussell.Numerics
         /// Doudec equal to the smallest value of double that is greater than 0.
         /// </summary>
         public static readonly Doudec Epsilon = new Doudec(double.Epsilon);
-        
+
     }
 
     /// <summary>
