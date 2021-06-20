@@ -388,21 +388,40 @@ namespace JesseRussell.Numerics
         /// <returns>Whether the parse was successful.</returns>
         public static bool TryParse(string s, out Doudec result)
         {
-            if (decimal.TryParse(s, out decimal dec))
+            // Try Parsing both double and decimal.
+            bool isDecimal = decimal.TryParse(s, out decimal dec);
+            bool isDouble = double.TryParse(s, out double dbl);
+            //
+
+            if (isDecimal)
             {
-                result = new Doudec(dec);
-                return true;
+                if (isDouble)
+                {
+                    if (Convert.ToDouble(dec) == dbl)
+                    {
+                        result = new Doudec(dec);
+                    }
+                    else
+                    {
+                        result = new Doudec(dbl);
+                    }
+                }
+                else
+                {
+                    result = new Doudec(dec);
+                }
             }
-            else if (double.TryParse(s, out double d))
+            else if (isDouble)
             {
-                result = new Doudec(d);
-                return true;
+                result = new Doudec(dbl);
             }
             else
             {
                 result = default;
                 return false;
             }
+
+            return true;
         }
 
         /// <summary>
