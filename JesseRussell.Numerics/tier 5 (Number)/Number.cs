@@ -9,31 +9,31 @@ namespace JesseRussell.Numerics
     /// <summary>
     /// Represents either IntFloat or Fraction based on context.
     /// </summary>
-    public readonly struct IntFloatFrac : IComparable<BigInteger>, IComparable<double>, IComparable<float>, IComparable<Doudec>, IComparable<IntFloat>, IComparable<Fraction>, IComparable<IntFloatFrac>, IEquatable<BigInteger>, IEquatable<double>, IEquatable<float>, IEquatable<Doudec>, IEquatable<IntFloat>, IEquatable<Fraction>, IEquatable<IntFloatFrac>
+    public readonly struct Number : IComparable<BigInteger>, IComparable<double>, IComparable<float>, IComparable<Doudec>, IComparable<IntFloat>, IComparable<Fraction>, IComparable<Number>, IEquatable<BigInteger>, IEquatable<double>, IEquatable<float>, IEquatable<Doudec>, IEquatable<IntFloat>, IEquatable<Fraction>, IEquatable<Number>
     {
         #region public Constructors
-        public IntFloatFrac(IntFloat value)
+        public Number(IntFloat value)
         {
             intFloatNotFraction = true;
             this.value = value;
         }
-        public IntFloatFrac(Fraction value)
+        public Number(Fraction value)
         {
             intFloatNotFraction = false;
             this.value = value;
         }
 
-        public IntFloatFrac(sbyte i) : this(new IntFloat(i)) { }
-        public IntFloatFrac(short i) : this(new IntFloat(i)) { }
-        public IntFloatFrac(int i) : this(new IntFloat(i)) { }
-        public IntFloatFrac(long i) : this(new IntFloat(i)) { }
-        public IntFloatFrac(BigInteger i) : this(new IntFloat(i)) { }
+        public Number(sbyte i) : this(new IntFloat(i)) { }
+        public Number(short i) : this(new IntFloat(i)) { }
+        public Number(int i) : this(new IntFloat(i)) { }
+        public Number(long i) : this(new IntFloat(i)) { }
+        public Number(BigInteger i) : this(new IntFloat(i)) { }
 
-        public IntFloatFrac(byte i) : this(new IntFloat(i)) { }
-        public IntFloatFrac(ushort i) : this(new IntFloat(i)) { }
-        public IntFloatFrac(uint i) : this(new IntFloat(i)) { }
-        public IntFloatFrac(ulong i) : this(new IntFloat(i)) { }
-        public IntFloatFrac(UBigInteger i) : this(new IntFloat(i)) { }
+        public Number(byte i) : this(new IntFloat(i)) { }
+        public Number(ushort i) : this(new IntFloat(i)) { }
+        public Number(uint i) : this(new IntFloat(i)) { }
+        public Number(ulong i) : this(new IntFloat(i)) { }
+        public Number(UBigInteger i) : this(new IntFloat(i)) { }
         #endregion
 
         #region public Properties { get; }
@@ -73,8 +73,8 @@ namespace JesseRussell.Numerics
 
         #region public Methods
         #region Math
-        public IntFloatFrac Increment() => this + 1;
-        public IntFloatFrac Decrement() => this - 1;
+        public Number Increment() => this + 1;
+        public Number Decrement() => this - 1;
         #endregion
         #region Comparison
         #region CompareTo
@@ -84,7 +84,7 @@ namespace JesseRussell.Numerics
         public int CompareTo(Doudec dd) => intFloatNotFraction ? ifloat.CompareTo(dd) : frac.ToDoudec().CompareTo(dd);
         public int CompareTo(IntFloat ift) => intFloatNotFraction ? ifloat.CompareTo(ift) : IntFloat.FromFraction(frac).CompareTo(ift);
         public int CompareTo(Fraction f) => Fraction.CompareTo(f);
-        public int CompareTo(IntFloatFrac other) => other.intFloatNotFraction ? CompareTo(other.ifloat) : CompareTo(other.frac);
+        public int CompareTo(Number other) => other.intFloatNotFraction ? CompareTo(other.ifloat) : CompareTo(other.frac);
         #endregion
 
         #region Equals
@@ -94,7 +94,7 @@ namespace JesseRussell.Numerics
         public bool Equals(Doudec dd) => intFloatNotFraction ? ifloat.Equals(dd) : frac.Equals(dd);
         public bool Equals(IntFloat ift) => intFloatNotFraction ? ifloat.Equals(ift) : frac.Equals(ift);
         public bool Equals(Fraction f) => Fraction.Equals(f);
-        public bool Equals(IntFloatFrac other) => other.intFloatNotFraction ? Equals(other.ifloat) : Equals(other.frac);
+        public bool Equals(Number other) => other.intFloatNotFraction ? Equals(other.ifloat) : Equals(other.frac);
         public override bool Equals(object obj) => obj switch
         {
             sbyte i => Equals((BigInteger)i),
@@ -125,25 +125,25 @@ namespace JesseRussell.Numerics
 
         #region public static Methods
         #region Math
-        public static IntFloatFrac Add(IntFloatFrac left, IntFloatFrac right)
+        public static Number Add(Number left, Number right)
         {
             if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float + right.Float);
             if (left.IsFraction || right.IsFraction) return left.Fraction + right.Fraction;
             return left.Int + right.Int;
         }
-        public static IntFloatFrac Subtract(IntFloatFrac left, IntFloatFrac right)
+        public static Number Subtract(Number left, Number right)
         {
             if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float - right.Float);
             if (left.IsFraction || right.IsFraction) return left.Fraction - right.Fraction;
             return left.Int - right.Int;
         }
-        public static IntFloatFrac Multiply(IntFloatFrac left, IntFloatFrac right)
+        public static Number Multiply(Number left, Number right)
         {
             if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float * right.Float);
             if (left.IsFraction || right.IsFraction) return left.Fraction * right.Fraction;
             return left.Int * right.Int;
         }
-        public static IntFloatFrac Divide(IntFloatFrac left, IntFloatFrac right)
+        public static Number Divide(Number left, Number right)
         {
             if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float / right.Float);
             if (left.IsFraction || right.IsFraction) return left.Fraction / right.Fraction;
@@ -153,15 +153,15 @@ namespace JesseRussell.Numerics
             return left.Fraction / right.Fraction;
         }
 
-        public static IntFloatFrac FloorDivide(IntFloatFrac left, IntFloatFrac right) => Floor(Divide(left, right));
+        public static Number FloorDivide(Number left, Number right) => Floor(Divide(left, right));
 
-        public static IntFloatFrac Remainder(IntFloatFrac left, IntFloatFrac right)
+        public static Number Remainder(Number left, Number right)
         {
             if (left.IsFloat || right.IsFloat) return new IntFloatFrac(left.Float % right.Float); ;
             if (left.IsFraction || right.IsFraction) return left.Fraction % right.Fraction;
             return left.Int % right.Int;
         }
-        public static IntFloatFrac Pow(IntFloatFrac x, int y)
+        public static Number Pow(Number x, int y)
         {
             if (y < 0 && (x.IsInt || x.IsFraction))
             {
@@ -177,13 +177,13 @@ namespace JesseRussell.Numerics
             }
         }
 
-        public static IntFloatFrac Pow(IntFloatFrac x, double y) => x.intFloatNotFraction switch
+        public static Number Pow(Number x, double y) => x.intFloatNotFraction switch
         {
             true => new IntFloatFrac(IntFloat.Pow(x.ifloat, y)),
             false => new IntFloatFrac(Doudec.Pow((Doudec)x.frac, y))
         };
 
-        public static IntFloatFrac Pow(IntFloatFrac x, IntFloat y)
+        public static Number Pow(Number x, IntFloat y)
         {
             if (y.IsInt)
             {
@@ -200,21 +200,21 @@ namespace JesseRussell.Numerics
             }
         }
 
-        public static IntFloatFrac Abs(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Abs(x.ifloat)) : x.frac.Abs;
-        public static IntFloatFrac Neg(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Negate(x.ifloat)) : x.frac.Negate();
-        public static IntFloatFrac Floor(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Floor(x.ifloat)) : x.frac.Floor();
-        public static IntFloatFrac Ceiling(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Ceiling(x.ifloat)) : x.frac.Ceiling();
-        public static IntFloatFrac Truncate(IntFloatFrac x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Truncate(x.ifloat)) : x.frac.Truncate();
-        public static int Sign(IntFloatFrac iff) => iff.intFloatNotFraction ? IntFloat.Sign(iff.ifloat) : iff.frac.Sign;
-        public static IntFloatFrac Log(IntFloatFrac iff) => Math.Log(iff.Float.Double);
-        public static IntFloatFrac Log(IntFloatFrac iff, double newBase) => Math.Log(iff.Float.Double, newBase);
-        public static IntFloatFrac Log10(IntFloatFrac iff) => Math.Log10(iff.Float.Double);
-        public static IntFloatFrac Min(IntFloatFrac a, IntFloatFrac b) => a > b ? b : a;
-        public static IntFloatFrac Max(IntFloatFrac a, IntFloatFrac b) => a < b ? b : a;
+        public static Number Abs(Number x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Abs(x.ifloat)) : x.frac.Abs;
+        public static Number Neg(Number x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Negate(x.ifloat)) : x.frac.Negate();
+        public static Number Floor(Number x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Floor(x.ifloat)) : x.frac.Floor();
+        public static Number Ceiling(Number x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Ceiling(x.ifloat)) : x.frac.Ceiling();
+        public static Number Truncate(Number x) => x.intFloatNotFraction ? new IntFloatFrac(IntFloat.Truncate(x.ifloat)) : x.frac.Truncate();
+        public static int Sign(Number iff) => iff.intFloatNotFraction ? IntFloat.Sign(iff.ifloat) : iff.frac.Sign;
+        public static Number Log(Number iff) => Math.Log(iff.Float.Double);
+        public static Number Log(Number iff, double newBase) => Math.Log(iff.Float.Double, newBase);
+        public static Number Log10(Number iff) => Math.Log10(iff.Float.Double);
+        public static Number Min(Number a, Number b) => a > b ? b : a;
+        public static Number Max(Number a, Number b) => a < b ? b : a;
         #endregion
 
         #region Parse
-        public static bool TryParse(string s, out IntFloatFrac result)
+        public static bool TryParse(string s, out Number result)
         {
             if (Fraction.TryParse(s, out Fraction f))
             {
@@ -223,15 +223,15 @@ namespace JesseRussell.Numerics
             }
             if (IntFloat.TryParse(s, out IntFloat i))
             {
-                result = new IntFloatFrac(i);
+                result = new Number(i);
                 return true;
             }
             result = default;
             return false;
         }
-        public static IntFloatFrac Parse(string s)
+        public static Number Parse(string s)
         {
-            if (TryParse(s, out IntFloatFrac result))
+            if (TryParse(s, out Number result))
             {
                 return result;
             }
@@ -243,81 +243,81 @@ namespace JesseRussell.Numerics
         #endregion
 
         #region Operators
-        public static IntFloatFrac operator -(IntFloatFrac iff) => Neg(iff);
-        public static IntFloatFrac operator +(IntFloatFrac iff) => iff;
+        public static Number operator -(Number iff) => Neg(iff);
+        public static Number operator +(Number iff) => iff;
 
-        public static IntFloatFrac operator +(IntFloatFrac left, IntFloatFrac right) => Add(left, right);
-        public static IntFloatFrac operator -(IntFloatFrac left, IntFloatFrac right) => Subtract(left, right);
-        public static IntFloatFrac operator *(IntFloatFrac left, IntFloatFrac right) => Multiply(left, right);
-        public static IntFloatFrac operator /(IntFloatFrac left, IntFloatFrac right) => Divide(left, right);
-        public static IntFloatFrac operator %(IntFloatFrac left, IntFloatFrac right) => Remainder(left, right);
+        public static Number operator +(Number left, Number right) => Add(left, right);
+        public static Number operator -(Number left, Number right) => Subtract(left, right);
+        public static Number operator *(Number left, Number right) => Multiply(left, right);
+        public static Number operator /(Number left, Number right) => Divide(left, right);
+        public static Number operator %(Number left, Number right) => Remainder(left, right);
 
-        public static IntFloatFrac operator ++(IntFloatFrac iff) => iff.Increment();
-        public static IntFloatFrac operator --(IntFloatFrac iff) => iff.Decrement();
+        public static Number operator ++(Number iff) => iff.Increment();
+        public static Number operator --(Number iff) => iff.Decrement();
 
-        public static bool operator ==(IntFloatFrac left, IntFloatFrac right) => left.Equals(right);
-        public static bool operator !=(IntFloatFrac left, IntFloatFrac right) => !left.Equals(right);
+        public static bool operator ==(Number left, Number right) => left.Equals(right);
+        public static bool operator !=(Number left, Number right) => !left.Equals(right);
 
-        public static bool operator >(IntFloatFrac left, IntFloatFrac right) => left.CompareTo(right) > 0;
-        public static bool operator >=(IntFloatFrac left, IntFloatFrac right) => left.CompareTo(right) >= 0;
-        public static bool operator <(IntFloatFrac left, IntFloatFrac right) => left.CompareTo(right) < 0;
-        public static bool operator <=(IntFloatFrac left, IntFloatFrac right) => left.CompareTo(right) <= 0;
+        public static bool operator >(Number left, Number right) => left.CompareTo(right) > 0;
+        public static bool operator >=(Number left, Number right) => left.CompareTo(right) >= 0;
+        public static bool operator <(Number left, Number right) => left.CompareTo(right) < 0;
+        public static bool operator <=(Number left, Number right) => left.CompareTo(right) <= 0;
         #endregion
 
         #region Casts
         #region from
         // integer -> IntFloatFrac
-        public static implicit operator IntFloatFrac(sbyte sb) => new IntFloatFrac((BigInteger)sb);
-        public static implicit operator IntFloatFrac(short s) => new IntFloatFrac((BigInteger)s);
-        public static implicit operator IntFloatFrac(int i) => new IntFloatFrac((BigInteger)i);
-        public static implicit operator IntFloatFrac(long l) => new IntFloatFrac((BigInteger)l);
-        public static implicit operator IntFloatFrac(BigInteger bi) => new IntFloatFrac(bi);
+        public static implicit operator Number(sbyte sb) => new Number((BigInteger)sb);
+        public static implicit operator Number(short s) => new Number((BigInteger)s);
+        public static implicit operator Number(int i) => new Number((BigInteger)i);
+        public static implicit operator Number(long l) => new Number((BigInteger)l);
+        public static implicit operator Number(BigInteger bi) => new Number(bi);
 
-        public static implicit operator IntFloatFrac(byte b) => new IntFloatFrac((BigInteger)b);
-        public static implicit operator IntFloatFrac(ushort us) => new IntFloatFrac((BigInteger)us);
-        public static implicit operator IntFloatFrac(uint ui) => new IntFloatFrac((BigInteger)ui);
-        public static implicit operator IntFloatFrac(ulong ul) => new IntFloatFrac((BigInteger)ul);
-        public static implicit operator IntFloatFrac(UBigInteger ubi) => new IntFloatFrac(ubi);
+        public static implicit operator Number(byte b) => new Number((BigInteger)b);
+        public static implicit operator Number(ushort us) => new Number((BigInteger)us);
+        public static implicit operator Number(uint ui) => new Number((BigInteger)ui);
+        public static implicit operator Number(ulong ul) => new Number((BigInteger)ul);
+        public static implicit operator Number(UBigInteger ubi) => new Number(ubi);
 
         // floating point -> IntFloatFrac
-        public static implicit operator IntFloatFrac(float f) => FromDouble(f);
-        public static implicit operator IntFloatFrac(double f) => FromDouble(f);
-        public static implicit operator IntFloatFrac(decimal f) => FromDecimal(f);
-        public static implicit operator IntFloatFrac(Doudec f) => FromDoudec(f);
+        public static implicit operator Number(float f) => FromDouble(f);
+        public static implicit operator Number(double f) => FromDouble(f);
+        public static implicit operator Number(decimal f) => FromDecimal(f);
+        public static implicit operator Number(Doudec f) => FromDoudec(f);
 
         // Fraction -> IntFloatFrac
-        public static implicit operator IntFloatFrac(Fraction f) => FromFraction(f);
-        public static implicit operator IntFloatFrac(FractionOperation fo) => FromFraction(fo);
+        public static implicit operator Number(Fraction f) => FromFraction(f);
+        public static implicit operator Number(FractionOperation fo) => FromFraction(fo);
 
         // IntFloat -> IntFloatFrac
-        public static implicit operator IntFloatFrac(IntFloat ift) => FromIntFloat(ift);
+        public static implicit operator Number(IntFloat ift) => FromIntFloat(ift);
         #endregion
 
         #region to
         // IntFloatFrac -> integer
-        public static explicit operator sbyte(IntFloatFrac iff) => (sbyte)iff.Int;
-        public static explicit operator short(IntFloatFrac iff) => (short)iff.Int;
-        public static explicit operator int(IntFloatFrac iff) => (int)iff.Int;
-        public static explicit operator long(IntFloatFrac iff) => (long)iff.Int;
-        public static explicit operator BigInteger(IntFloatFrac iff) => iff.Int;
+        public static explicit operator sbyte(Number iff) => (sbyte)iff.Int;
+        public static explicit operator short(Number iff) => (short)iff.Int;
+        public static explicit operator int(Number iff) => (int)iff.Int;
+        public static explicit operator long(Number iff) => (long)iff.Int;
+        public static explicit operator BigInteger(Number iff) => iff.Int;
 
-        public static explicit operator byte(IntFloatFrac iff) => (byte)iff.Int;
-        public static explicit operator ushort(IntFloatFrac iff) => (ushort)iff.Int;
-        public static explicit operator uint(IntFloatFrac iff) => (uint)iff.Int;
-        public static explicit operator ulong(IntFloatFrac iff) => (ulong)iff.Int;
-        public static explicit operator UBigInteger(IntFloatFrac iff) => (UBigInteger)iff.Int;
+        public static explicit operator byte(Number iff) => (byte)iff.Int;
+        public static explicit operator ushort(Number iff) => (ushort)iff.Int;
+        public static explicit operator uint(Number iff) => (uint)iff.Int;
+        public static explicit operator ulong(Number iff) => (ulong)iff.Int;
+        public static explicit operator UBigInteger(Number iff) => (UBigInteger)iff.Int;
 
         // IntFloatFrac -> floating point
-        public static explicit operator float(IntFloatFrac iff) => (float)iff.Float;
-        public static explicit operator double(IntFloatFrac iff) => (double)iff.Float;
-        public static explicit operator decimal(IntFloatFrac iff) => (decimal)iff.Float;
-        public static explicit operator Doudec(IntFloatFrac iff) => iff.Float;
+        public static explicit operator float(Number iff) => (float)iff.Float;
+        public static explicit operator double(Number iff) => (double)iff.Float;
+        public static explicit operator decimal(Number iff) => (decimal)iff.Float;
+        public static explicit operator Doudec(Number iff) => iff.Float;
 
         // IntFloatFrac -> Fraction
-        public static explicit operator Fraction(IntFloatFrac iff) => iff.Fraction;
+        public static explicit operator Fraction(Number iff) => iff.Fraction;
 
         // IntFloatFract -> IntFloat
-        public static explicit operator IntFloat(IntFloatFrac iff) => iff.IntFloat;
+        public static explicit operator IntFloat(Number iff) => iff.IntFloat;
         #endregion
         #endregion
 
@@ -325,7 +325,7 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// Conversion from double. Does not prioritize fraction.
         /// </summary>
-        public static IntFloatFrac FromDouble(double d)
+        public static Number FromDouble(double d)
         {
             return new IntFloatFrac((Doudec)d);
         }
@@ -333,12 +333,12 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// Conversion that prioritizes Fraction.
         /// </summary>
-        public static IntFloatFrac FromDecimal(decimal dec) => Fraction.FromDecimal(dec);
+        public static Number FromDecimal(decimal dec) => Fraction.FromDecimal(dec);
 
         /// <summary>
         /// Conversion that prioritizes Fraction.
         /// </summary>
-        public static IntFloatFrac FromDoudec(Doudec d)
+        public static Number FromDoudec(Doudec d)
         {
             if (d.IsDouble)
             {
@@ -353,7 +353,7 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// Conversion that prioritizes Fraction.
         /// </summary>
-        public static IntFloatFrac FromIntFloat(IntFloat i)
+        public static Number FromIntFloat(IntFloat i)
         {
             if (i.IsInt)
             {
@@ -369,7 +369,7 @@ namespace JesseRussell.Numerics
         /// <summary>
         /// Conversion that prioritizes BigInteger.
         /// </summary>
-        public static IntFloatFrac FromFraction(Fraction f)
+        public static Number FromFraction(Fraction f)
         {
             if (f.IsWhole)
             {
@@ -377,17 +377,17 @@ namespace JesseRussell.Numerics
             }
             else
             {
-                return new IntFloatFrac(f);
+                return new Number(f);
             }
         }
         #endregion
         #endregion
 
         #region public static Properties { get; }
-        public static IntFloatFrac NaN => new IntFloatFrac(double.NaN);
-        public static IntFloatFrac PositiveInfinity => new IntFloatFrac(double.PositiveInfinity);
-        public static IntFloatFrac NegativeInfinity => new IntFloatFrac(double.NegativeInfinity);
-        public static IntFloatFrac Epsilon => new IntFloatFrac(double.Epsilon);
+        public static Number NaN => new IntFloatFrac(double.NaN);
+        public static Number PositiveInfinity => new IntFloatFrac(double.PositiveInfinity);
+        public static Number NegativeInfinity => new IntFloatFrac(double.NegativeInfinity);
+        public static Number Epsilon => new IntFloatFrac(double.Epsilon);
         #endregion
 
         #region private readonly Fields
@@ -402,8 +402,8 @@ namespace JesseRussell.Numerics
     }
 
 
-    public static class IntFloatFracUtils
+    public static class NumberUtils
     {
-        public static IntFloatFrac Sum(this IEnumerable<IntFloatFrac> items) => items.Aggregate((total, next) => total + next);
+        public static Number Sum(this IEnumerable<Number> items) => items.Aggregate((total, next) => total + next);
     }
 }
